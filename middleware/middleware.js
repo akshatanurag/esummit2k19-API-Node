@@ -45,7 +45,8 @@ module.exports = {
                 return res.status(400).send({
                     error: "No user was found"
                 });
-
+            console.log(currentUser.secureSessionID);
+            console.log(req.session.secure)
             if (req.session.secure != undefined && currentUser.secureSessionID != undefined && req.session.secure == currentUser.secureSessionID)
                 next();
             else
