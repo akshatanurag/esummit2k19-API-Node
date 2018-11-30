@@ -34,7 +34,7 @@ module.exports = {
                 error: 'Access denied'
             });
         try {
-            const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+            const decoded = jwt.verify(token,'qwertyuiop');
             req.user = decoded;
             if (req.user)
                 var email = req.user.email

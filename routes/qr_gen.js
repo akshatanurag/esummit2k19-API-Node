@@ -19,7 +19,7 @@ router.get("/qr-gen",[middleware.isLoggedIn, middleware.isVerified, middleware.i
 
 
 
-        }, config.get('jwtPrivateKey'))
+        }, 'qwertyuiop')
     }
     var token = qr_token(currentUserProfile)
     var enc_token = crypto.AES.encrypt(token,salt).toString()
@@ -39,7 +39,7 @@ router.post("/qr-gen",[middleware.isLoggedIn, middleware.isVerified, middleware.
     return res.status(400).send({error: "Token was expected"})
     dec_token = await crypto.AES.decrypt(req.body.token, salt).toString(crypto.enc.Utf8);
     console.log(dec_token);
-    var decoded = await jwt.verify(dec_token,config.get('jwtPrivateKey'))
+    var decoded = await jwt.verify(dec_token,'qwertyuiop')
     var userProfile = await Profile.findOne({main_email: decoded.email})
     if(!userProfile)
     return res.status(400).send({error: "Wrong jwt token"})
