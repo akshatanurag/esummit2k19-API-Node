@@ -1,17 +1,17 @@
-#Welcome to E-SUMMIT 2019 API
+# Welcome to E-SUMMIT 2019 API
 
 ### The following is a guide on how using this API
 
 ---
 
-##Users
+## Users
 
 1. Participants
 2. Admins (Panel not created yet)
 
 ---
 
-##Particapnts
+## Particapnts
 
 ```
     - Register for e-summit
@@ -28,7 +28,7 @@
 
 ---
 
-##Admins
+## Admins
 
 ```
     - Find User data
@@ -41,7 +41,7 @@
 
 ---
 
-##Routes
+## Routes
 
 ```
     -/api/signup - **POST**
