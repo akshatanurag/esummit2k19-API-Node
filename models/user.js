@@ -66,7 +66,7 @@ userSchema.methods.validPassword = function (password, hashPass) {
 userSchema.methods.generateAuthToken = function (bodyEmail) {
     return jwt.sign({
         email: bodyEmail
-    }, 'qwertyuiop')
+    }, config.get("jwtPrivateKey"))
 }
 
 

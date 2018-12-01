@@ -34,25 +34,25 @@ module.exports = {
                 error: 'Access denied'
             });
         try {
-            const decoded = jwt.verify(token,'qwertyuiop');
+            const decoded = jwt.verify(token,config.get("jwtPrivateKey"));
             req.user = decoded;
-            // if (req.user)
-            //     var email = req.user.email
-            // else
-            //     var email = req.body.email
-            // var currentUser = await fetchUser(email)
-            // if (currentUser == 0)
-            //     return res.status(400).send({
-            //         error: "No user was found"
-            //     });
-            // console.log(currentUser.secureSessionID);
-            // console.log(req.session.secure)
-            // if (req.session.secure != undefined && currentUser.secureSessionID != undefined && req.session.secure == currentUser.secureSessionID)
+            if (req.user)
+                var email = req.user.email
+            else
+                var email = req.body.email
+            var currentUser = await fetchUser(email)
+            if (currentUser == 0)
+                return res.status(400).send({
+                    error: "No user was found"
+                });
+            console.log(currentUser.secureSessionID);
+            console.log(req.session.secure)
+            if (req.session.secure != undefined && currentUser.secureSessionID != undefined && req.session.secure == currentUser.secureSessionID)
                 next();
-            // else
-            //     return res.status(401).send({
-            //         error: 'Invalid Session'
-            //     });
+            else
+                return res.status(401).send({
+                    error: 'Invalid Session'
+                });
 
             //next();
 
