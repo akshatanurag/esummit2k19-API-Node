@@ -74,7 +74,9 @@ if (cluster.isMaster) {
 
 
 
-  app.listen(port, process.env.IP)
+  app.listen(port, process.env.IP,()=>{
+    console.log(`Server is up on ${port}`);
+  })
 
   // console.log(`Worker ${process.pid} started`);
 }
