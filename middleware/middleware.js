@@ -6,6 +6,7 @@ const {
 const {
     Profile
 } = require('../models/profile');
+const {admin} = require('../models/admin')
 
 const seatInfo = require('../models/allSeats');
 
@@ -45,8 +46,8 @@ module.exports = {
                 return res.status(400).send({
                     error: "No user was found"
                 });
-            console.log(currentUser.secureSessionID);
-            console.log(req.session.secure)
+            // console.log(currentUser.secureSessionID);
+            // console.log(req.session.secure)
             if (req.session.secure != undefined && currentUser.secureSessionID != undefined && req.session.secure == currentUser.secureSessionID)
                 next();
             else
@@ -177,6 +178,24 @@ module.exports = {
             return res.status(400).send({
                 error: "Done that already? "
             })
+    },
+    isAdminLoggedIn: async function(req,res,next){
+        const token = req.header('x-auth-token');
+        if (!token && !req.session.secure)
+            return res.status(401).send({
+                error: 'Access denied'
+            });
+            const decoded = await jwt.verify(token,config.get("jwtPrivateKey"));
+            console.log(decoded.email);
+            req.user = decoded;
+            var adminFind = await admin.findOne({
+                email: decoded.email
+            }).select("-password")
+            if(adminFind && req.session.secure == adminFind._id && decoded.isAdmin)
+                next();
+            else
+                return res.status(401).send({error: "Not authorized"})
+
     }
 
 

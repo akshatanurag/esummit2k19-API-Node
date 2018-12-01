@@ -3,7 +3,7 @@
     The route was having too many bugs, below you will see my deperate attempts to resolve the issues,
     it's just that the code works.
 
-    I will refactor the code later, Kindly use this for now, due to time crunch I coded whatever I could
+    I will refactor the code later, Kindly use this for now, due to time less time I coded whatever I could
 
     =========
     DANGER
@@ -88,7 +88,7 @@ var InsertDataAfterCheck = async (eventName, playersData, palyerData, email, res
         }, {
             $push: {
                 eventsChosen: {
-                    event_name :eventName
+                    event_name: eventName
                 }
             }
         })
@@ -111,7 +111,7 @@ router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middlewa
 
         var status = await insertIntoTotSeats('All Seats', playersData, palyerData, req.user.email, res);
 
-        if (status == 1){
+        if (status == 1) {
             await Profile.findOneAndUpdate({
                 main_email: req.user.email
             }, {
@@ -120,9 +120,7 @@ router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middlewa
             return res.status(200).send({
                 sucees: "We have saved a seat for you"
             })
-        }
-
-        else{
+        } else {
             return res.status(200).send({
                 error: "Opps! something went wrong"
             })
@@ -141,7 +139,7 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
         });
     let palyerData = await fetchUserProfile(req.user.email)
     //s(n)_d1
-    var status1 = await sessionHandler_1(event.event1,event.event2,palyerData, req, res)
+    var status1 = await sessionHandler_1(event.event1, event.event2, palyerData, req, res)
     console.log(`status1: ${status1}`)
     //s(n)_d2
     //var status2 = await sessionHandler_2(event.event2, req, res)
@@ -155,12 +153,11 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
         return res.status(200).send({
             success: "Session have been selected"
         })
-    } else if(!status1){
+    } else if (!status1) {
         return res.status(400).send({
             error: "in function wrong call"
         })
-    }
-     else {
+    } else {
         return res.status(400).send({
             error: "Opps! Something went wrong 1"
         })
@@ -169,12 +166,17 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
 
 })
 
-var sessionHandler_1 = async (eventName,eventName2,palyerData, req, res) => {
+router.get("/dashboard/choose-events", async (req, res) => {
+    var seatStatus = await allSeats.find({}).select("-players")
+    res.status(200).send(seatStatus);
+})
+
+var sessionHandler_1 = async (eventName, eventName2, palyerData, req, res) => {
     console.log(eventName)
     console.log(eventName2)
-    if ((eventName == "S1_D1" || eventName == "S2_D1" )&& (eventName2 == "S1_D2" || eventName2 =="S2_D2")) {
+    if ((eventName == "S1_D1" || eventName == "S2_D1") && (eventName2 == "S1_D2" || eventName2 == "S2_D2")) {
         console.log("this runs")
-        
+
         var playersData = await allSeats.findOne({
             name: eventName
         })
@@ -190,14 +192,13 @@ var sessionHandler_1 = async (eventName,eventName2,palyerData, req, res) => {
             return res.status(400).send({
                 error: "Sorry we are full"
             });
-        if (status == 1){
-        var status2 = await sessionHandler_2(eventName2,palyerData, req, res)
-        if(status2 == 1)
-        return 1;
-        else
-        return 0;
-        }
-        else{
+        if (status == 1) {
+            var status2 = await sessionHandler_2(eventName2, palyerData, req, res)
+            if (status2 == 1)
+                return 1;
+            else
+                return 0;
+        } else {
             return 0;
         }
 
@@ -209,7 +210,7 @@ var sessionHandler_1 = async (eventName,eventName2,palyerData, req, res) => {
 
 }
 
-var sessionHandler_2 = async (eventName,palyerData, req, res) => {
+var sessionHandler_2 = async (eventName, palyerData, req, res) => {
     if (eventName == "S1_D2" || eventName == "S2_D2") {
         //let palyerData = await fetchUserProfile(req.user.email)
         var playersData = await allSeats.findOne({

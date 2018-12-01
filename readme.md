@@ -7,7 +7,7 @@
 ## Users
 
 1. Participants
-2. Admins (Panel not created yet)
+2. Admins (Live Status feature left to add)
 
 ---
 
@@ -129,6 +129,11 @@
 ```
 
 ```
+    -/api/dashboard/choose-events - **GET**
+        -Results
+            -Get seat status
+
+
     -/api/dashboard/choose-events - **POST**
         -Expects
             -event1 - *S1_D1* or *S2_D1*
@@ -167,8 +172,46 @@
             -userData
         -Error
             if any
+        -Middlewares
+            -only for admins to post the token here and get the user data
 
 ```
+
+```
+    \api\logout - **GET**
+        -Results
+            -Logs user out
+            -Destroys sessions
+            -Destroys headers
+```
+---
+
+### Admin Routes
+
+```
+    \api\admin\login - **POST **
+        -Expects
+            -email
+            -password
+        -Result
+            -creates an admin user
+            -sets an x-auth-token and id of the current user in session
+        -Errors
+            -if any
+    
+    \api\admin\create-admin - **POST**
+        -Expects
+            -email
+            -password
+        -Middlewares
+            -A admin should always be present to create other admins (current I have manually added an admin user, if you need the creds for testing the contact me)
+        -Result
+            -Creates an admin
+        -Error
+            -if any
+
+``` 
+---
 
 ### For any queries call me directly.
         

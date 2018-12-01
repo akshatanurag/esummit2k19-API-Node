@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-mongoose.connect("mongodb://root:kW8Qc7gBT@ds123434.mlab.com:23434/esummit", {
+//mongodb://root:kW8Qc7gBT@ds123434.mlab.com:23434/esummit
+mongoose.connect("mongodb://localhost/e-summit", {
     useNewUrlParser: true
 }, () => {
     console.log("connected to db");
