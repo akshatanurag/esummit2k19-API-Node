@@ -1,3 +1,17 @@
+/* 
+    Yeah! ik the code on this page is way too fucked up. Do not attempt to undestand it.
+    The route was having too many bugs, below you will see my deperate attempts to resolve the issues,
+    it's just that the code works.
+
+    I will refactor the code later, Kindly use this for now, due to time crunch I coded whatever I could
+
+    =========
+    DANGER
+    =========
+    DON'T SCROLL !!!!!!
+
+*/
+
 const express = require('express');
 const middleware = require('../middleware/middleware');
 const allSeats = require('../models/allSeats');
@@ -15,6 +29,7 @@ var fetchUserProfile = async (email) => {
         return 0;
     return findProfile;
 }
+
 
 var insertIntoTotSeats = async (eventName, playersData, palyerData, email, res) => {
     for (var i = 0; i < playersData.players.length; i++) {
@@ -73,7 +88,7 @@ var InsertDataAfterCheck = async (eventName, playersData, palyerData, email, res
         }, {
             $push: {
                 eventsChosen: {
-                    eventName
+                    event_name :eventName
                 }
             }
         })
@@ -95,19 +110,24 @@ router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middlewa
         })
 
         var status = await insertIntoTotSeats('All Seats', playersData, palyerData, req.user.email, res);
-        await Profile.findOneAndUpdate({
-            main_email: req.user.email
-        }, {
-            seatSafe: true
-        })
-        if (status == 1)
+
+        if (status == 1){
+            await Profile.findOneAndUpdate({
+                main_email: req.user.email
+            }, {
+                seatSafe: true
+            })
             return res.status(200).send({
                 sucees: "We have saved a seat for you"
             })
-        else
+        }
+
+        else{
             return res.status(200).send({
                 error: "Opps! something went wrong"
             })
+        }
+
     }
 
 
@@ -119,13 +139,14 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
         return res.status(400).send({
             error: "No event was chosen"
         });
+    let palyerData = await fetchUserProfile(req.user.email)
     //s(n)_d1
-    var status1 = await sessionHandler_1(event.event1, req, res)
-    console.log(status1)
+    var status1 = await sessionHandler_1(event.event1,event.event2,palyerData, req, res)
+    console.log(`status1: ${status1}`)
     //s(n)_d2
-    var status2 = await sessionHandler_2(event.event2, req, res)
-    console.log(status2)
-    if (status1 == 1 && status2 == 1) {
+    //var status2 = await sessionHandler_2(event.event2, req, res)
+    //console.log(status2)
+    if (status1 == 1) {
         await Profile.findOneAndUpdate({
             main_email: req.user.email
         }, {
@@ -134,7 +155,12 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
         return res.status(200).send({
             success: "Session have been selected"
         })
-    } else {
+    } else if(!status1){
+        return res.status(400).send({
+            error: "in function wrong call"
+        })
+    }
+     else {
         return res.status(400).send({
             error: "Opps! Something went wrong 1"
         })
@@ -143,11 +169,12 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
 
 })
 
-var sessionHandler_1 = async (eventName, req, res) => {
+var sessionHandler_1 = async (eventName,eventName2,palyerData, req, res) => {
     console.log(eventName)
-    if (eventName == "S1_D1" || eventName == "S2_D1") {
-
-        let palyerData = await fetchUserProfile(req.user.email)
+    console.log(eventName2)
+    if ((eventName == "S1_D1" || eventName == "S2_D1" )&& (eventName2 == "S1_D2" || eventName2 =="S2_D2")) {
+        console.log("this runs")
+        
         var playersData = await allSeats.findOne({
             name: eventName
         })
@@ -163,24 +190,28 @@ var sessionHandler_1 = async (eventName, req, res) => {
             return res.status(400).send({
                 error: "Sorry we are full"
             });
-        if (status == 1)
-            return 1;
+        if (status == 1){
+        var status2 = await sessionHandler_2(eventName2,palyerData, req, res)
+        if(status2 == 1)
+        return 1;
         else
+        return 0;
+        }
+        else{
             return 0;
+        }
 
     } else {
-        return res.status(400).send({
-            error: "Wrong event chosen"
-        })
+        return 0;
     }
 
 
 
 }
 
-var sessionHandler_2 = async (eventName, req, res) => {
+var sessionHandler_2 = async (eventName,palyerData, req, res) => {
     if (eventName == "S1_D2" || eventName == "S2_D2") {
-        let palyerData = await fetchUserProfile(req.user.email)
+        //let palyerData = await fetchUserProfile(req.user.email)
         var playersData = await allSeats.findOne({
             name: eventName
         })
@@ -197,9 +228,7 @@ var sessionHandler_2 = async (eventName, req, res) => {
         else
             return 0;
     } else {
-        return res.status(400).send({
-            error: "Wrong event chosen"
-        })
+        return 0;
     }
 
 

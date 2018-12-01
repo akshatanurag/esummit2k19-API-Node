@@ -8,10 +8,10 @@ const session = require('express-session');
 //const QRCode = require('qrcode');
 //custom imports
 
-// if (!config.get('jwtPrivateKey')) {
-//   console.log("FATAL ERROR: jwtPrivateKey not defined");
-//   process.exit(1);
-// }
+if (!config.get('jwtPrivateKey')) {
+  console.log("FATAL ERROR: jwtPrivateKey not defined");
+  process.exit(1);
+}
 
 require('../db/connection');
 const commonRoutes = require('../routes/common');
