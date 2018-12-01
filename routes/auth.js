@@ -20,7 +20,7 @@ const sendMail = (token, email, host) => {
             /*This password is not meant for you, so do not misue it. I will be getting a notification on my phone, if you dare to login and
             if I am able to locate you, then consider yourself dead. I will eat your head off. _|_*/
             user: 'akshatanurag1998@gmail.com',
-            pass: 'sYWUM#gTuz'
+            pass: ''
         }
     });
     var mailOptions = {
