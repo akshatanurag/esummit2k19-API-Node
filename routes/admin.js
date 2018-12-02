@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto-js')
-
+const santizer = require('sanitizer');
 const middleware = require('../middleware/middleware')
 
 const {
@@ -11,6 +11,8 @@ const {
 var router = express.Router();
 
 router.post("/create-admin",middleware.isAdminLoggedIn,async (req, res) => {
+    var s_email = santizer.escape(req.body.email)
+    var s_password = santizer.escape(req.body.password)
     const {
         error
     } = validateSchema(req.body);
@@ -19,13 +21,13 @@ router.post("/create-admin",middleware.isAdminLoggedIn,async (req, res) => {
     });
 
     var adminFind = await admin.findOne({
-        email: req.body.email
+        email: s_email
     }).select("-password")
     if(adminFind)
     return res.status(400).send({error: "Opps! Admin already created"})
-    var hashPassword = await crypto.SHA256(req.body.password).toString()
+    var hashPassword = await crypto.SHA256(s_password).toString()
     var newadmin = new admin({
-        email: req.body.email,
+        email: s_email,
         password: hashPassword
     })
     await newadmin.save()
@@ -36,12 +38,12 @@ router.post("/create-admin",middleware.isAdminLoggedIn,async (req, res) => {
 
 
 router.post("/login", async (req, res) => {
-
-
-    var hashPassword = await crypto.SHA256(req.body.password).toString()
-    console.log(hashPassword);
+    var s_email = santizer.escape(req.body.email)
+    var s_password = santizer.escape(req.body.password)
+    var hashPassword = await crypto.SHA256(s_password).toString()
+    // console.log(hashPassword);
     var findAdmin = await admin.findOne({
-        email: req.body.email,
+        email: s_email,
         password: hashPassword
     })
     if (!findAdmin) {
@@ -51,7 +53,7 @@ router.post("/login", async (req, res) => {
     }
     var newAdmin = admin()
 
-    const token = await newAdmin.generateAuthToken(req.body.email)
+    const token = await newAdmin.generateAuthToken(s_email)
     req.session.secure = findAdmin._id
     return res.header('x-auth-token', token).status(200).send({
         success: "logged in"

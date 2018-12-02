@@ -73,7 +73,7 @@ router.get("/thankyou", [middleware.isLoggedIn, middleware.isProfileComplete, mi
     }, async function (error, response, body) {
         if (!error && response.statusCode == 200) {
             obj = JSON.parse(body)
-            console.log(obj.payment_request.payments[0]);
+            //console.log(obj.payment_request.payments[0]);
             if (obj.payment_request.payments[0].status == 'Credit') {
                 var findUser = await User.findOne({
                     email: obj.payment_request.email

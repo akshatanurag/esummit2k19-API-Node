@@ -1,6 +1,6 @@
 # Welcome to E-SUMMIT 2019 API
 
-### The following is a guide on how using this API
+### The following is a guide on using this API
 
 ---
 

@@ -7,7 +7,11 @@ const {
 } = require('../models/profile')
 const router = express.Router();
 var crypto = require("crypto-js");
-var salt = "kiitecellislove"
+var salt = process.env.SALT 
+
+
+const santizer = require('sanitizer');
+
 router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid, middleware.hasSeat], async (req, res) => {
     
     var currentUserProfile = await Profile.findOne({
@@ -18,7 +22,7 @@ router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.
             error: "Profile was not found"
         })
     if(currentUserProfile.eventsChosen[1] && currentUserProfile.eventsChosen[2]){
-    console.log(currentUserProfile.eventsChosen[1].event_name)
+    //console.log(currentUserProfile.eventsChosen[1].event_name)
     qr_token = async (currentUserProfile) => {
         return await jwt.sign({
             _id: currentUserProfile.user_id,
@@ -69,8 +73,8 @@ router.post("/qr-gen", middleware.isAdminLoggedIn, async (req, res) => {
         return res.status(400).send({
             error: "Token was expected"
         })
-    dec_token = await crypto.AES.decrypt(req.body.token, salt).toString(crypto.enc.Utf8);
-    console.log(dec_token);
+    dec_token = await crypto.AES.decrypt(santizer.escape(req.body.token), salt).toString(crypto.enc.Utf8);
+    //console.log(dec_token);
     var decoded = await jwt.verify(dec_token, config.get("jwtPrivateKey"))
     var userProfile = await Profile.findOne({
         main_email: decoded.email
