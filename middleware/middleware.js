@@ -7,6 +7,7 @@ const {
     Profile
 } = require('../models/profile');
 const {admin} = require('../models/admin')
+const sanitizer = require('sanitizer')
 
 const seatInfo = require('../models/allSeats');
 
@@ -40,7 +41,7 @@ module.exports = {
             if (req.user)
                 var email = req.user.email
             else
-                var email = req.body.email
+                var email = sanitizer.escape(req.body.email)
             var currentUser = await fetchUser(email)
             if (currentUser == 0)
                 return res.status(400).send({
@@ -68,7 +69,7 @@ module.exports = {
         if (req.user)
             var email = req.user.email
         else
-            var email = req.body.email
+            var email = sanitizer.escape(req.body.email)
         var currentUser = await fetchUser(email)
         if (currentUser == 0)
             return res.status(400).send({
@@ -170,8 +171,8 @@ module.exports = {
             return res.status(400).send({
                 error: "No user profile was found"
             })
-        console.log(userProfile.selectedTwoEvents)
-        console.log(userProfile.eventsChosen.length)
+        // console.log(userProfile.selectedTwoEvents)
+        // console.log(userProfile.eventsChosen.length)
         if (userProfile.selectedTwoEvents == false && userProfile.eventsChosen.length < 4)
             next()
         else
@@ -186,7 +187,7 @@ module.exports = {
                 error: 'Access denied'
             });
             const decoded = await jwt.verify(token,config.get("jwtPrivateKey"));
-            console.log(decoded.email);
+            // console.log(decoded.email);
             req.user = decoded;
             var adminFind = await admin.findOne({
                 email: decoded.email

@@ -10,6 +10,9 @@
     =========
     DON'T SCROLL !!!!!!
 
+    --Btw, I noticed just now--
+    OMFG! the page takes 4437ms to repond. So fuckin dead. I need to make this better very soon
+
 */
 
 const express = require('express');
@@ -20,7 +23,7 @@ const {
     Profile
 } = require('../models/profile')
 const router = express.Router();
-
+const sanitizer = require('sanitizer')
 var fetchUserProfile = async (email) => {
     var findProfile = await Profile.findOne({
         main_email: email
@@ -139,8 +142,8 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
         });
     let palyerData = await fetchUserProfile(req.user.email)
     //s(n)_d1
-    var status1 = await sessionHandler_1(event.event1, event.event2, palyerData, req, res)
-    console.log(`status1: ${status1}`)
+    var status1 = await sessionHandler_1(sanitizer.escape(event.event1),sanitizer.escape(event.event2), palyerData, req, res)
+    //console.log(`status1: ${status1}`)
     //s(n)_d2
     //var status2 = await sessionHandler_2(event.event2, req, res)
     //console.log(status2)
@@ -172,10 +175,10 @@ router.get("/dashboard/choose-events", async (req, res) => {
 })
 
 var sessionHandler_1 = async (eventName, eventName2, palyerData, req, res) => {
-    console.log(eventName)
-    console.log(eventName2)
+    //console.log(eventName)
+    //console.log(eventName2)
     if ((eventName == "S1_D1" || eventName == "S2_D1") && (eventName2 == "S1_D2" || eventName2 == "S2_D2")) {
-        console.log("this runs")
+        //console.log("this runs")
 
         var playersData = await allSeats.findOne({
             name: eventName

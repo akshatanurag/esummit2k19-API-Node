@@ -1,3 +1,8 @@
+/*
+    The page does not have santizer in it. Will ad it later too much work now!!1
+
+*/
+
 const express = require('express');
 const _ = require('lodash');
 var randomstring = require("randomstring");
@@ -29,7 +34,7 @@ router.post("/profile", [middleware.isLoggedIn, middleware.isVerified], async (r
         return res.status(400).send({
             error: "Opps!Looks like you have already done that"
         })
-    console.log(findUser._id)
+    //console.log(findUser._id)
     const {
         error
     } = validate(req.body);
@@ -45,7 +50,7 @@ router.post("/profile", [middleware.isLoggedIn, middleware.isVerified], async (r
         length: 4,
         charset: 'alphanumeric'
     });
-    console.log(randString);
+    //console.log(randString);
     profile.es_id = `ES_${randString}`
     profile.profileComplete = true
     await profile.save();
