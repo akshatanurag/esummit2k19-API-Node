@@ -16,8 +16,8 @@ var MAX_CONTENT_LENGTH_ACCEPTED = 9999;
 //const QRCode = require('qrcode');
 //custom imports
 
-if (!config.get('jwtPrivateKey')) {
-  console.log("FATAL ERROR: jwtPrivateKey not defined");
+if (!config.get('jwtPrivateKey') && !process.env.SALT && !process.env.SESSION_SECRET && !process.env.password) {
+  console.log("FATAL ERROR: keys not defined");
   process.exit(1);
 }
 
@@ -103,6 +103,10 @@ app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400
   app.use("/api",qrGenRoutes);
   app.use("/api/admin",adminRoutes);
 
+
+  app.get("*",(req,res)=>{
+    return res.status(404).send({error: "The page was not found"});
+})
 
 
 

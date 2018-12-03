@@ -11,6 +11,10 @@
 
 ---
 
+### **Note** : Each route sends a success (bool) and message response. 
+
+---
+
 ## Particapnts
 
 ```
