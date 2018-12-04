@@ -3,6 +3,15 @@ const _ = require('lodash');
 const router = express.Router();
 var randomstring = require("randomstring");
 const sanitizer = require('sanitizer')
+var owasp = require('owasp-password-strength-test');
+
+owasp.config({
+    allowPassphrases       : true,
+    maxLength              : 128,
+    minLength              : 5,
+    minPhraseLength        : 20,
+    minOptionalTestsToPass : 4,
+  });
 
 const {
     User,
@@ -44,6 +53,11 @@ router.post("/signup", async (req, res) => {
     try {
         if(!req.body.email || !req.body.password)
         throw "error";
+
+        var passStrength = owasp.test(req.body.password)
+        if(passStrength.errors.length > 0)
+        return res.status(400).send({errors: passStrength.errors});
+
         if (await User.findOne({
                 email: sanitizer.escape(req.body.email)
             })) {
