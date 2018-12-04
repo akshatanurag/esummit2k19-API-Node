@@ -12,6 +12,7 @@ const helmet = require('helmet')
 var compression = require('compression')
 var contentLength = require('express-content-length-validator');
 var MAX_CONTENT_LENGTH_ACCEPTED = 9999;
+const url = require('url')
 
 //const QRCode = require('qrcode');
 //custom imports
@@ -102,6 +103,10 @@ app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400
   app.use("/api", paymentRoutes);
   app.use("/api",qrGenRoutes);
   app.use("/api/admin",adminRoutes);
+
+
+
+
 
 
   app.get("*",(req,res)=>{
