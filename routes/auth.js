@@ -4,9 +4,7 @@ const router = express.Router();
 var randomstring = require("randomstring");
 const sanitizer = require('sanitizer')
 var owasp = require('owasp-password-strength-test');
-const {
-    google
-} = require('googleapis');
+
 const url = require('url')
 
 owasp.config({
@@ -21,6 +19,8 @@ const {
     User,
     validate
 } = require('../models/user');
+
+const google = require('../config/google-util')
 
 const middleware = require('../middleware/middleware')
 const nodemailer = require('nodemailer');
@@ -59,153 +59,11 @@ const sendMail = async (token, email, host) => {
  * 
  */
 
-router.get("/callback", async (req, res) => {
+router.get("/auth/google", async (req, res) => {
     try {
-        const googleConfig = {
-            clientId: '1093232338076-a2dfdlm8q0ncduf0dak39o5un0lrof4h.apps.googleusercontent.com',
-            clientSecret: 'm7rXPEoC0NcwZFgKzUOFkxRO',
-            redirect: 'http://localhost:3000/api/callback',
-        };
-
-        const defaultScope = [
-            'https://www.googleapis.com/auth/plus.me',
-            'https://www.googleapis.com/auth/userinfo.email',
-        ];
-
-        function createConnection() {
-            return new google.auth.OAuth2(
-                googleConfig.clientId,
-                googleConfig.clientSecret,
-                googleConfig.redirect
-            );
-        }
-
-        function getConnectionUrl(auth) {
-            return auth.generateAuthUrl({
-                access_type: 'offline',
-                prompt: 'consent',
-                scope: defaultScope
-            });
-        }
-
-        function getGooglePlusApi(auth) {
-            return google.plus({
-                version: 'v1',
-                auth
-            });
-        }
-
-        function urlGoogle() {
-            const auth = createConnection();
-            const url = getConnectionUrl(auth);
-            console.log(url);
-        }
-        //urlGoogle()
-
-        /**
-         * This function will generate this url
-         * 
-         * https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=1093232338076-a2dfdlm8q0ncduf0dak39o5un0lrof4h.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fcallback
-         *
-         * 
-         * until and unless we don't change the whole auth redirected thingy
-         *  
-         */
-
-
-        var q = url.parse(req.url, true);
-        if (q.query.code) {
-            var data = await getGoogleAccountFromCode(q.query.code)
-            var user = User()
-            /**
-             * 
-             * Now this is where magic happens.!!!
-             * 
-             * One reguest for both login and signup, amazing right. Wish I would've used simple google auth without passport before, It's simeple and 
-             * gives you much more flexiblity
-             * 
-             * Anyways, here we compare the database for the email sent by google 
-             * if we finde it then we simply set the session to users session and send response accoding ly
-             * 
-             */
-            if (currUser = await User.findOne({
-                    email: data.email
-                })) {
-                const token = user.generateAuthToken(req.body.email)
-                req.session.secure = currUser.secureSessionID;
-                return res.header('x-auth-token', token).status(200).send({
-                    success: true,
-                    message: "logged in"
-                });
-            }
-            /**
-             * now this will only run if the user is not registered with us 
-             * 
-             * basically we get the users details save in the db, 
-             * 
-             * Now, here since I don't get password and all from google, I simply put the users token here. Which will never be user used, 
-             * also I am too lazy to change the db schema now. So..:p
-             * 
-             * And the worst part if the user is not registered on google+, it deos not return a username (fuckers!!)
-             * 
-             * Anyways for that I have stored "Not set in gmail" as name of the user.
-             * again too lazy to change this(schema required it so...) 
-             *
-             *  */
-            var user = new User();
-            //console.log(data)
-            if (data.name == '')
-                user.name = 'Not Set in gmail'
-            else
-                user.name = data.displayName
-            user.email = data.email
-            user.password = data.tokens.id_token
-            user.secureSessionID = randomstring.generate({
-                length: 20,
-                charset: 'hex'
-            });
-            const token = user.generateAuthToken(data.email)
-            user.dateJoined = Date.now()
-            await user.save()
-            await res.header('x-auth-token', token).send({
-                success: true,
-                message: "Sign up successful"
-            });
-        } else {
-            return res.status(404).send({
-                success: false,
-                message: "Page not found"
-            })
-        }
-        /** 
-         * Okay so this is the part where we get the function which gets the user data from
-         * 
-         * ?code=......(this value is sent by google)
-         * 
-         * Hey, this is shit easy to uderstand don't waste your time reading this XD!!
-         * **/
-        async function getGoogleAccountFromCode(code) {
-            const auth = createConnection();
-            const data = await auth.getToken(code);
-            const tokens = data.tokens;
-
-            auth.setCredentials(tokens);
-            const plus = getGooglePlusApi(auth);
-            const me = await plus.people.get({
-                userId: 'me'
-            });
-            const userGoogleId = me.data.id;
-            const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
-            return {
-                id: userGoogleId,
-                name: me.data.displayName,
-                profilepic: me.data.image.url,
-                email: userGoogleEmail,
-                tokens: tokens,
-                domain: me.data.domain
-            };
-        }
-
+        return res.status(200).send({
+            url: google.urlGoogle()
+        })
     } catch (error) {
         console.log(error);
         return res.status(400).send({
@@ -214,6 +72,81 @@ router.get("/callback", async (req, res) => {
         })
     }
 
+})
+
+router.get("/auth/google/callback",async (req,res)=>{
+        try {
+            var q = url.parse(req.url, true);
+            if (q.query.code) {
+                var data = await google.getGoogleAccountFromCode(q.query.code)
+                var user = User()
+                /**
+                 * 
+                 * Now this is where magic happens.!!!
+                 * 
+                 * One reguest for both login and signup, amazing right. Wish I would've used simple google auth without passport before, It's simeple and 
+                 * gives you much more flexiblity
+                 * 
+                 * Anyways, here we compare the database for the email sent by google 
+                 * if we finde it then we simply set the session to users session and send response accoding ly
+                 * 
+                 */
+                if (currUser = await User.findOne({
+                        email: data.email
+                    })) {
+                    const token = user.generateAuthToken(data.email)
+                    req.session.secure = currUser.secureSessionID;
+                    return res.header('x-auth-token', token).status(200).send({
+                        success: true,
+                        message: "logged in"
+                    });
+                }
+                /**
+                 * now this will only run if the user is not registered with us 
+                 * 
+                 * basically we get the users details save in the db, 
+                 * 
+                 * Now, here since I don't get password and all from google, I simply put the users token here. Which will never be user used, 
+                 * also I am too lazy to change the db schema now. So..:p
+                 * 
+                 * And the worst part if the user is not registered on google+, it deos not return a username (fuckers!!)
+                 * 
+                 * Anyways for that I have stored "Not set in gmail" as name of the user.
+                 * again too lazy to change this(schema required it so...) 
+                 *
+                 *  */
+                var user = new User();
+                //console.log(data)
+                if (data.name == '')
+                    user.name = 'Not Set in gmail'
+                else
+                    user.name = data.displayName
+                user.email = data.email
+                user.password = data.tokens.id_token
+                user.secureSessionID = randomstring.generate({
+                    length: 20,
+                    charset: 'hex'
+                });
+                const token = user.generateAuthToken(data.email)
+                user.dateJoined = Date.now()
+                await user.save()
+                await res.header('x-auth-token', token).send({
+                    success: true,
+                    message: "Sign up successful"
+                });
+            } else {
+                return res.status(404).send({
+                    success: false,
+                    message: "Page not found"
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(400).send({
+                success: false,
+                message: "Opps! Uanbe to login/sign-up"
+            })
+        }
 })
 
 router.post("/signup", async (req, res) => {

@@ -182,7 +182,7 @@
 ```
 
 ```
-    \api\logout - **GET**
+    /api/logout - **GET**
         -Results
             -Logs user out
             -Destroys sessions
@@ -193,7 +193,7 @@
 ### Admin Routes
 
 ```
-    \api\admin\login - **POST **
+    /api/admin/login - **POST **
         -Expects
             -email
             -password
@@ -203,7 +203,7 @@
         -Errors
             -if any
     
-    \api\admin\create-admin - **POST**
+    /api/admin/create-admin - **POST**
         -Expects
             -email
             -password
@@ -216,6 +216,25 @@
 
 ``` 
 ---
+
+## Google Authentication
+
+---
+
+```
+    /api/auth/google - **GET**
+        -Here you will get the url from google to login use it in the button
+    
+    /api/auth/google/callback - **GET**
+        -THIS IS WHERE MAGIC HAPPENS :D
+        -Here the user will be logged in depending upon what he has done
+        -currently only it's saying success true or false
+        -later on we will redirect the user to /dashboard
+
+
+
+```    
+
 
 ### For any queries call me directly.
         
