@@ -63,7 +63,7 @@ if (cluster.isMaster) {
 
   //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InNkY3NkY2Rzdjc4N3Y4c3Y3OHNkczQ1c2Q0ZHNjc2RjIiwic2VjcmV0IjoiZGNzY2FzYXNxd2UyM1VVVUlKSEhoNzc1U0NTRDVDIiwiaWF0IjoxNTQzOTYyODc3fQ.jPQ4-SUZR4AdMs3mbn80cobg5T0vtlASwAz0eQ-PzjI
 
-
+/*
   app.use(function(req,res,next){
     try{
     var client_id = 'sdcsdcdsv787v8sv78sds45sd4dscsdc'
@@ -78,7 +78,7 @@ if (cluster.isMaster) {
       return res.status(401).send({success: false,message: "Unauthorized"})
     }
   })
- 
+*/ 
   app.use(
     bodyParser.urlencoded({
       extended: true
