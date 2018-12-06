@@ -1,3 +1,16 @@
+/***
+ * 
+ *  Very soon I will be commenting the entire code. Don't worry.
+ * 
+ *  I intend to use it every year.
+ * 
+ *  And if everything goes well then, I can modify this API for Icamp as well.
+ * 
+ * ===============================
+ * (: LET'S MAKE E-SUMMIT GREAT :) 
+ * ===============================
+ * 
+ */
 const express = require('express');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
