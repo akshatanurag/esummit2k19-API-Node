@@ -8,16 +8,26 @@ const bcrypt = require('bcrypt-nodejs')
 const sanitizer = require('sanitizer');
 
 const router = express.Router();
+var owasp = require('owasp-password-strength-test');
+
+
+owasp.config({
+    allowPassphrases: true,
+    maxLength: 128,
+    minLength: 5,
+    minPhraseLength: 20,
+    minOptionalTestsToPass: 4,
+});
 
 const sendMail = async (token, email, host) => {
     //console.log(email);
     var smtpTransport = await nodemailer.createTransport({
-        service: 'Gmail',
+        service: 'SendGrid',
         auth: {
             /*This password is not meant for you, so do not misue it. I will be getting a notification on my phone, if you dare to login and
             if I am able to locate you, then consider yourself dead. I will eat your head off. _|_*/
-            user: 'akshatanurag1998@gmail.com',
-            pass: process.env.password
+            user: 'techieAkshat',
+            pass: 'Anurag2@3'
             //pass: "wrong"
         }
     });
@@ -125,6 +135,11 @@ router.post("/reset/:token", async (req, res) => {
                     success: false,
                     message: "Password not enterd"
                 })
+                var passStrength = owasp.test(req.body.password)
+                if (passStrength.errors.length > 0)
+                    return res.status(400).send({
+                        errors: passStrength.errors
+                    });
             findUserByToken.password = await bcrypt.hashSync(sanitizer.escape(req.body.password), bcrypt.genSaltSync(10), null);
             findUserByToken.resetEmailToken = undefined;
             findUserByToken.resetEmailExpires = undefined
