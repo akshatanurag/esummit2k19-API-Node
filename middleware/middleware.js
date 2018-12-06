@@ -244,6 +244,12 @@ module.exports = {
             })
         }
 
+    },
+    doNotShowRegisterPage: function(req,res,next){
+        if(!req.header('x-auth-token')&&!req.session.secure)
+        next();
+        else
+        return res.status(400).send({succes: false,message: "You are already loggedin. Kindly log out first"})
     }
 
 

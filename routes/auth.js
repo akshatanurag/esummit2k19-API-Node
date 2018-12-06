@@ -59,7 +59,7 @@ const sendMail = async (token, email, host) => {
  * 
  */
 
-router.get("/auth/google", async (req, res) => {
+router.get("/auth/google",middleware.doNotShowRegisterPage,async (req, res) => {
     try {
         return res.status(200).send({
             url: google.urlGoogle()
@@ -74,7 +74,7 @@ router.get("/auth/google", async (req, res) => {
 
 })
 
-router.get("/auth/google/callback",async (req,res)=>{
+router.get("/auth/google/callback",middleware.doNotShowRegisterPage,async (req,res)=>{
         try {
             var q = url.parse(req.url, true);
             if (q.query.code) {
@@ -118,11 +118,13 @@ router.get("/auth/google/callback",async (req,res)=>{
                 var user = new User();
                 //console.log(data)
                 if (data.name == '')
-                    user.name = 'Not Set in gmail'
+                    user.name = 'N/A by Gmail'
                 else
-                    user.name = data.displayName
+                    user.name = data.name
                 user.email = data.email
                 user.password = data.tokens.id_token
+                user.singUpType = 'Gmail'
+                user.isEmailVerified = 1
                 user.secureSessionID = randomstring.generate({
                     length: 20,
                     charset: 'hex'
@@ -153,7 +155,7 @@ router.get("/auth/google/callback",async (req,res)=>{
 
 
 
-router.post("/signup", async (req, res) => {
+router.post("/signup",middleware.doNotShowRegisterPage,async (req, res) => {
     try {
         if (!req.body.email || !req.body.password)
             throw "error";
@@ -195,6 +197,7 @@ router.post("/signup", async (req, res) => {
             charset: 'hex'
         });
         user.dateJoined = Date.now()
+        user.singUpType = 'Normal'
         //user.resetPasswordExpires = Date.now() + 86400000; // 24 hour
         sentMail = await sendMail(verifyToken, req.body.email, req.headers.host);
         if (sendMail) {
@@ -221,7 +224,7 @@ router.post("/signup", async (req, res) => {
 
 })
 
-router.post("/login", middleware.isVerified, async (req, res) => {
+router.post("/login",[middleware.isVerified,middleware.doNotShowRegisterPage], async (req, res) => {
     try {
 
         if (!req.body.email || !req.body.password)

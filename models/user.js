@@ -50,6 +50,10 @@ var userSchema = new mongoose.Schema({
         instamojo_id: {
             type: String
         }
+    },
+    singUpType: {
+        type: String,
+        required: true
     }
 });
 mongoose.Promise = global.Promise;
