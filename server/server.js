@@ -9,7 +9,8 @@
  * ===============================
  * (: LET'S MAKE E-SUMMIT GREAT :) 
  * ===============================
- * 
+ * chat on other page
+ *
  */
 const express = require('express');
 const cluster = require('cluster');

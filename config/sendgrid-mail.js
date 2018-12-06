@@ -4,8 +4,9 @@ const sgmail = require('@sendgrid/mail');
 sgmail.setApiKey(
   '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'
 );
-module.exports = {
-  sendMail: async (token, to, host)=>{
+
+
+  async function sendMail(token, to, host) {
     const msg_send = {
       to: to,
       from: 'esummit@ecell.org.in',
@@ -29,4 +30,4 @@ module.exports = {
       return false;
     }
   }
-}
+  module.exports = {sendMail}

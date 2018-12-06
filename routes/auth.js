@@ -315,7 +315,7 @@ router.get('/verify/:token', (req, res) => {
         //m.resetPasswordExpires= undefined,
         (m.isEmailVerified = 1);
         m.save();
-        console.log(m);
+        //console.log(m);
         res.status(200).send({
           success: 'Email Verified'
         });
