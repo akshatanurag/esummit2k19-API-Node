@@ -15,12 +15,15 @@ owasp.config({
   minOptionalTestsToPass: 4
 });
 
-const { User, validate } = require('../models/user');
+const {
+  User,
+  validate
+} = require('../models/user');
 
 const google = require('../config/google-util');
 
 const middleware = require('../middleware/middleware');
-const nodemailer = require('nodemailer');
+//const nodemailer = require('nodemailer');
 
 // const sendMail = async (token, email, host) => {
 //   //console.log(email);
@@ -181,7 +184,9 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       });
     }
 
-    const { error } = validate(req.body);
+    const {
+      error
+    } = validate(req.body);
     if (error)
       return res.status(400).send({
         success: false,
@@ -222,6 +227,7 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(400).send({
       success: false,
       message: 'Uable to sign you up'
@@ -300,14 +306,14 @@ router.get('/logout', middleware.isLoggedIn, async (req, res) => {
 
 router.get('/verify/:token', (req, res) => {
   User.findOne({
-    resetPasswordToken: req.params.token
-    //resetPasswordExpires: { $gt: Date.now() }
-  })
+      resetPasswordToken: req.params.token
+      //resetPasswordExpires: { $gt: Date.now() }
+    })
     .then(
       m => {
         (m.resetPasswordToken = undefined),
-          //m.resetPasswordExpires= undefined,
-          (m.isEmailVerified = 1);
+        //m.resetPasswordExpires= undefined,
+        (m.isEmailVerified = 1);
         m.save();
         console.log(m);
         res.status(200).send({
