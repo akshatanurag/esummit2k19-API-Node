@@ -9,7 +9,7 @@ const router = express.Router();
 var crypto = require("crypto-js");
 var salt = process.env.SALT 
 
-
+const log = require('../config/bunyan-config');
 const santizer = require('sanitizer');
 
 router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid, middleware.hasSeat], async (req, res) => {
@@ -57,6 +57,7 @@ router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.
         }
     
     } catch (error) {
+        log.error(error);
         return res.status(400).send({success: false, message: "Opps! Something went wrong"})
     }
     
@@ -77,7 +78,8 @@ router.post("/qr-gen", middleware.isAdminLoggedIn, async (req, res) => {
     // {
     //     var token =  req.body.token
     // }
-    if (!req.body.token)
+    try {
+        if (!req.body.token)
         return res.status(400).send({
             success: false,
             message: "Token was expected"
@@ -98,5 +100,9 @@ router.post("/qr-gen", middleware.isAdminLoggedIn, async (req, res) => {
         message: "Here is the user data use it wisely",
         userData: userProfile
     })
+    } catch (e) {
+        log.error(e);
+    }
+
 })
 module.exports = router;

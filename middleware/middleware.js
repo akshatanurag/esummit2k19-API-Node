@@ -10,6 +10,7 @@ const {
     admin
 } = require('../models/admin')
 const sanitizer = require('sanitizer')
+const log = require('../config/bunyan-config')
 
 const seatInfo = require('../models/allSeats');
 
@@ -52,6 +53,7 @@ module.exports = {
 
             //next();
         } catch (e) {
+            log.error(e);
             return res.status(401).send({
                 success: false,
                 message: 'Access denied'
@@ -79,6 +81,7 @@ module.exports = {
                     message: 'Email not verified'
                 });
         } catch (e) {
+            log.error(e);
             return res.status(401).send({
                 success: false,
                 message: 'Email not verified'
@@ -103,6 +106,7 @@ module.exports = {
                     message: "Profile not completed yet"
                 })
         } catch (e) {
+            log.error(e);
             return res.status(400).send({
                 success: false,
                 message: "Profile not completed yet"
@@ -139,6 +143,7 @@ module.exports = {
                     message: "You need to pay first"
                 });
         } catch (e) {
+            log.error(e);
             return res.status(401).send({
                 success: false,
                 message: "You need to pay first"
@@ -168,6 +173,7 @@ module.exports = {
                     });
             }
         } catch (e) {
+            log.error(e);
             return res.status(401).send({
                 success: false,
                 message: "Sorry! we are full"
@@ -191,6 +197,7 @@ module.exports = {
                     message: "Visit dashboard before choosing events"
                 });
         } catch (e) {
+            log.error(e);
             return res.status(400).send({success: false,
                 message: "Visit dashboard before choosing events"
             })
@@ -214,6 +221,7 @@ module.exports = {
                     message: "Done that already? "
                 })
         } catch (e) {
+            log.error(e);
             return res.status(400).send({success: false,
                 message: "Done that already? "
             })
@@ -239,6 +247,7 @@ module.exports = {
                     message: "Not authorized"
                 })
         } catch (e) {
+            log.error(e);
             return res.status(401).send({success: false,
                 message: "Not authorized"
             })

@@ -39,6 +39,7 @@ var fetchUserProfile = async (email) => {
         return 0;
     return findProfile;
 }
+const log = require('../config/bunyan-config')
 
 
 var insertIntoTotSeats = async (eventName, playersData, palyerData, email, res) => {
@@ -107,42 +108,50 @@ var InsertDataAfterCheck = async (eventName, playersData, palyerData, email, res
 }
 
 router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid], async (req, res) => {
-
-    var userProfile = await fetchUserProfile(req.user.email)
-    if (userProfile.seatSafe) {
-        return res.status(200).send({
-            success: "Welcome to dashboard"
-        });
-    } else {
-        let palyerData = await fetchUserProfile(req.user.email)
-        var playersData = await allSeats.findOne({
-            name: 'All Seats'
-        })
-
-        var status = await insertIntoTotSeats('All Seats', playersData, palyerData, req.user.email, res);
-
-        if (status == 1) {
-            await Profile.findOneAndUpdate({
-                main_email: req.user.email
-            }, {
-                seatSafe: true
-            })
+    try {
+        var userProfile = await fetchUserProfile(req.user.email)
+        if (userProfile.seatSafe) {
             return res.status(200).send({
-                sucees: "We have saved a seat for you"
-            })
+                success: "Welcome to dashboard"
+            });
         } else {
-            return res.status(200).send({
-                error: "Opps! something went wrong"
+            let palyerData = await fetchUserProfile(req.user.email)
+            var playersData = await allSeats.findOne({
+                name: 'All Seats'
             })
+    
+            var status = await insertIntoTotSeats('All Seats', playersData, palyerData, req.user.email, res);
+    
+            if (status == 1) {
+                await Profile.findOneAndUpdate({
+                    main_email: req.user.email
+                }, {
+                    seatSafe: true
+                })
+                return res.status(200).send({
+                    sucees: "We have saved a seat for you"
+                })
+            } else {
+                return res.status(200).send({
+                    error: "Opps! something went wrong"
+                })
+            }
+    
         }
-
+    } catch (error) {
+        log.error(error)
+        return res.status(200).send({
+            error: "Opps! something went wrong"
+        })
     }
+   
 
 
 })
 
 router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid, middleware.hasSeat, middleware.hasSelectedTwoEvents], async (req, res) => {
-    var event = _.pick(req.body, ["event1", "event2"]);
+    try {
+        var event = _.pick(req.body, ["event1", "event2"]);
     if (!event.event1 || !event.event2)
         return res.status(400).send({
             error: "No event was chosen"
@@ -172,13 +181,25 @@ router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVer
             error: "Opps! Something went wrong 1"
         })
     }
+    } catch (error) {
+        log.error(error);
+        return res.status(400).send({
+            error: "Opps! Something went wrong 1"
+        })
+    }
+    
 
 
 })
 
 router.get("/dashboard/choose-events", async (req, res) => {
-    var seatStatus = await allSeats.find({}).select("-players")
-    res.status(200).send(seatStatus);
+    try {
+        var seatStatus = await allSeats.find({}).select("-players")
+        res.status(200).send(seatStatus);
+    } catch (error) {
+        log.error(error);
+    }
+
 })
 
 var sessionHandler_1 = async (eventName, eventName2, palyerData, req, res) => {

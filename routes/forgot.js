@@ -6,6 +6,7 @@ var randomstring = require("randomstring");
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt-nodejs')
 const sanitizer = require('sanitizer');
+const log = require('../config/bunyan-config')
 
 const router = express.Router();
 var owasp = require('owasp-password-strength-test');
@@ -75,6 +76,7 @@ router.post("/forgot", async (req, res) => {
         } else
             throw "error"
     } catch (error) {
+        log.error(error);
         return res.status(500).send({
             success: false,
             message: "We were unable to send the reset password link please try again later"
@@ -108,6 +110,7 @@ router.get("/reset/:token", async (req, res) => { //render the form here to get 
             });
         }
     } catch (error) {
+        log.error(error)      
         return res.status(400).send({
             success: false,
             message: "Reset token is invalid or has expired."
@@ -155,6 +158,7 @@ router.post("/reset/:token", async (req, res) => {
             });
         }
     } catch (error) {
+        log.error(error);
         return res.status(400).send({
             success: false,
             message: "Reset token is invalid or has expired."

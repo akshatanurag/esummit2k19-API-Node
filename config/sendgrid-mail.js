@@ -1,4 +1,5 @@
 const sgmail = require('@sendgrid/mail');
+const log = require('./bunyan-config')
 
 //set up api for mail
 sgmail.setApiKey(
@@ -26,7 +27,7 @@ sgmail.setApiKey(
       await sgmail.send(msg_send);
       return true;
     } catch (e) {
-      //console.log(e);
+      log.error(e)
       return false;
     }
   }

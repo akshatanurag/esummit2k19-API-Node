@@ -10,6 +10,7 @@ const {
     Profile
 } = require('../models/profile')
 const middleware = require('../middleware/middleware')
+const log = require('../config/bunyan-config')
 
 
 
@@ -76,6 +77,7 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete, middlew
             }
         })
     } catch (error) {
+        log.error(error);
         return res.status(400).send({
             success: false,
             message: "Opps! Something went wrong"
@@ -134,6 +136,7 @@ router.get("/thankyou", async (req, res) => {
             }
         })
     } catch (error) {
+        log.error(error);
         return res.status(400).send({
             success: false,
             message: "Opps! Something went wrong"

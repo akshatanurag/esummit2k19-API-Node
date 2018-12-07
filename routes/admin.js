@@ -2,6 +2,7 @@ const express = require('express');
 const crypto = require('crypto-js')
 const santizer = require('sanitizer');
 const middleware = require('../middleware/middleware')
+const log = require('../config/bunyan-config')
 
 const {
     admin,
@@ -39,6 +40,7 @@ router.post("/create-admin", middleware.isAdminLoggedIn, async (req, res) => {
             message: "admin was created successfully"
         });
     } catch (e) {
+        log.error(e);
         return res.status(500).send({
             success: false,
             message: "Opps! Something went wrong"
@@ -72,6 +74,7 @@ router.post("/login", async (req, res) => {
             message: "logged in"
         });
     } catch (e) {
+        log.error(e);
         return res.status(500).send({
             success: false,
             message: "Opps! Something went wrong"
@@ -84,6 +87,7 @@ router.get("/logout",middleware.isAdminLoggedIn,(req, res) => {
         req.session.secure = null;
         return res.status(200).header('x-auth-token', null).send({success: true,message: "Logged out!"})
     } catch (error) {
+        log.error(error);
         return res.status(500).send({
             success: false,
             message: "Opps!Something went wrong"

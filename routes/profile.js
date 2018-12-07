@@ -15,7 +15,7 @@ const {
     User
 } = require('../models/user');
 const middleware = require('../middleware/middleware');
-
+const log = require('../config/bunyan-config');
 const router = express.Router();
 
 router.post("/profile", [middleware.isLoggedIn, middleware.isVerified], async (req, res) => {
@@ -71,6 +71,7 @@ router.post("/profile", [middleware.isLoggedIn, middleware.isVerified], async (r
         }
     
     } catch (error) {
+        log.error(error);
         return res.status(400).send({
             success: false,
             message: 'Opps! Something went wrong'

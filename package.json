@@ -16,6 +16,7 @@
     "@sendgrid/mail": "^6.3.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "bunyan": "^1.8.12",
     "compression": "^1.7.3",
     "concurrently": "^4.1.0",
     "config": "^2.0.2",

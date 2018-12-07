@@ -9,7 +9,7 @@
  * ===============================
  * (: LET'S MAKE E-SUMMIT GREAT :) 
  * ===============================
- * chat on other page
+ * 
  *
  */
 const express = require('express');
@@ -36,6 +36,8 @@ if (!config.get('jwtPrivateKey') && !process.env.SALT && !process.env.SESSION_SE
   console.log("FATAL ERROR: keys not defined");
   process.exit(1);
 }
+
+
 
 
 const commonRoutes = require('../routes/common');
@@ -77,22 +79,22 @@ if (cluster.isMaster) {
 
   //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InNkY3NkY2Rzdjc4N3Y4c3Y3OHNkczQ1c2Q0ZHNjc2RjIiwic2VjcmV0IjoiZGNzY2FzYXNxd2UyM1VVVUlKSEhoNzc1U0NTRDVDIiwiaWF0IjoxNTQzOTYyODc3fQ.jPQ4-SUZR4AdMs3mbn80cobg5T0vtlASwAz0eQ-PzjI
 
-/*
-  app.use(function(req,res,next){
-    try{
-    var client_id = 'sdcsdcdsv787v8sv78sds45sd4dscsdc'
-    var client_secret = 'dcscasasqwe23UUUIJHHh775SCSD5C'
-    var decoded = ()=>{ return jwt.verify(req.header('x-api-token'),config.get('jwtPrivateKey'))}
-    if(client_id == decoded().id && client_secret == decoded().secret)
-    next();
-    else
-    return res.status(401).send({success: false,message: "Unauthorized"})
-    }
-    catch(e){
+  /*
+    app.use(function(req,res,next){
+      try{
+      var client_id = 'sdcsdcdsv787v8sv78sds45sd4dscsdc'
+      var client_secret = 'dcscasasqwe23UUUIJHHh775SCSD5C'
+      var decoded = ()=>{ return jwt.verify(req.header('x-api-token'),config.get('jwtPrivateKey'))}
+      if(client_id == decoded().id && client_secret == decoded().secret)
+      next();
+      else
       return res.status(401).send({success: false,message: "Unauthorized"})
-    }
-  })
-*/ 
+      }
+      catch(e){
+        return res.status(401).send({success: false,message: "Unauthorized"})
+      }
+    })
+  */
   app.use(
     bodyParser.urlencoded({
       extended: true
@@ -114,28 +116,36 @@ if (cluster.isMaster) {
     })
   );
   app.use(cookieParser('6xH$*CYY*u44gcUN57%H'))
-//   app.use(csrf());
-//   app.use(function (req, res, next) {
-//     res.cookie('XSRF-TOKEN', req.csrfToken(),{signed: true});
-//     next();
-// });
-app.use(cors())
-app.use(hpp());
-app.disable('x-powered-by');
-app.use(function(req, res, next){
-  res.header('X-XSS-Protection', '1; mode=block');
-  res.header('X-Frame-Options', 'deny');
-  res.header('X-Content-Type-Options', 'nosniff');
-  next();
-});
-app.use(helmet())
-app.use(helmet.hidePoweredBy({setTo: 'KIIT Ecell Server 1.0'})); //change value of X-Powered-By header to given value
-app.use(helmet.noCache({noEtag: true})); //set Cache-Control header
-app.use(helmet.noSniff());    // set X-Content-Type-Options header
-app.use(helmet.frameguard()); // set X-Frame-Options header
-app.use(helmet.xssFilter());  // set X-XSS-Protection header
-app.use(compression())
-app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400, message: "Limit Reached"}));
+  //   app.use(csrf());
+  //   app.use(function (req, res, next) {
+  //     res.cookie('XSRF-TOKEN', req.csrfToken(),{signed: true});
+  //     next();
+  // });
+  app.use(cors())
+  app.use(hpp());
+  app.disable('x-powered-by');
+  app.use(function (req, res, next) {
+    res.header('X-XSS-Protection', '1; mode=block');
+    res.header('X-Frame-Options', 'deny');
+    res.header('X-Content-Type-Options', 'nosniff');
+    next();
+  });
+  app.use(helmet())
+  app.use(helmet.hidePoweredBy({
+    setTo: 'KIIT Ecell Server 1.0'
+  })); //change value of X-Powered-By header to given value
+  app.use(helmet.noCache({
+    noEtag: true
+  })); //set Cache-Control header
+  app.use(helmet.noSniff()); // set X-Content-Type-Options header
+  app.use(helmet.frameguard()); // set X-Frame-Options header
+  app.use(helmet.xssFilter()); // set X-XSS-Protection header
+  app.use(compression())
+  app.use(contentLength.validateMax({
+    max: MAX_CONTENT_LENGTH_ACCEPTED,
+    status: 400,
+    message: "Limit Reached"
+  }));
 
   app.use("/api", commonRoutes);
   app.use("/api", authRoutes);
@@ -143,17 +153,19 @@ app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400
   app.use("/api", dashboardRoutes);
   app.use("/api", forgotRoutes);
   app.use("/api", paymentRoutes);
-  app.use("/api",qrGenRoutes);
-  app.use("/api/admin",adminRoutes);
+  app.use("/api", qrGenRoutes);
+  app.use("/api/admin", adminRoutes);
 
 
 
 
 
 
-  app.get("*",(req,res)=>{
-    return res.status(404).send({error: "The page was not found"});
-})
+  app.get("*", (req, res) => {
+    return res.status(404).send({
+      error: "The page was not found"
+    });
+  })
 
 
 

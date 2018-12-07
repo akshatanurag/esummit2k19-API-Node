@@ -19,6 +19,7 @@ const {
   User,
   validate
 } = require('../models/user');
+const log = require('../config/bunyan-config')
 
 const google = require('../config/google-util');
 
@@ -70,7 +71,8 @@ router.get(
         url: google.urlGoogle()
       });
     } catch (error) {
-      console.log(error);
+      //console.log(error);
+      log.error(error);
       return res.status(400).send({
         success: false,
         message: 'Opps! Something went wrong.'
@@ -154,7 +156,8 @@ router.get(
         });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
+      log.error(error);
       return res.status(400).send({
         success: false,
         message: 'Opps! Uanbe to login/sign-up'
@@ -227,7 +230,8 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    //console.log(error);
+    log.error(error);
     return res.status(400).send({
       success: false,
       message: 'Uable to sign you up'
@@ -274,6 +278,7 @@ router.post(
           message: 'logged in'
         });
     } catch (error) {
+      log.error(error);
       return res.status(400).send({
         success: false,
         message: 'Opps! something went wrong'
@@ -321,14 +326,16 @@ router.get('/verify/:token', (req, res) => {
         });
       },
       e => {
-        console.log(e);
+        //console.log(e);
+        log.error(e);
         res.status(400).send({
           error: 'Verification token is invalid or has expired.'
         });
       }
     )
     .catch(e => {
-      console.log(e);
+      //console.log(e);
+      log.error(e);
       res.status(400).send({
         error: 'Verification token is invalid or has expired.'
       });
