@@ -12,6 +12,7 @@
 ---
 
 ### **Note** : Each route sends a success (bool) and message response. 
+###          : CSRF Protection added. Ensure that you pass CSRF token in your headers in order to post something on this API (available in                 header as XSRF-TOKEN)            
 
 ---
 
