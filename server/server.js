@@ -18,7 +18,7 @@ const numCPUs = require('os').cpus().length;
 const config = require("config");
 const bodyParser = require('body-parser');
 const session = require('express-session');
-// var csrf = require('csurf');
+var csrf = require('csurf');
 var cookieParser = require('cookie-parser')
 var cors = require('cors');
 const hpp = require('hpp');
@@ -116,11 +116,6 @@ if (cluster.isMaster) {
     })
   );
   app.use(cookieParser('6xH$*CYY*u44gcUN57%H'))
-  //   app.use(csrf());
-  //   app.use(function (req, res, next) {
-  //     res.cookie('XSRF-TOKEN', req.csrfToken(),{signed: true});
-  //     next();
-  // });
   app.use(cors())
   app.use(hpp());
   app.disable('x-powered-by');
@@ -146,8 +141,15 @@ if (cluster.isMaster) {
     status: 400,
     message: "Limit Reached"
   }));
+  app.use(csrf());
+  app.use(function(req, res, next) {
+    res.setHeader('XSRF-TOKEN', req.csrfToken());
+    next();
+  });
 
-  app.use("/api", commonRoutes);
+
+
+  app.use("/api",commonRoutes);
   app.use("/api", authRoutes);
   app.use("/api", profileRoutes);
   app.use("/api", dashboardRoutes);

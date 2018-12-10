@@ -271,7 +271,7 @@ router.post(
       }
       const token = newUser.generateAuthToken(req.body.email);
       req.session.secure = findUser.secureSessionID;
-      console.log(req.session.secure)
+      //console.log(req.session.secure)
       return res
         .header('x-auth-token', token)
         .status(200)
