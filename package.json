@@ -38,6 +38,7 @@
     "owasp-password-strength-test": "^1.3.0",
     "randomstring": "^1.1.5",
     "request": "^2.88.0",
+    "request-ip": "^2.1.3",
     "sanitizer": "^0.1.3",
     "validator": "^10.8.0"
   }
