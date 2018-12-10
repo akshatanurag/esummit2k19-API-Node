@@ -215,7 +215,8 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
     let sentMail = await mailer.sendMail(
       verifyToken,
       req.body.email,
-      req.headers.host
+      req.headers.host,
+      'verify'
     );
     if (sentMail) {
       await user.save();
@@ -270,6 +271,7 @@ router.post(
       }
       const token = newUser.generateAuthToken(req.body.email);
       req.session.secure = findUser.secureSessionID;
+      console.log(req.session.secure)
       return res
         .header('x-auth-token', token)
         .status(200)

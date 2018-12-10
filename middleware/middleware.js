@@ -43,6 +43,8 @@ module.exports = {
             const decoded = jwt.verify(token, config.get("jwtPrivateKey"));
             req.user = decoded;
             var currentUser = await fetchUser(decoded.email)
+            console.log(currentUser.secureSessionID)
+            console.log(req.session.secure);
             if (req.session.secure && currentUser.secureSessionID && req.session.secure == currentUser.secureSessionID)
                 next();
             else

@@ -7,7 +7,7 @@ sgmail.setApiKey(
 );
 
 
-  async function sendMail(token, to, host) {
+  async function sendMail(token, to, host,route) {
     const msg_send = {
       to: to,
       from: 'esummit@ecell.org.in',
@@ -17,7 +17,7 @@ sgmail.setApiKey(
         'Please click on the following link, or paste this into your browser to complete the verfication process:\n\n' +
         'http://' +
         host +
-        '/api/verify/' +
+        '/api/'+ route + '/' +
         token +
         '\n\n' +
         'If you did not request this.\n'

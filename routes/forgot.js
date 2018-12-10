@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt-nodejs')
 const sanitizer = require('sanitizer');
 const log = require('../config/bunyan-config')
-
+const mailer = require('../config/sendgrid-mail');
 const router = express.Router();
 var owasp = require('owasp-password-strength-test');
 
@@ -20,33 +20,33 @@ owasp.config({
     minOptionalTestsToPass: 4,
 });
 
-const sendMail = async (token, email, host) => {
-    //console.log(email);
-    var smtpTransport = await nodemailer.createTransport({
-        service: 'SendGrid',
-        auth: {
-            /*This password is not meant for you, so do not misue it. I will be getting a notification on my phone, if you dare to login and
-            if I am able to locate you, then consider yourself dead. I will eat your head off. _|_*/
-            user: 'techieAkshat',
-            pass: 'Anurag2@3'
-            //pass: "wrong"
-        }
-    });
-    var mailOptions = {
-        to: email,
-        from: 'KIIT E-Cell',
-        subject: 'KIIT E-Cell Password Reset',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-            'http://' + host + '/api/reset/' + token + '\n\n' +
-            'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-    };
-    sentMail = await smtpTransport.sendMail(mailOptions);
-    if (sendMail)
-        return true;
-    else
-        return false;
-}
+// const sendMail = async (token, email, host) => {
+//     //console.log(email);
+//     var smtpTransport = await nodemailer.createTransport({
+//         service: 'SendGrid',
+//         auth: {
+//             /*This password is not meant for you, so do not misue it. I will be getting a notification on my phone, if you dare to login and
+//             if I am able to locate you, then consider yourself dead. I will eat your head off. _|_*/
+//             user: 'techieAkshat',
+//             pass: 'Anurag2@3'
+//             //pass: "wrong"
+//         }
+//     });
+//     var mailOptions = {
+//         to: email,
+//         from: 'KIIT E-Cell',
+//         subject: 'KIIT E-Cell Password Reset',
+//         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+//             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+//             'http://' + host + '/api/reset/' + token + '\n\n' +
+//             'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+//     };
+//     sentMail = await smtpTransport.sendMail(mailOptions);
+//     if (sendMail)
+//         return true;
+//     else
+//         return false;
+// }
 
 router.post("/forgot", async (req, res) => {
     try {
@@ -66,15 +66,25 @@ router.post("/forgot", async (req, res) => {
         });
         findUser.resetEmailToken = verifyToken;
         findUser.resetEmailExpires = Date.now() + 3600000;
-        sentMail = await sendMail(verifyToken, findUser.email, req.headers.host)
-        if (sentMail) {
+        //sentMail = await sendMail(verifyToken, findUser.email, req.headers.host)
+        let sentMail = await mailer.sendMail(
+            verifyToken,
+            req.body.email,
+            req.headers.host,
+            'reset'
+          );
+          if (sentMail) {
             await findUser.save();
-            return res.status(200).send({
-                success: true,
-                message: "Verification link sent"
+            res.status(200).send({
+              success: true,
+              message: 'Email verification link sent'
             });
-        } else
-            throw "error"
+          } else {
+            res.status(400).send({
+              success: false,
+              message: 'Unable to send the verification link'
+            });
+          }
     } catch (error) {
         log.error(error);
         return res.status(500).send({
@@ -100,7 +110,7 @@ router.get("/reset/:token", async (req, res) => { //render the form here to get 
         if (findUserByToken.resetEmailToken == req.params.token) {
             return res.status(200).send({
                 success: true,
-                message: "Enter new email by sending post request on this exact route"
+                message: "Enter new password by sending post request on this exact route"
             })
             //render reset form here
         } else {
