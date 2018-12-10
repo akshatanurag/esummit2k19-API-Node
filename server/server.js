@@ -18,7 +18,7 @@ const numCPUs = require('os').cpus().length;
 const config = require("config");
 const bodyParser = require('body-parser');
 const session = require('express-session');
-var csrf = require('csurf');
+//var csrf = require('csurf');
 var cookieParser = require('cookie-parser')
 var cors = require('cors');
 const hpp = require('hpp');
@@ -141,11 +141,11 @@ if (cluster.isMaster) {
     status: 400,
     message: "Limit Reached"
   }));
-  app.use(csrf());
-  app.use(function(req, res, next) {
-    res.setHeader('XSRF-TOKEN', req.csrfToken());
-    next();
-  });
+  // app.use(csrf());
+  // app.use(function(req, res, next) {
+  //   res.setHeader('XSRF-TOKEN', req.csrfToken());
+  //   next();
+  // });
 
 
 
