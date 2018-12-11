@@ -111,7 +111,7 @@ if (cluster.isMaster) {
         secure: false, //will make this true when we get ssl
         httpOnly: true,
         signed: true,
-        maxAge: 3600000
+        maxAge: 86400000
       }
     })
   );
