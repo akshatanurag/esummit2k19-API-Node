@@ -12,7 +12,44 @@
 ---
 
 ### **Note** : Each route sends a success (bool) and message response. 
-###          : CSRF Protection added. Ensure that you pass CSRF token in your headers in order to post something on this API (available in                 header as XSRF-TOKEN)            
+          
+
+---
+
+
+## Client Authentication
+
+---
+
+```
+    In order to ensure that the API is not being misused, I have added this particular method.
+
+    How it works?
+
+    Every client(Android or Angular) needs to send an x-api-token (valid for 24hrs only) with every request. In order to prove,
+    wehter they are who, they say they are. 
+
+    How to get this token?
+
+    Simple, the known clients (Angular or Android) will make an request to /api/get-token with their credentials in the header (username,password)
+    and in response  header they will be getting an x-api-token. That will be valid for only 24 hrs and thus serve the request.
+
+    Important : 
+    Without this x-api-token, no routes can be accessed so get that token.
+
+    Credentials (will be changed to something complicated very soon..) : 
+    
+    ANGULAR
+    ========
+    username : angular
+    password : abcdef
+
+    ANDROID
+    =======
+    username : android
+    password : 123456
+
+```
 
 ---
 
@@ -235,6 +272,8 @@
 
 
 ```    
+
+
 
 
 ### For any queries call me directly.

@@ -51,6 +51,7 @@ const {
 } = require('../routes/payment');
 const qrGenRoutes = require('../routes/qr_gen')
 const adminRoutes = require('../routes/admin')
+const clientRoute = require('../routes/clients');
 
 
 let port = process.env.PORT || 3000;
@@ -68,33 +69,7 @@ if (cluster.isMaster) {
 } else {
   //ALL CODE GOES IN HERE
   const app = express();
-
-  // genAPIToken = ()=>{
-  //   return jwt.sign({
-  //     id: process.env.id,
-  //     secret: process.env.secret
-  //   },config.get("jwtPrivateKey"))
-  // }
-  // console.log(genAPIToken())
-
-  //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InNkY3NkY2Rzdjc4N3Y4c3Y3OHNkczQ1c2Q0ZHNjc2RjIiwic2VjcmV0IjoiZGNzY2FzYXNxd2UyM1VVVUlKSEhoNzc1U0NTRDVDIiwiaWF0IjoxNTQzOTYyODc3fQ.jPQ4-SUZR4AdMs3mbn80cobg5T0vtlASwAz0eQ-PzjI
-
-  /*
-    app.use(function(req,res,next){
-      try{
-      var client_id = 'sdcsdcdsv787v8sv78sds45sd4dscsdc'
-      var client_secret = 'dcscasasqwe23UUUIJHHh775SCSD5C'
-      var decoded = ()=>{ return jwt.verify(req.header('x-api-token'),config.get('jwtPrivateKey'))}
-      if(client_id == decoded().id && client_secret == decoded().secret)
-      next();
-      else
-      return res.status(401).send({success: false,message: "Unauthorized"})
-      }
-      catch(e){
-        return res.status(401).send({success: false,message: "Unauthorized"})
-      }
-    })
-  */
+  
   app.use(
     bodyParser.urlencoded({
       extended: true
@@ -141,6 +116,24 @@ if (cluster.isMaster) {
     status: 400,
     message: "Limit Reached"
   }));
+  
+
+
+  
+    app.use("/api",clientRoute)
+    app.use(function(req,res,next){
+      try{
+      var decoded = ()=>{ return jwt.verify(req.header('x-api-token'),config.get('jwtPrivateKey'))}
+      if("Android" == decoded().device || "Angular" == decoded().device)
+      next();
+      else
+      return res.status(401).send({success: false,message: "Unauthorized Client"})
+      }
+      catch(e){
+        return res.status(401).send({success: false,message: "Unauthorized Client"})
+      }
+    })
+
   // app.use(csrf());
   // app.use(function(req, res, next) {
   //   res.setHeader('XSRF-TOKEN', req.csrfToken());
