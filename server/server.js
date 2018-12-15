@@ -51,6 +51,7 @@ const { paymentRoutes, requestFromPay } = require('../routes/payment');
 const qrGenRoutes = require('../routes/qr_gen');
 const adminRoutes = require('../routes/admin');
 const clientRoute = require('../routes/clients');
+const impsRoutes = require('../routes/imps');
 
 let port = process.env.PORT || 3000;
 if (cluster.isMaster) {
@@ -157,6 +158,7 @@ if (cluster.isMaster) {
   app.use('/api', paymentRoutes);
   app.use('/api', qrGenRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use("/api/imps",impsRoutes);
 
   app.get('*', (req, res) => {
     return res.status(404).send({
