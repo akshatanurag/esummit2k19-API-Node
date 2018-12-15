@@ -52,44 +52,35 @@ router.post(
           message: error.details[0].message
         });
 
-       console.log('In profile route');
-        
-        let profileObj = _.pick(req.body, [
-          'fullName',
-          'alt_email',
-          'mob_no',
-          'w_mob_no',
-          'roll',
-          'uni',
-          'gender',
-          'year'
-        ]);
 
-        
-        console.log(profileObj);
-        // Sanatize all the values coming in lodash.
-        // All the values types are
-        //wait some issues
-        // okay 
-        //
-          
-        
+      // Sanatize all the values coming in lodash.
+      // All the values types are
 
-        Object.keys(profileObj).forEach(props => {
-          if (
-            typeof profileObj[props] == 'string' &&
-            profileObj[props] !== null
-          ) {
-            console.log(props);
-            profileObj[props] = sanitizer.escape(profileObj[props]);
-          }
-        });
-  
-        let profile = new Profile(profileObj);
-        console.log(profile); //not working...
+      console.log('In profile route');
 
-        //aap isko fix karke git pe push karo codealine ka kaam hai thora abhi... /////
-        //okay
+      let profileObj = _.pick(req.body, [
+        'fullName',
+        'alt_email',
+        'mob_no',
+        'w_mob_no',
+        'roll',
+        'uni',
+        'gender',
+        'year'
+      ]);
+
+      Object.keys(profileObj).forEach(props => {
+        if (
+          typeof profileObj[props] == 'string' &&
+          profileObj[props] !== null
+        ) {
+          profileObj[props] = sanitizer.escape(profileObj[props]);
+        }
+      });
+
+      let profile = new Profile(profileObj);
+      console.log('*******', profile);
+
       /**
        * Things we are checking unique in
        * Profile db.
