@@ -306,37 +306,6 @@ router.get('/logout', middleware.isLoggedIn, async (req, res) => {
 //     });
 // })
 
-router.get('/verify/:token', (req, res) => {
-  User.findOne({
-    resetPasswordToken: req.params.token
-    //resetPasswordExpires: { $gt: Date.now() }
-  })
-    .then(
-      m => {
-        (m.resetPasswordToken = undefined),
-          //m.resetPasswordExpires= undefined,
-          (m.isEmailVerified = 1);
-        m.save();
-        //console.log(m);
-        res.status(200).send({
-          success: 'Email Verified'
-        });
-      },
-      e => {
-        //console.log(e);
-        log.error(e);
-        res.status(400).send({
-          error: 'Verification token is invalid or has expired.'
-        });
-      }
-    )
-    .catch(e => {
-      //console.log(e);
-      log.error(e);
-      res.status(400).send({
-        error: 'Verification token is invalid or has expired.'
-      });
-    });
-});
+
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const request = require('request');
 const express = require('express');
-const url = require('url')
+
 
 const router = express.Router();
 const {
@@ -88,63 +88,63 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
 
 
 
-router.get("/thankyou", [middleware.isLoggedIn, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isVerified, middleware.isSeatLeft],async (req, res) => {
-    try {
-        var headers = {
-            'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
-            'X-Auth-Token': 'test_984665af47a659c0a4af0eef5a2'
-        }
-        var q = url.parse(req.url, true);
-        if(!q.query.payment_request_id || !q.query.payment_id)
-        {
-            return res.status(404).send({
-                success: false,
-                error: "The page was not found"});
-        }
+// router.get("/thankyou", [middleware.isLoggedIn, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isVerified, middleware.isSeatLeft],async (req, res) => {
+//     try {
+//         var headers = {
+//             'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
+//             'X-Auth-Token': 'test_984665af47a659c0a4af0eef5a2'
+//         }
+//         var q = url.parse(req.url, true);
+//         if(!q.query.payment_request_id || !q.query.payment_id)
+//         {
+//             return res.status(404).send({
+//                 success: false,
+//                 error: "The page was not found"});
+//         }
     
-        request.get(`https://test.instamojo.com/api/1.1/payment-requests/${q.query.payment_request_id}/`, {
-            headers: headers
-        }, async function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                obj = JSON.parse(body)
-                //console.log(obj.payment_request.payments[0]);
-                if (obj.payment_request.payments[0].status == 'Credit') {
-                    var findUser = await User.findOne({
-                        email: obj.payment_request.email
-                    }).select('-password').select('-secureSessionID');
-                    if (!findUser)
-                        return res.status(400).send({
-                            error: "User not registred"
-                        })
+//         request.get(`https://test.instamojo.com/api/1.1/payment-requests/${q.query.payment_request_id}/`, {
+//             headers: headers
+//         }, async function (error, response, body) {
+//             if (!error && response.statusCode == 200) {
+//                 obj = JSON.parse(body)
+//                 //console.log(obj.payment_request.payments[0]);
+//                 if (obj.payment_request.payments[0].status == 'Credit') {
+//                     var findUser = await User.findOne({
+//                         email: obj.payment_request.email
+//                     }).select('-password').select('-secureSessionID');
+//                     if (!findUser)
+//                         return res.status(400).send({
+//                             error: "User not registred"
+//                         })
     
-                    findUser.payments.isPaid = true;
-                    findUser.payments.payment_id = obj.payment_request.id
-                    findUser.payments.instamojo_id = obj.payment_request.payments[0].payment_id
-                    await findUser.save();
+//                     findUser.payments.isPaid = true;
+//                     findUser.payments.payment_id = obj.payment_request.id
+//                     findUser.payments.instamojo_id = obj.payment_request.payments[0].payment_id
+//                     await findUser.save();
     
-                    //success
-                    return res.status(200).send({
-                        success: true,
-                        message: "Payment was successfull",
+//                     //success
+//                     return res.status(200).send({
+//                         success: true,
+//                         message: "Payment was successfull",
                         
-                    });
-                }
-            } else {
-                return res.status(400).send({
-                    error: "Opps! Something went wrong"
-                })
-            }
-        })
-    } catch (error) {
-        log.error(error);
-        return res.status(400).send({
-            success: false,
-            message: "Opps! Something went wrong"
-        })
-    }
+//                     });
+//                 }
+//             } else {
+//                 return res.status(400).send({
+//                     error: "Opps! Something went wrong"
+//                 })
+//             }
+//         })
+//     } catch (error) {
+//         log.error(error);
+//         return res.status(400).send({
+//             success: false,
+//             message: "Opps! Something went wrong"
+//         })
+//     }
 
 
-})
+// })
 
 
 module.exports = {
