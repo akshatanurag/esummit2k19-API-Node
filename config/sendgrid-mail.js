@@ -3,7 +3,7 @@ const log = require('./bunyan-config')
 
 //set up api for mail
 sgmail.setApiKey(
-  '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'
+  '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'
 );
 
 
