@@ -24,11 +24,12 @@ router.post(
       })
         .select('-password')
         .select('-secureSessionID');
+      console.log(findUser)
 
       if (!findUser)
         return res.status(400).send({
           success: false,
-          message: 'Opps!Something went wrong'
+          message: "Looks like you haven't signed up yet!"
         });
 
       // Refactor isProfileComplete Middileware we can use that here.
@@ -50,6 +51,7 @@ router.post(
           success: false,
           message: error.details[0].message
         });
+
 
       // Sanatize all the values coming in lodash.
       // All the values types are
@@ -78,6 +80,7 @@ router.post(
 
       let profile = new Profile(profileObj);
       console.log('*******', profile);
+
       /**
        * Things we are checking unique in
        * Profile db.
@@ -126,7 +129,9 @@ router.post(
         profile.es_id = `ES_${randString}`;
         profile.profileComplete = true;
 
+        
         // Send mail to kiit student
+        if(profile.uni == "kiit university"){
         if (req.kiit) {
           let verifyToken = randomstring.generate({
             length: 50,
@@ -146,6 +151,10 @@ router.post(
         }
 
         await profile.save();
+      }
+        else{
+          await profile.save();
+        }
 
         return res.status(200).send({
           success: true,
@@ -170,3 +179,11 @@ router.post(
 );
 
 module.exports = router;
+
+
+
+// Got the problem....
+// Let me fix this
+
+//okay
+// also middleware will only work for kiit students. So i am doing that
