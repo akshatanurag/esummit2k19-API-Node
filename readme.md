@@ -126,6 +126,14 @@
             -error(only if error exists)
         -Middlewares
             -Cannot access without signup and login
+
+
+    ===========================
+    Profile verification added.
+    ===========================
+    Now a verification link will be sent to users kiit mail id, if they say they are from kiit. It would again act as an middleware.
+
+
 ```
 
 ```

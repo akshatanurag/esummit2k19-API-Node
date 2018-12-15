@@ -71,8 +71,9 @@ userSchema.methods.generateAuthToken = function(bodyEmail) {
     {
       email: bodyEmail
     },
-    config.get('jwtPrivateKey')
-  );
+    config.get('jwtPrivateKey'),{
+      expiresIn: "24h"
+  });
 };
 
 function validateSchema(user) {
