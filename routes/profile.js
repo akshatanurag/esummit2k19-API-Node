@@ -24,12 +24,12 @@ router.post(
       })
         .select('-password')
         .select('-secureSessionID');
+      console.log(findUser)
 
-      console.log('In profile route');
       if (!findUser)
         return res.status(400).send({
           success: false,
-          message: 'Opps!Something went wrong'
+          message: "Looks like you haven't signed up yet!"
         });
 
       // Refactor isProfileComplete Middileware we can use that here.
@@ -52,8 +52,9 @@ router.post(
           message: error.details[0].message
         });
 
-      let profile = new Profile(
-        _.pick(req.body, [
+       console.log('In profile route');
+        
+        let profileObj = _.pick(req.body, [
           'fullName',
           'alt_email',
           'mob_no',
@@ -62,16 +63,33 @@ router.post(
           'uni',
           'gender',
           'year'
-        ])
-      );
-      // Sanatize all the values coming in lodash.
-      // All the values types are
-      Object.keys(profile).forEach(props => {
-        if (typeof profile[props] !== 'object' && profile[prop] !== null) {
-          profile[props] = sanitizer.escape(profile[props]);
-        }
-      });
+        ]);
 
+        
+        console.log(profileObj);
+        // Sanatize all the values coming in lodash.
+        // All the values types are
+        //wait some issues
+        // okay 
+        //
+          
+        
+
+        Object.keys(profileObj).forEach(props => {
+          if (
+            typeof profileObj[props] == 'string' &&
+            profileObj[props] !== null
+          ) {
+            console.log(props);
+            profileObj[props] = sanitizer.escape(profileObj[props]);
+          }
+        });
+  
+        let profile = new Profile(profileObj);
+        console.log(profile); //not working...
+
+        //aap isko fix karke git pe push karo codealine ka kaam hai thora abhi... /////
+        //okay
       /**
        * Things we are checking unique in
        * Profile db.
@@ -113,14 +131,16 @@ router.post(
         let randString = await randomstring.generate({
           length: 4,
           charset: 'alphanumeric',
-          capitalization: 'lowecase'
+          capitalization: 'uppercase'
         });
 
         // console.log('For ProfileDB + ', randString);
         profile.es_id = `ES_${randString}`;
         profile.profileComplete = true;
 
+        
         // Send mail to kiit student
+        if(profile.uni == "kiit university"){
         if (req.kiit) {
           let verifyToken = randomstring.generate({
             length: 50,
@@ -140,6 +160,10 @@ router.post(
         }
 
         await profile.save();
+      }
+        else{
+          await profile.save();
+        }
 
         return res.status(200).send({
           success: true,
@@ -164,3 +188,11 @@ router.post(
 );
 
 module.exports = router;
+
+
+
+// Got the problem....
+// Let me fix this
+
+//okay
+// also middleware will only work for kiit students. So i am doing that

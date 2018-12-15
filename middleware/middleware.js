@@ -271,7 +271,7 @@ module.exports = {
       'law.ac.in'
     ]);
 
-    let email = req.user.email.split('@')[1];
+    let email = req.body.alt_email.split('@')[1];
     if (kiitSet.has(email)) {
       req.kiit = true;
     } else {
