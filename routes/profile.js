@@ -25,7 +25,6 @@ router.post(
         .select('-password')
         .select('-secureSessionID');
 
-      console.log('In profile route');
       if (!findUser)
         return res.status(400).send({
           success: false,
@@ -52,26 +51,33 @@ router.post(
           message: error.details[0].message
         });
 
-      let profile = new Profile(
-        _.pick(req.body, [
-          'fullName',
-          'alt_email',
-          'mob_no',
-          'w_mob_no',
-          'roll',
-          'uni',
-          'gender',
-          'year'
-        ])
-      );
       // Sanatize all the values coming in lodash.
       // All the values types are
-      Object.keys(profile).forEach(props => {
-        if (typeof profile[props] !== 'object' && profile[prop] !== null) {
-          profile[props] = sanitizer.escape(profile[props]);
+
+      console.log('In profile route');
+
+      let profileObj = _.pick(req.body, [
+        'fullName',
+        'alt_email',
+        'mob_no',
+        'w_mob_no',
+        'roll',
+        'uni',
+        'gender',
+        'year'
+      ]);
+
+      Object.keys(profileObj).forEach(props => {
+        if (
+          typeof profileObj[props] == 'string' &&
+          profileObj[props] !== null
+        ) {
+          profileObj[props] = sanitizer.escape(profileObj[props]);
         }
       });
 
+      let profile = new Profile(profileObj);
+      console.log('*******', profile);
       /**
        * Things we are checking unique in
        * Profile db.
@@ -113,7 +119,7 @@ router.post(
         let randString = await randomstring.generate({
           length: 4,
           charset: 'alphanumeric',
-          capitalization: 'lowecase'
+          capitalization: 'uppercase'
         });
 
         // console.log('For ProfileDB + ', randString);
