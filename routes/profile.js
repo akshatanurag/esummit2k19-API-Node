@@ -6,8 +6,13 @@
 const express = require('express');
 const _ = require('lodash');
 var randomstring = require('randomstring');
-const { Profile, validate } = require('../models/profile');
-const { User } = require('../models/user');
+const {
+  Profile,
+  validate
+} = require('../models/profile');
+const {
+  User
+} = require('../models/user');
 const middleware = require('../middleware/middleware');
 const log = require('../config/bunyan-config');
 const router = express.Router();
@@ -20,11 +25,11 @@ router.post(
   async (req, res) => {
     try {
       let findUser = await User.findOne({
-        email: sanitizer.escape(req.user.email)
-      })
+          email: sanitizer.escape(req.user.email)
+        })
         .select('-password')
         .select('-secureSessionID');
-      console.log(findUser)
+      //console.log(findUser)
 
       if (!findUser)
         return res.status(400).send({
@@ -45,7 +50,9 @@ router.post(
         });
       //console.log(findUser._id)
 
-      const { error } = validate(req.body);
+      const {
+        error
+      } = validate(req.body);
       if (error)
         return res.status(400).send({
           success: false,
@@ -56,7 +63,7 @@ router.post(
       // Sanatize all the values coming in lodash.
       // All the values types are
 
-      console.log('In profile route');
+      //console.log('In profile route');
 
       let profileObj = _.pick(req.body, [
         'fullName',
@@ -79,7 +86,7 @@ router.post(
       });
 
       let profile = new Profile(profileObj);
-      console.log('*******', profile);
+      //console.log('*******', profile);
 
       /**
        * Things we are checking unique in
@@ -93,18 +100,26 @@ router.post(
        **/
 
       const checkUnique = await Profile.find({
-        $or: [
-          { alt_email: profile.alt_email },
-          { mob_no: profile.mob_no },
-          { roll: profile.roll },
-          { w_mob_no: profile.w_mob_no }
+        $or: [{
+            alt_email: profile.alt_email
+          },
+          {
+            mob_no: profile.mob_no
+          },
+          {
+            roll: profile.roll
+          },
+          {
+            w_mob_no: profile.w_mob_no
+          }
         ]
       });
+      //console.log(checkUnique.length)
 
-      if (checkUnique) {
+      if (checkUnique != 0) {
         return res.status(400).send({
           success: false,
-          message: 'Duplicate Values sent...'
+          message: 'Looks like you have already done that.'
         });
       }
       // Values lying under this are true
@@ -129,37 +144,48 @@ router.post(
         profile.es_id = `ES_${randString}`;
         profile.profileComplete = true;
 
-        
+        //Fix needed
         // Send mail to kiit student
-        if(profile.uni == "kiit university"){
-        if (req.kiit) {
-          let verifyToken = randomstring.generate({
-            length: 50,
-            charset: 'hex'
-          });
+        if (profile.uni == "kiit university") {
+          if (req.kiit) {
+            let verifyToken = randomstring.generate({
+              length: 50,
+              charset: 'hex'
+            });
+            profile.kiitMailVerifyToken = verifyToken;
+            let sentMail = await mailer.sendMail(
+              verifyToken,
+              profile.alt_email,
+              req.headers.host,
+              'kiit-id-verify'
+            );
+            
+            if (!sentMail) {
+              throw 'Mail Not sent';
+            } else {
+              await profile.save();
+              return res.status(200).send({
+                success: true,
+                message: 'Profile has been saved'
+              });
+            }
 
-          let sentMail = await mailer.sendMail(
-            verifyToken,
-            profile.email,
-            req.headers.host,
-            'verify'
-          );
-
-          if (!sentMail) {
-            throw 'Mail Not sent';
+          } else {
+            return res.status(400).send({
+              success: false,
+              message: "Incorrect KIIT mail id"
+            })
           }
-        }
 
-        await profile.save();
-      }
-        else{
+        } else {
           await profile.save();
+          return res.status(200).send({
+            success: true,
+            message: 'Profile has been saved'
+          });
         }
 
-        return res.status(200).send({
-          success: true,
-          message: 'Profile has been saved'
-        });
+
       }
       // Some bad value were filled.
       else {
@@ -172,11 +198,27 @@ router.post(
       log.error(error);
       return res.status(400).send({
         success: false,
-        message: 'Opps! Something went wrong'
+        message: `Opps! Something went wrong ${error}`
       });
     }
   }
 );
+
+
+router.get("/kiit-id-verify/:token",async (req,res)=>{
+  if(profileData = await Profile.findOne({
+    kiitMailVerifyToken: req.params.token
+  }))
+  {
+    profileData.kiitMailVerifyToken = undefined;
+    profileData.kiitMailVerfyStatus = true;
+    await profileData.save()
+    return res.status(200).send({success: true, message: "KIIT Mail verification successful"})
+  }
+  else{
+    return res.status(400).send({success: false, message: "Verification token is invalid or has expired."})
+  }
+})
 
 module.exports = router;
 

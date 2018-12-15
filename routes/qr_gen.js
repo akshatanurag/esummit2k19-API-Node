@@ -12,7 +12,7 @@ var salt = process.env.SALT
 const log = require('../config/bunyan-config');
 const santizer = require('sanitizer');
 
-router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid, middleware.hasSeat], async (req, res) => {
+router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid, middleware.hasSeat], async (req, res) => {
     try {
         var currentUserProfile = await Profile.findOne({
             main_email: req.user.email

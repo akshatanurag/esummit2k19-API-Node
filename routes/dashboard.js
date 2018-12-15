@@ -107,7 +107,7 @@ var InsertDataAfterCheck = async (eventName, playersData, palyerData, email, res
     }
 }
 
-router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid], async (req, res) => {
+router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid], async (req, res) => {
     try {
         var userProfile = await fetchUserProfile(req.user.email)
         if (userProfile.seatSafe) {
@@ -149,7 +149,7 @@ router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middlewa
 
 })
 
-router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete, middleware.isPaid, middleware.hasSeat, middleware.hasSelectedTwoEvents], async (req, res) => {
+router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid, middleware.hasSeat, middleware.hasSelectedTwoEvents], async (req, res) => {
     try {
         var event = _.pick(req.body, ["event1", "event2"]);
     if (!event.event1 || !event.event2)

@@ -69,7 +69,12 @@ var profileSchema = new mongoose.Schema({
     year: {
         type: Number,
         required: true
-    } 
+    },
+    kiitMailVerifyToken:  String,
+    kiitMailVerfyStatus:{
+        type: Boolean,
+        default: false
+    }
 })
 
 function validateSchema(profile) {

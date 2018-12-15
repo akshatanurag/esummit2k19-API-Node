@@ -15,7 +15,7 @@ const log = require('../config/bunyan-config')
 
 
 
-router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete, middleware.isVerified, middleware.isSeatLeft], async (req, res) => {
+router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isVerified, middleware.isSeatLeft], async (req, res) => {
     try {
         var findUser = await User.findOne({
             email: req.user.email
@@ -88,7 +88,7 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete, middlew
 
 
 
-router.get("/thankyou", async (req, res) => {
+router.get("/thankyou", [middleware.isLoggedIn, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isVerified, middleware.isSeatLeft],async (req, res) => {
     try {
         var headers = {
             'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',

@@ -274,8 +274,9 @@ module.exports = {
 
     let email = null;
     // Only If email is there...
-    if (req.user.email) {
-      email = req.user.email.split('@')[1];
+   // console.log(req.body.alt_email);
+    if (req.body.alt_email) {
+      email = req.body.alt_email.split('@')[1];
     }
 
     if (kiitSet.has(email)) {
@@ -285,5 +286,24 @@ module.exports = {
     }
 
     next();
+  },
+  isKiitStudent: async function(req,res,next){
+    try {
+      let userProfile = await Profile.findOne({
+        main_email: req.user.email
+      })
+      if(!userProfile)
+      return res.status(400).send({succes: false, message: "Profile not complete"})
+  
+      if(userProfile.uni == 'kiit university' && userProfile.kiitMailVerfyStatus)
+      next();
+      else if(userProfile.uni !== 'kiit university' && userProfile.kiitMailVerfyStatus == false)
+      next()
+      else
+      return res.status(400).send({succes: false, message: "If you are from KIIT then, please verify your kiit mail first. Or contact us at techies@ecell.org.in"})
+    } catch (error) {
+      return res.status(400).send({succes: false, message: "Opps! Something went wrong..."})
+    }
+
   }
 };
