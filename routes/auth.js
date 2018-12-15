@@ -15,11 +15,8 @@ owasp.config({
   minOptionalTestsToPass: 4
 });
 
-const {
-  User,
-  validate
-} = require('../models/user');
-const log = require('../config/bunyan-config')
+const { User, validate } = require('../models/user');
+const log = require('../config/bunyan-config');
 
 const google = require('../config/google-util');
 
@@ -169,7 +166,6 @@ router.get(
 router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) throw 'error';
-
     var passStrength = owasp.test(req.body.password);
     if (passStrength.errors.length > 0)
       return res.status(400).send({
@@ -187,9 +183,7 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       });
     }
 
-    const {
-      error
-    } = validate(req.body);
+    const { error } = validate(req.body);
     if (error)
       return res.status(400).send({
         success: false,
@@ -203,7 +197,7 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       length: 50,
       charset: 'hex'
     });
-    //console.log(verifyToken);
+    // console.log(verifyToken);
     user.resetPasswordToken = verifyToken;
     user.secureSessionID = randomstring.generate({
       length: 20,
@@ -218,6 +212,7 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
       req.headers.host,
       'verify'
     );
+
     if (sentMail) {
       await user.save();
       res.header('x-auth-token', token).send({
@@ -313,14 +308,14 @@ router.get('/logout', middleware.isLoggedIn, async (req, res) => {
 
 router.get('/verify/:token', (req, res) => {
   User.findOne({
-      resetPasswordToken: req.params.token
-      //resetPasswordExpires: { $gt: Date.now() }
-    })
+    resetPasswordToken: req.params.token
+    //resetPasswordExpires: { $gt: Date.now() }
+  })
     .then(
       m => {
         (m.resetPasswordToken = undefined),
-        //m.resetPasswordExpires= undefined,
-        (m.isEmailVerified = 1);
+          //m.resetPasswordExpires= undefined,
+          (m.isEmailVerified = 1);
         m.save();
         //console.log(m);
         res.status(200).send({
