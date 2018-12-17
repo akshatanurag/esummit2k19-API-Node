@@ -59,109 +59,109 @@ const middleware = require('../middleware/middleware');
  *
  */
 
-router.get(
-  '/auth/google',
-  middleware.doNotShowRegisterPage,
-  async (req, res) => {
-    try {
-      return res.status(200).send({
-        url: google.urlGoogle()
-      });
-    } catch (error) {
-      //console.log(error);
-      log.error(error);
-      return res.status(400).send({
-        success: false,
-        message: 'Opps! Something went wrong.'
-      });
-    }
-  }
-);
+// router.get(
+//   '/auth/google',
+//   middleware.doNotShowRegisterPage,
+//   async (req, res) => {
+//     try {
+//       return res.status(200).send({
+//         url: google.urlGoogle()
+//       });
+//     } catch (error) {
+//       //console.log(error);
+//       log.error(error);
+//       return res.status(400).send({
+//         success: false,
+//         message: 'Opps! Something went wrong.'
+//       });
+//     }
+//   }
+// );
 
-router.get(
-  '/auth/google/callback',
-  middleware.doNotShowRegisterPage,
-  async (req, res) => {
-    try {
-      var q = url.parse(req.url, true);
-      if (q.query.code) {
-        var data = await google.getGoogleAccountFromCode(q.query.code);
-        var user = User();
-        /**
-         *
-         * Now this is where magic happens.!!!
-         *
-         * One reguest for both login and signup, amazing right. Wish I would've used simple google auth without passport before, It's simeple and
-         * gives you much more flexiblity
-         *
-         * Anyways, here we compare the database for the email sent by google
-         * if we finde it then we simply set the session to users session and send response accoding ly
-         *
-         */
-        if (
-          (currUser = await User.findOne({
-            email: data.email
-          }))
-        ) {
-          const token = user.generateAuthToken(data.email);
-          req.session.secure = currUser.secureSessionID;
-          return res
-            .header('x-auth-token', token)
-            .status(200)
-            .send({
-              success: true,
-              message: 'logged in'
-            });
-        }
-        /**
-         * now this will only run if the user is not registered with us
-         *
-         * basically we get the users details save in the db,
-         *
-         * Now, here since I don't get password and all from google, I simply put the users token here. Which will never be user used,
-         * also I am too lazy to change the db schema now. So..:p
-         *
-         * And the worst part if the user is not registered on google+, it deos not return a username (fuckers!!)
-         *
-         * Anyways for that I have stored "Not set in gmail" as name of the user.
-         * again too lazy to change this(schema required it so...)
-         *
-         *  */
-        var user = new User();
-        //console.log(data)
-        if (data.name == '') user.name = 'N/A by Gmail';
-        else user.name = data.name;
-        user.email = data.email;
-        user.password = data.tokens.id_token;
-        user.singUpType = 'Gmail';
-        user.isEmailVerified = 1;
-        user.secureSessionID = randomstring.generate({
-          length: 20,
-          charset: 'hex'
-        });
-        const token = user.generateAuthToken(data.email);
-        user.dateJoined = Date.now();
-        await user.save();
-        await res.header('x-auth-token', token).send({
-          success: true,
-          message: 'Sign up successful'
-        });
-      } else {
-        return res.status(404).send({
-          success: false,
-          message: 'Page not found'
-        });
-      }
-    } catch (error) {
-      //console.log(error);
-      log.error(error);
-      return res.status(400).send({
-        success: false,
-        message: 'Opps! Uanbe to login/sign-up'
-      });
-    }
-  }
-);
+// router.get(
+//   '/auth/google/callback',
+//   middleware.doNotShowRegisterPage,
+//   async (req, res) => {
+//     try {
+//       var q = url.parse(req.url, true);
+//       if (q.query.code) {
+//         var data = await google.getGoogleAccountFromCode(q.query.code);
+//         var user = User();
+//         /**
+//          *
+//          * Now this is where magic happens.!!!
+//          *
+//          * One reguest for both login and signup, amazing right. Wish I would've used simple google auth without passport before, It's simeple and
+//          * gives you much more flexiblity
+//          *
+//          * Anyways, here we compare the database for the email sent by google
+//          * if we finde it then we simply set the session to users session and send response accoding ly
+//          *
+//          */
+//         if (
+//           (currUser = await User.findOne({
+//             email: data.email
+//           }))
+//         ) {
+//           const token = user.generateAuthToken(data.email);
+//           req.session.secure = currUser.secureSessionID;
+//           return res
+//             .header('x-auth-token', token)
+//             .status(200)
+//             .send({
+//               success: true,
+//               message: 'logged in'
+//             });
+//         }
+//         /**
+//          * now this will only run if the user is not registered with us
+//          *
+//          * basically we get the users details save in the db,
+//          *
+//          * Now, here since I don't get password and all from google, I simply put the users token here. Which will never be user used,
+//          * also I am too lazy to change the db schema now. So..:p
+//          *
+//          * And the worst part if the user is not registered on google+, it deos not return a username (fuckers!!)
+//          *
+//          * Anyways for that I have stored "Not set in gmail" as name of the user.
+//          * again too lazy to change this(schema required it so...)
+//          *
+//          *  */
+//         var user = new User();
+//         //console.log(data)
+//         if (data.name == '') user.name = 'N/A by Gmail';
+//         else user.name = data.name;
+//         user.email = data.email;
+//         user.password = data.tokens.id_token;
+//         user.singUpType = 'Gmail';
+//         user.isEmailVerified = 1;
+//         user.secureSessionID = randomstring.generate({
+//           length: 20,
+//           charset: 'hex'
+//         });
+//         const token = user.generateAuthToken(data.email);
+//         user.dateJoined = Date.now();
+//         await user.save();
+//         await res.header('x-auth-token', token).send({
+//           success: true,
+//           message: 'Sign up successful'
+//         });
+//       } else {
+//         return res.status(404).send({
+//           success: false,
+//           message: 'Page not found'
+//         });
+//       }
+//     } catch (error) {
+//       //console.log(error);
+//       log.error(error);
+//       return res.status(400).send({
+//         success: false,
+//         message: 'Opps! Uanbe to login/sign-up'
+//       });
+//     }
+//   }
+// );
 
 router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
   try {

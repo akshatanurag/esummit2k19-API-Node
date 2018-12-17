@@ -68,12 +68,14 @@ if (cluster.isMaster) {
 } else {
   //ALL CODE GOES IN HERE
   const app = express();
-
+  app.set("view engine","ejs");
+app.use(express.static(__dirname + '/public'));
   app.use(
     bodyParser.urlencoded({
       extended: true
     })
   );
+  
   app.use(bodyParser.json());
   app.use(
     session({
@@ -126,7 +128,7 @@ if (cluster.isMaster) {
     })
   );
 
-  app.use('/api', clientRoute);
+  app.use( clientRoute);
   app.use(function(req, res, next) {
     try {
       var decoded = () => {
@@ -140,14 +142,36 @@ if (cluster.isMaster) {
       else
         return res
           .status(401)
-          .send({ success: false, message: 'Unauthorized Client' });
+          .render("404")
     } catch (e) {
       return res
         .status(401)
-        .send({ success: false, message: 'Unauthorized Client' });
+        .render("404")
     }
   });
+  app.use('/api', authRoutes);
+  //Three level verification to stop other routes
+  app.get('*', (req, res) => {
 
+
+    return res.status(404).render("404")
+  });
+  app.post('*', (req, res) => {
+
+
+    return res.status(404).render("404")
+  });
+app.use(function(req,res,next){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+  var completeDate = `${dd}/${mm}/${yyyy}`
+  if(completeDate == '20/1/2019')
+  next();
+  else
+  res.status(400).send({success: false, message: "Sorry!"})
+})
   // app.use(csrf());
   // app.use(function(req, res, next) {
   //   res.setHeader('XSRF-TOKEN', req.csrfToken());
@@ -155,20 +179,15 @@ if (cluster.isMaster) {
   // });
 
   app.use('/api', commonRoutes);
-  app.use('/api', authRoutes);
+  app.use('/api', forgotRoutes);
   app.use('/api', profileRoutes);
   app.use('/api', dashboardRoutes);
-  app.use('/api', forgotRoutes);
   app.use('/api', paymentRoutes);
   app.use('/api', qrGenRoutes);
   app.use('/api/admin', adminRoutes);
   app.use("/api/imps",impsRoutes);
 
-  app.get('*', (req, res) => {
-    return res.status(404).send({
-      error: 'The page was not found'
-    });
-  });
+ 
 
   app.listen(port, process.env.IP);
 

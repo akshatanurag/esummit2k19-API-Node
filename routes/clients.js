@@ -22,7 +22,7 @@ genAPIToken = async (username) => {
 }
 
 
-router.get("/get-token", async (req, res) => {
+router.get("/api/get-token", async (req, res) => {
     if (req.header("username") == "android" && req.header("password") == "123456")
         res.status(200).header("x-api-token", await genAPIToken("Android")).send({
             success: true
@@ -51,30 +51,23 @@ router.get('/verify/:token', (req, res) => {
                 (m.isEmailVerified = 1);
                 m.save();
                 //console.log(m);
-                res.status(200).send({
-                    success: true,
-                    message: "Email verified"
-                })
+                res.status(200).render("emailverify")
             },
             e => {
                 //console.log(e);
                 log.error(e);
-                res.status(400).send({
-                    error: 'Verification token is invalid or has expired.'
-                });
+                res.status(400).render("emainVerifyError")
             }
         )
         .catch(e => {
             //console.log(e);
             log.error(e);
-            res.status(400).send({
-                error: 'Verification token is invalid or has expired.'
-            });
+            res.status(400).render("emainVerifyError")
         });
 });
 
 /* forgot.js*/
-router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
+/*router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
     try {
         var findUserByToken = await User.findOne({
             resetEmailToken: req.params.token,
@@ -157,10 +150,11 @@ router.post("/reset/:token", async (req, res) => {
     }
 
 })
+*/
 
 /* payments.js */
 
-router.get("/thankyou", async (req, res) => {
+/*router.get("/thankyou", async (req, res) => {
     try {
         var headers = {
             'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
@@ -218,7 +212,7 @@ router.get("/thankyou", async (req, res) => {
 
 })
 
-/* kiit mail verify*/
+
 router.get("/kiit-id-verify/:token", async (req, res) => {
     if (profileData = await Profile.findOne({
             kiitMailVerifyToken: req.params.token
@@ -236,6 +230,8 @@ router.get("/kiit-id-verify/:token", async (req, res) => {
             message: "Verification token is invalid or has expired."
         })
     }
-})
+})*/
+
+
 
 module.exports = router
