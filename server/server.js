@@ -128,7 +128,7 @@ app.use(express.static(__dirname + '/public'));
     })
   );
 
-  app.use( clientRoute);
+  app.use("/api",clientRoute);
   app.use(function(req, res, next) {
     try {
       var decoded = () => {
@@ -141,37 +141,27 @@ app.use(express.static(__dirname + '/public'));
         next();
       else
         return res
-          .status(401)
-          .render("404")
+          .status(401).send({success: false,message: "Unauthorized Client"})
     } catch (e) {
       return res
         .status(401)
-        .render("404")
+        .send({success: false,message: "Unauthorized Client"})
     }
   });
   app.use('/api', authRoutes);
   //Three level verification to stop other routes
-  app.get('*', (req, res) => {
 
-
-    return res.status(404).render("404")
-  });
-  app.post('*', (req, res) => {
-
-
-    return res.status(404).render("404")
-  });
-app.use(function(req,res,next){
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1; //January is 0!
-  var yyyy = today.getFullYear();
-  var completeDate = `${dd}/${mm}/${yyyy}`
-  if(completeDate == '20/1/2019')
-  next();
-  else
-  res.status(400).send({success: false, message: "Sorry!"})
-})
+// app.use(function(req,res,next){
+//   var today = new Date();
+//   var dd = today.getDate();
+//   var mm = today.getMonth()+1; //January is 0!
+//   var yyyy = today.getFullYear();
+//   var completeDate = `${dd}/${mm}/${yyyy}`
+//   if(completeDate == '20/1/2019')
+//   next();
+//   else
+//   res.status(400).send({success: false, message: "Sorry!"})
+// })
   // app.use(csrf());
   // app.use(function(req, res, next) {
   //   res.setHeader('XSRF-TOKEN', req.csrfToken());
@@ -187,6 +177,16 @@ app.use(function(req,res,next){
   app.use('/api/admin', adminRoutes);
   app.use("/api/imps",impsRoutes);
 
+  app.get('*', (req, res) => {
+
+
+    return res.status(404).render("404")
+  });
+  app.post('*', (req, res) => {
+
+
+    return res.status(404).render("404")
+  });
  
 
   app.listen(port, process.env.IP);
