@@ -91,7 +91,9 @@ if (cluster.isMaster) {
   );
   app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
   app.use(cors({
-    exposedHeaders: ['x-api-token','x-auth-token','set-cookie']
+    exposedHeaders: ['x-api-token','x-auth-token'],
+    methods: ['GET','POST'],
+    credentials: true
   }));
   app.use(hpp());
   app.disable('x-powered-by');
