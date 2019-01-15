@@ -236,7 +236,7 @@ async function sendMail(token, to, host, route) {
                               <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey,</h2>
                               <p>Wowwee! Thanks for registering! Before you experience the gretest E-Summit in the country...</p>
                               <p>We'll need to verify your email.</p><br>
-                              <p>Link : ${'http://' +host + '/' + route + '/' +token }</p><br>
+                              <p>Link : ${'http://' +host + "/" +  'api' + '/' + route + '/' +token }</p><br>
                               <p style="text-align:center;">or</p>
                             </div>
                           </td>

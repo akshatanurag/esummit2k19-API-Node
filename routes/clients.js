@@ -22,7 +22,7 @@ genAPIToken = async (username) => {
 }
 
 
-router.get("/api/get-token", async (req, res) => {
+router.get("/get-token", async (req, res) => {
     if (req.header("username") == "android" && req.header("password") == "123456")
         res.status(200).header("x-api-token", await genAPIToken("Android")).send({
             success: true
@@ -67,7 +67,7 @@ router.get('/verify/:token', (req, res) => {
 });
 
 /* forgot.js*/
-/*router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
+router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
     try {
         var findUserByToken = await User.findOne({
             resetEmailToken: req.params.token,
@@ -150,11 +150,11 @@ router.post("/reset/:token", async (req, res) => {
     }
 
 })
-*/
+
 
 /* payments.js */
 
-/*router.get("/thankyou", async (req, res) => {
+router.get("/thankyou", async (req, res) => {
     try {
         var headers = {
             'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
@@ -230,7 +230,7 @@ router.get("/kiit-id-verify/:token", async (req, res) => {
             message: "Verification token is invalid or has expired."
         })
     }
-})*/
+})
 
 
 
