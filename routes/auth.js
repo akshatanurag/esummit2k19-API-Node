@@ -248,12 +248,12 @@ router.get('/verify/:token', (req, res) => {
               (m.isEmailVerified = 1);
               m.save();
               //console.log(m);
-              res.status(200).render("emailverify")
+              res.status(200).send({success: true, message: 'Email verified'})
           },
           e => {
               //console.log(e);
               log.error(e);
-              res.status(400).render("emainVerifyError")
+              res.status(400).send({success: false, message: 'Email not verified'})
           }
       )
       .catch(e => {
