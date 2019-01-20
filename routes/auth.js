@@ -259,7 +259,7 @@ router.get('/verify/:token', (req, res) => {
       .catch(e => {
           //console.log(e);
           log.error(e);
-          res.status(400).render("emainVerifyError")
+          res.status(400).send({success: false, message: 'Email not verified'})
       });
 });
 
