@@ -94,89 +94,89 @@ router.post("/forgot", async (req, res) => {
     }
 })
 
-// router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
-//     try {
-//         var findUserByToken = await User.findOne({
-//             resetEmailToken: req.params.token,
-//             resetEmailExpires: {
-//                 $gt: Date.now()
-//             }
-//         }).select('-password').select('-secureSessionID');
-//         if (!findUserByToken)
-//             return res.status(400).send({
-//                 success: false,
-//                 message: "Reset token is invalid or has expired."
-//             });
-//         if (findUserByToken.resetEmailToken == req.params.token) {
-//             return res.status(200).send({
-//                 success: true,
-//                 message: "Enter new password by sending post request on this exact route"
-//             })
-//             //render reset form here
-//         } else {
-//             return res.status(400).send({
-//                 success: false,
-//                 message: "Reset token is invalid or has expired."
-//             });
-//         }
-//     } catch (error) {
-//         log.error(error)      
-//         return res.status(400).send({
-//             success: false,
-//             message: "Reset token is invalid or has expired."
-//         })
-//     }
+router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
+    try {
+        var findUserByToken = await User.findOne({
+            resetEmailToken: req.params.token,
+            resetEmailExpires: {
+                $gt: Date.now()
+            }
+        }).select('-password').select('-secureSessionID');
+        if (!findUserByToken)
+            return res.status(400).send({
+                success: false,
+                message: "Reset token is invalid or has expired."
+            });
+        if (findUserByToken.resetEmailToken == req.params.token) {
+            return res.status(200).send({
+                success: true,
+                message: "Enter new password by sending post request on this exact route"
+            })
+            //render reset form here
+        } else {
+            return res.status(400).send({
+                success: false,
+                message: "Reset token is invalid or has expired."
+            });
+        }
+    } catch (error) {
+        log.error(error)      
+        return res.status(400).send({
+            success: false,
+            message: "Reset token is invalid or has expired."
+        })
+    }
 
-// })
+})
 
 
-// router.post("/reset/:token", async (req, res) => {
-//     try {
-//         var findUserByToken = await User.findOne({
-//             resetEmailToken: req.params.token,
-//             resetEmailExpires: {
-//                 $gt: Date.now()
-//             }
-//         }).select('-password').select('-secureSessionID');
-//         if (!findUserByToken)
-//             return res.status(400).send({
-//                 success: false,
-//                 message: "Reset token is invalid or has expired."
-//             });
-//         if (findUserByToken.resetEmailToken == req.params.token) {
-//             //return res.status(200).send({success: "Enter new email by sending post request on /reset/:token"})
-//             if (!req.body.password)
-//                 return res.status(400).send({
-//                     success: false,
-//                     message: "Password not enterd"
-//                 })
-//                 var passStrength = owasp.test(req.body.password)
-//                 if (passStrength.errors.length > 0)
-//                     return res.status(400).send({
-//                         errors: passStrength.errors
-//                     });
-//             findUserByToken.password = await bcrypt.hashSync(sanitizer.escape(req.body.password), bcrypt.genSaltSync(10), null);
-//             findUserByToken.resetEmailToken = undefined;
-//             findUserByToken.resetEmailExpires = undefined
-//             await findUserByToken.save()
-//             return res.status(200).send({
-//                 success: true,
-//                 message: 'Password reset successful'
-//             });
-//         } else {
-//             return res.status(400).send({
-//                 success: false,
-//                 message: "Reset token is invalid or has expired."
-//             });
-//         }
-//     } catch (error) {
-//         log.error(error);
-//         return res.status(400).send({
-//             success: false,
-//             message: "Reset token is invalid or has expired."
-//         });
-//     }
+router.post("/reset/:token", async (req, res) => {
+    try {
+        var findUserByToken = await User.findOne({
+            resetEmailToken: req.params.token,
+            resetEmailExpires: {
+                $gt: Date.now()
+            }
+        }).select('-password').select('-secureSessionID');
+        if (!findUserByToken)
+            return res.status(400).send({
+                success: false,
+                message: "Reset token is invalid or has expired."
+            });
+        if (findUserByToken.resetEmailToken == req.params.token) {
+            //return res.status(200).send({success: "Enter new email by sending post request on /reset/:token"})
+            if (!req.body.password)
+                return res.status(400).send({
+                    success: false,
+                    message: "Password not enterd"
+                })
+                var passStrength = owasp.test(req.body.password)
+                if (passStrength.errors.length > 0)
+                    return res.status(400).send({
+                        errors: passStrength.errors
+                    });
+            findUserByToken.password = await bcrypt.hashSync(sanitizer.escape(req.body.password), bcrypt.genSaltSync(10), null);
+            findUserByToken.resetEmailToken = undefined;
+            findUserByToken.resetEmailExpires = undefined
+            await findUserByToken.save()
+            return res.status(200).send({
+                success: true,
+                message: 'Password reset successful'
+            });
+        } else {
+            return res.status(400).send({
+                success: false,
+                message: "Reset token is invalid or has expired."
+            });
+        }
+    } catch (error) {
+        log.error(error);
+        return res.status(400).send({
+            success: false,
+            message: "Reset token is invalid or has expired."
+        });
+    }
 
-// })
+})
 
 module.exports = router;

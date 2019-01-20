@@ -60,6 +60,7 @@ router.post("/login", async (req, res) => {
             password: hashPassword
         })
         if (!findAdmin) {
+            console.log("here");
             return res.status(400).send({
                 success: false,
                 message: "Invalid email or password"

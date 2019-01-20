@@ -39,7 +39,9 @@ router.get("/get-token", async (req, res) => {
 })
 
 /*AUTH.js email verify */
-router.get('/verify/:token', (req, res) => {
+
+
+/*router.get('/verify/:token', (req, res) => {
     User.findOne({
             resetPasswordToken: req.params.token
             //resetPasswordExpires: { $gt: Date.now() }
@@ -64,10 +66,10 @@ router.get('/verify/:token', (req, res) => {
             log.error(e);
             res.status(400).render("emainVerifyError")
         });
-});
+});*/
 
 /* forgot.js*/
-router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
+/*router.get("/reset/:token", async (req, res) => { //render the form here to get the new password
     try {
         var findUserByToken = await User.findOne({
             resetEmailToken: req.params.token,
@@ -149,12 +151,12 @@ router.post("/reset/:token", async (req, res) => {
         });
     }
 
-})
+})*/
 
 
 /* payments.js */
 
-router.get("/thankyou", async (req, res) => {
+/*router.get("/thankyou", async (req, res) => {
     try {
         var headers = {
             'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
@@ -210,27 +212,27 @@ router.get("/thankyou", async (req, res) => {
     }
 
 
-})
+})*/
 
 
-router.get("/kiit-id-verify/:token", async (req, res) => {
-    if (profileData = await Profile.findOne({
-            kiitMailVerifyToken: req.params.token
-        })) {
-        profileData.kiitMailVerifyToken = undefined;
-        profileData.kiitMailVerfyStatus = true;
-        await profileData.save()
-        return res.status(200).send({
-            success: true,
-            message: "KIIT Mail verification successful"
-        })
-    } else {
-        return res.status(400).send({
-            success: false,
-            message: "Verification token is invalid or has expired."
-        })
-    }
-})
+// router.get("/kiit-id-verify/:token", async (req, res) => {
+//     if (profileData = await Profile.findOne({
+//             kiitMailVerifyToken: req.params.token
+//         })) {
+//         profileData.kiitMailVerifyToken = undefined;
+//         profileData.kiitMailVerfyStatus = true;
+//         await profileData.save()
+//         return res.status(200).send({
+//             success: true,
+//             message: "KIIT Mail verification successful"
+//         })
+//     } else {
+//         return res.status(400).send({
+//             success: false,
+//             message: "Verification token is invalid or has expired."
+//         })
+//     }
+// })
 
 
 

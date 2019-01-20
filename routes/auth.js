@@ -235,6 +235,34 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
   }
 });
 
+
+router.get('/verify/:token', (req, res) => {
+  User.findOne({
+          resetPasswordToken: req.params.token
+          //resetPasswordExpires: { $gt: Date.now() }
+      }).select("-password").select("-secureSessionId")
+      .then(
+          m => {
+              (m.resetPasswordToken = undefined),
+              //m.resetPasswordExpires= undefined,
+              (m.isEmailVerified = 1);
+              m.save();
+              //console.log(m);
+              res.status(200).render("emailverify")
+          },
+          e => {
+              //console.log(e);
+              log.error(e);
+              res.status(400).render("emainVerifyError")
+          }
+      )
+      .catch(e => {
+          //console.log(e);
+          log.error(e);
+          res.status(400).render("emainVerifyError")
+      });
+});
+
 router.post(
   '/login',
   [middleware.isVerified, middleware.doNotShowRegisterPage],
