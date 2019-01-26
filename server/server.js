@@ -53,7 +53,7 @@ const forgotRoutes = require('../routes/forgot');
 const { paymentRoutes, requestFromPay } = require('../routes/payment');
 const qrGenRoutes = require('../routes/qr_gen');
 const adminRoutes = require('../routes/admin');
-const clientRoute = require('../routes/clients');
+//const clientRoute = require('../routes/clients');
 const impsRoutes = require('../routes/imps');
 
 let port = process.env.PORT || 3000;
@@ -137,7 +137,7 @@ app.use(express.static(__dirname + '/public'));
     return completeDate;
  }
 
-  app.use("/api",clientRoute);
+  //app.use("/api",clientRoute);
 
 
  /* app.use(function(req, res, next) {
