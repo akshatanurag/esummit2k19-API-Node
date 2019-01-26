@@ -163,8 +163,9 @@ app.use(express.static(__dirname + '/public'));
   app.use(async function(req,res,next){
     try {
       let secretDate = Number(getDate()) + Number(getDate()%(Math.pow(10,6))) + salt;
+      console.log(secretDate);
       var hashedDate = await crypto.SHA256(secretDate).toString()
-      //console.log(hashedDate);
+      console.log(hashedDate);
       if(req.header('x-api-token') == hashedDate)
       next()
       else

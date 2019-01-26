@@ -41,8 +41,8 @@
     Example : 
 
     currentDate = 2612019
-    dateMod6 = (2612019 + 612019) => 267340038
-    finalString = 267340038 + salt
+    dateMod6 = (2612019 + 612019) => 3224038
+    finalString = 3224038 + salt
     x-api-token = sha256(finalString)
 
     +++++++++++++++++++++
