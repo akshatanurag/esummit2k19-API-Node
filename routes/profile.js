@@ -204,6 +204,28 @@ router.post(
   }
 );
 
+router.get("/profile",[middleware.isLoggedIn, middleware.isVerified,middleware.isProfileComplete,middleware.isFromKiit],async (req,res)=>{
+  let findUser = await User.findOne({
+    email: req.user.email
+  })
+  .select('-password')
+  .select('-secureSessionID');
+//console.log(findUser)
+
+if (!findUser)
+  return res.status(400).send({
+    success: false,
+    message: "Looks like you haven't signed up yet!"
+  });
+
+// Refactor isProfileComplete Middileware we can use that here.
+let findProfile = await Profile.findOne({
+  user_id: findUser._id
+}).select("-profileComplete").select("-seatSafe").select("-selectedTwoEvents").select("-kiitMailVerfyStatus").select("-_id").select("-user_id");
+
+  return res.status(200).send({success: true,profile: findProfile})
+})
+
 
 // router.get("/kiit-id-verify/:token",async (req,res)=>{
 //   if(profileData = await Profile.findOne({

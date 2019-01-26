@@ -25,7 +25,8 @@ const hpp = require('hpp');
 const helmet = require('helmet');
 var compression = require('compression');
 var contentLength = require('express-content-length-validator');
-var MAX_CONTENT_LENGTH_ACCEPTED = 9999;
+const crypto = require('crypto-js')
+var MAX_CONTENT_LENGTH_ACCEPTED = 20000;
 const jwt = require('jsonwebtoken');
 require('../db/connection');
 
@@ -41,6 +42,8 @@ if (
   console.log('FATAL ERROR: keys not defined');
   process.exit(1);
 }
+
+var salt = process.env.SALT 
 
 const commonRoutes = require('../routes/common');
 const authRoutes = require('../routes/auth');
@@ -128,8 +131,16 @@ app.use(express.static(__dirname + '/public'));
     })
   );
 
+  getDate = ()=>{
+    var today = new Date();
+    var completeDate = `${today.getDate()}${today.getMonth()+1}${today.getFullYear()}`
+    return completeDate;
+ }
+
   app.use("/api",clientRoute);
-  app.use(function(req, res, next) {
+
+
+ /* app.use(function(req, res, next) {
     try {
       var decoded = () => {
         return jwt.verify(
@@ -147,26 +158,33 @@ app.use(express.static(__dirname + '/public'));
         .status(401)
         .send({success: false,message: "Unauthorized Client"})
     }
-  });
-  app.use('/api', authRoutes);
-  //Three level verification to stop other routes
+  });*/
 
-// app.use(function(req,res,next){
-//   var today = new Date();
-//   var dd = today.getDate();
-//   var mm = today.getMonth()+1; //January is 0!
-//   var yyyy = today.getFullYear();
-//   var completeDate = `${dd}/${mm}/${yyyy}`
-//   if(completeDate == '20/1/2019')
-//   next();
-//   else
-//   res.status(400).send({success: false, message: "Sorry!"})
-// })
-  // app.use(csrf());
-  // app.use(function(req, res, next) {
-  //   res.setHeader('XSRF-TOKEN', req.csrfToken());
-  //   next();
-  // });
+  app.use(async function(req,res,next){
+    try {
+      let secretDate = Number(getDate()) + Number(getDate()%(Math.pow(10,6))) + salt;
+      var hashedDate = await crypto.SHA256(secretDate).toString()
+      console.log(hashedDate);
+      if(req.header('x-api-token') == hashedDate)
+      next()
+      else
+      return res.status(401).send({success: false,message: 'Not Found'})
+    } catch (error) {
+      return res.status(401).send({success: false,message: 'Not Found'})
+    }
+  })
+
+
+  app.use('/api', authRoutes);
+
+
+
+
+  /*app.use(csrf());
+  app.use(function(req, res, next) {
+    res.setHeader('XSRF-TOKEN', req.csrfToken());
+    next();
+  });*/
 
   app.use('/api', commonRoutes);
   app.use('/api', forgotRoutes);
