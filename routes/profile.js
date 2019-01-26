@@ -221,7 +221,7 @@ if (!findUser)
 // Refactor isProfileComplete Middileware we can use that here.
 let findProfile = await Profile.findOne({
   user_id: findUser._id
-}).select("-profileComplete").select("-seatSafe").select("-selectedTwoEvents").select("-kiitMailVerfyStatus").select("-_id").select("-user_id");
+}).select("-_id").select("-user_id");
 
   return res.status(200).send({success: true,profile: findProfile})
 })

@@ -12,12 +12,14 @@
 ---
 
 ### **Note** : Each route sends a success (bool) and message response. 
+
+###          : Check out  Client Authentication and Profile section (major updates)
           
 
 ---
 
 
-## Client Authentication
+## Client Authentication (updated)
 
 ---
 
@@ -26,28 +28,26 @@
 
     How it works?
 
-    Every client(Android or Angular) needs to send an x-api-token (valid for 24hrs only) with every request. In order to prove,
-    wehter they are who, they say they are. 
+    Every client *on their own* will generate an x-api-token and send it as their response header. If the token is verified then,
+    we allow the request to move foward. 
 
-    How to get this token?
+    How to generate this token? 
 
-    Simple, the known clients (Angular or Android) will make an request to /api/get-token with their credentials in the header (username,password)
-    and in response  header they will be getting an x-api-token. That will be valid for only 24 hrs and thus serve the request.
+    STEP 1 : get the current date (Format : ddmmyyyy)
+    STEP 2 : add the valure of date%10^6 to the current date ( ddmmyyyy + mmyyyy)
+    STEP 3: add a salt to the generated string (ddmmyyyy+ mmyy + salt)
+    STEP 4 : encrypt the final string with sha256 (sha256(ddmmyyyy+ mmyy + salt))
 
-    Important : 
-    Without this x-api-token, no routes can be accessed so get that token.
+    Example : 
 
-    Credentials (will be changed to something complicated very soon..) : 
-    
-    ANGULAR
-    ========
-    username : angular
-    password : abcdef
+    currentDate = 2612019
+    dateMod6 = (2612019 + 612019) => 267340038
+    finalString = 267340038 + salt
+    x-api-token = sha256(finalString)
 
-    ANDROID
-    =======
-    username : android
-    password : 123456
+    +++++++++++++++++++++
+    Salt = kiitesummitzgOrJz91QOME8hrislove
+
 
 ```
 
@@ -126,6 +126,10 @@
             -error(only if error exists)
         -Middlewares
             -Cannot access without signup and login
+
+    -/api/profile - **GET**
+        -Returns user profile
+        -returns bool value like, profile Status,seats Selection status etc
 
 
     ===========================

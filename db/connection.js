@@ -7,7 +7,7 @@ const log = require('../config/bunyan-config')
         useFindAndModify: false,
         useCreateIndex: true 
     }).then(()=>{
-        console.log("connected to db");
+        //console.log("connected to db");
     }).catch(()=>{
         log.error("Db not connected");
         console.log("unable to connect");
