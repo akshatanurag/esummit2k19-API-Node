@@ -19,7 +19,7 @@ const { User, validate } = require('../models/user');
 const log = require('../config/bunyan-config');
 
 const google = require('../config/google-util');
-
+const {Profile} = require('../models/profile');
 const middleware = require('../middleware/middleware');
 //const nodemailer = require('nodemailer');
 
@@ -321,6 +321,26 @@ router.get('/logout', middleware.isLoggedIn, async (req, res) => {
       success: 'Logged out'
     });
 });
+
+
+router.get("/kiit-id-verify/:token", async (req, res) => {
+    if (profileData = await Profile.findOne({
+            kiitMailVerifyToken: req.params.token
+        })) {
+        profileData.kiitMailVerifyToken = undefined;
+        profileData.kiitMailVerfyStatus = true;
+        await profileData.save()
+        return res.status(200).send({
+            success: true,
+            message: "KIIT Mail verification successful"
+        })
+    } else {
+        return res.status(400).send({
+            success: false,
+            message: "Verification token is invalid or has expired."
+        })
+    }
+})
 
 // router.get("/getdata", [middleware.isLoggedIn, middleware.isVerified], async (req, res) => {
 //     User.findOne({
