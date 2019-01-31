@@ -53,7 +53,7 @@ const forgotRoutes = require('../routes/forgot');
 const { paymentRoutes, requestFromPay } = require('../routes/payment');
 const qrGenRoutes = require('../routes/qr_gen');
 const adminRoutes = require('../routes/admin');
-//const clientRoute = require('../routes/clients');
+const clientRoute = require('../routes/clients');
 const impsRoutes = require('../routes/imps');
 
 let port = process.env.PORT || 3000;
@@ -137,10 +137,10 @@ app.use(express.static(__dirname + '/public'));
     return completeDate;
  }
 
-  //app.use("/api",clientRoute);
+  app.use("/api",clientRoute);
 
 
- /* app.use(function(req, res, next) {
+ app.use(function(req, res, next) {
     try {
       var decoded = () => {
         return jwt.verify(
@@ -158,22 +158,22 @@ app.use(express.static(__dirname + '/public'));
         .status(401)
         .send({success: false,message: "Unauthorized Client"})
     }
-  });*/
+  });
 
-  app.use(async function(req,res,next){
-    try {
-      let secretDate = Number(getDate()) + Number(getDate()%(Math.pow(10,6))) + salt;
-      //console.log(secretDate);
-      var hashedDate = await crypto.SHA256(secretDate).toString()
-      console.log(hashedDate);
-      if(req.header('x-api-token') == hashedDate)
-      next()
-      else
-      return res.status(401).send({success: false,message: 'Not Found'})
-    } catch (error) {
-      return res.status(401).send({success: false,message: 'Not Found'})
-    }
-  })
+  // app.use(async function(req,res,next){
+  //   try {
+  //     let secretDate = Number(getDate()) + Number(getDate()%(Math.pow(10,6))) + salt;
+  //     //console.log(secretDate);
+  //     var hashedDate = await crypto.SHA256(secretDate).toString()
+  //     console.log(hashedDate);
+  //     if(req.header('x-api-token') == hashedDate)
+  //     next()
+  //     else
+  //     return res.status(401).send({success: false,message: 'Not Found'})
+  //   } catch (error) {
+  //     return res.status(401).send({success: false,message: 'Not Found'})
+  //   }
+  // })
 
 
   app.use('/api', authRoutes);

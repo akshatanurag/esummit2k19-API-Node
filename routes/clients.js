@@ -1,42 +1,42 @@
-// const express = require('express');
-// const jwt = require('jsonwebtoken')
-// const config = require('config');
-// const request = require('request');
-// const url = require('url')
+const express = require('express');
+const jwt = require('jsonwebtoken')
+const config = require('config');
+const request = require('request');
+const url = require('url')
 
-// var router = express.Router()
-// const {
-//     User
-// } = require('../models/user');
-// const {
-//     Profile
-// } = require('../models/profile');
-// const log = require('../config/bunyan-config')
+var router = express.Router()
+const {
+    User
+} = require('../models/user');
+const {
+    Profile
+} = require('../models/profile');
+const log = require('../config/bunyan-config')
 
-// genAPIToken = async (username) => {
-//     return jwt.sign({
-//         device: username
-//     }, config.get("jwtPrivateKey"), {
-//         expiresIn: "24h"
-//     })
-// }
+genAPIToken = async (username) => {
+    return jwt.sign({
+        device: username
+    }, config.get("jwtPrivateKey"), {
+        expiresIn: "24h"
+    })
+}
 
 
-// router.get("/get-token", async (req, res) => {
-//     if (req.header("username") == "android" && req.header("password") == "123456")
-//         res.status(200).header("x-api-token", await genAPIToken("Android")).send({
-//             success: true
-//         })
-//     else if (req.header("username") == "angular" && req.header("password") == "abcdef")
-//         res.status(200).header("x-api-token", await genAPIToken("Angular")).send({
-//             success: true
-//         })
-//     else
-//         res.status(400).send({
-//             success: false,
-//             message: "Unauthorized"
-//         })
-// })
+router.get("/get-token", async (req, res) => {
+    if (req.header("username") == "android" && req.header("password") == "llQxi22oreOE2FQ")
+        res.status(200).header("x-api-token", await genAPIToken("Android")).send({
+            success: true
+        })
+    else if (req.header("username") == "angular" && req.header("password") == "oD4U2tHtwiRTzVb")
+        res.status(200).header("x-api-token", await genAPIToken("Angular")).send({
+            success: true
+        })
+    else
+        res.status(400).send({
+            success: false,
+            message: "Unauthorized"
+        })
+})
 
 // /*AUTH.js email verify */
 
@@ -235,5 +235,4 @@
 // // })
 
 
-
-// module.exports = router
+module.exports = router
