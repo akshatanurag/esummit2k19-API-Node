@@ -96,7 +96,7 @@ app.use(express.static(__dirname + '/public'));
   );
   app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
   app.use(cors({
-    exposedHeaders: ['x-api-token','x-auth-token'],
+    exposedHeaders: ['x-api-token','x-auth-token','set-cookie'],
     methods: ['GET','POST'],
     credentials: true
   }));
