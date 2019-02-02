@@ -99,7 +99,7 @@ app.use(express.static(__dirname + '/public'));
     origin: 'http://localhost:4200',
     exposedHeaders: ['x-api-token','x-auth-token','set-cookie'],
     methods: ['GET','POST'],
-    credentials: true
+    credentials: false
   }));
   app.use(hpp());
   app.disable('x-powered-by');
@@ -107,7 +107,7 @@ app.use(express.static(__dirname + '/public'));
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Frame-Options', 'deny');
     res.header('X-Content-Type-Options', 'nosniff');
-    res.header('xhr.withCredentials','false');
+    //res.header('xhr.withCredentials','false');
     next();
   });
   app.use(helmet());
