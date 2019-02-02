@@ -11,3 +11,4 @@
 {"name":"esummit_logs","hostname":"techieCool","pid":42640,"level":50,"msg":"Db not connected","time":"2019-02-01T17:49:08.394Z","v":0}
 {"name":"esummit_logs","hostname":"techieCool","pid":13008,"level":50,"msg":"Db not connected","time":"2019-02-01T17:49:08.396Z","v":0}
 {"name":"esummit_logs","hostname":"techieCool","pid":40324,"level":50,"msg":"Db not connected","time":"2019-02-01T17:49:08.406Z","v":0}
+{"name":"esummit_logs","hostname":"techieCool","pid":57920,"level":50,"err":{"message":"Cannot set property 'secure' of undefined","name":"TypeError","stack":"TypeError: Cannot set property 'secure' of undefined\n    at router.post (G:\\My Websites\\e-summit\\routes\\auth.js:296:26)\n    at process._tickCallback (internal/process/next_tick.js:68:7)"},"msg":"Cannot set property 'secure' of undefined","time":"2019-02-02T13:04:35.765Z","v":0}

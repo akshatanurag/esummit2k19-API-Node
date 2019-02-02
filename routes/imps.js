@@ -129,7 +129,7 @@ router.post(
           });
         }
         const token = newUser.generateAuthToken(req.body.email);
-        req.session.secure = findUser.secureSessionID;
+        //req.session.secure = findUser.secureSessionID;
         //console.log(req.session.secure)
         return res
           .header('x-auth-token', token)
@@ -149,7 +149,7 @@ router.post(
   );
   
   router.get('/logout',impsMiddleware.isLoggedIn,async (req, res) => {
-    req.session.secure = undefined;
+    //req.session.secure = undefined;
     res
       .header('x-auth-token', null)
       .status(200)

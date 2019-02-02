@@ -27,7 +27,7 @@ module.exports = {
   isLoggedIn: async function(req, res, next) {
     try {
       const token = req.header('x-auth-token');
-      if (!token && !req.session.secure)
+      if (!token)
         return res.status(401).send({
           success: false,
           message: 'Access denied'
@@ -35,11 +35,12 @@ module.exports = {
       const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
       req.user = decoded;
       var currentUser = await fetchUser(decoded.email);
-      if (
-        req.session.secure &&
-        currentUser.secureSessionID &&
-        req.session.secure == currentUser.secureSessionID
-      )
+      if(currentUser!= 0)
+      // if (
+      //   req.session.secure &&
+      //   currentUser.secureSessionID &&
+      //   req.session.secure == currentUser.secureSessionID
+      // )
         next();
       else
         return res.status(401).send({
@@ -223,7 +224,7 @@ module.exports = {
   isAdminLoggedIn: async function(req, res, next) {
     try {
       const token = req.header('x-auth-token');
-      if (!token && !req.session.secure)
+      if (!token)
         return res
           .status(401)
           .send({ success: false, message: 'Access denied' });
@@ -235,7 +236,7 @@ module.exports = {
           email: decoded.email
         })
         .select('-password');
-      if (adminFind && req.session.secure == adminFind._id && decoded.isAdmin)
+      if (adminFind && decoded.isAdmin)
         next();
       else
         return res
@@ -249,7 +250,7 @@ module.exports = {
     }
   },
   doNotShowRegisterPage: function(req, res, next) {
-    if (!req.header('x-auth-token') && !req.session.secure) next();
+    if (!req.header('x-auth-token')) next();
     else
       return res.status(400).send({
         succes: false,

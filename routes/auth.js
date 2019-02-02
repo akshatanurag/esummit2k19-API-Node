@@ -104,7 +104,7 @@ router.get(
           }))
         ) {
           const token = user.generateAuthToken(data.email);
-          req.session.secure = currUser.secureSessionID;
+          //req.session.secure = currUser.secureSessionID;
           return res
             .header('x-auth-token', token)
             .status(200)
@@ -293,7 +293,7 @@ router.post(
         });
       }
       const token = newUser.generateAuthToken(req.body.email);
-      req.session.secure = findUser.secureSessionID;
+      //req.session.secure = findUser.secureSessionID;
       //console.log(req.session.secure)
       return res
         .header('x-auth-token', token)
@@ -313,7 +313,7 @@ router.post(
 );
 
 router.get('/logout', middleware.isLoggedIn, async (req, res) => {
-  req.session.secure = undefined;
+  //req.session.secure = undefined;
   res
     .header('x-auth-token', null)
     .status(200)

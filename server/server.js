@@ -17,9 +17,9 @@ const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const config = require('config');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+//const session = require('express-session');
 //var csrf = require('csurf');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var cors = require('cors');
 const hpp = require('hpp');
 const helmet = require('helmet');
@@ -80,21 +80,21 @@ app.use(express.static(__dirname + '/public'));
   );
   
   app.use(bodyParser.json());
-  app.use(
-    session({
-      name: 'SESS_ID',
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        secure: false, //will make this true when we get ssl
-        httpOnly: true,
-        signed: true,
-        maxAge: 86400000
-      }
-    })
-  );
-  app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
+  // app.use(
+  //   session({
+  //     name: 'SESS_ID',
+  //     secret: process.env.SESSION_SECRET,
+  //     resave: false,
+  //     saveUninitialized: true,
+  //     cookie: {
+  //       secure: false, //will make this true when we get ssl
+  //       httpOnly: true,
+  //       signed: true,
+  //       maxAge: 86400000
+  //     }
+  //   })
+  // );
+  //app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
   app.use(cors({
     origin: 'http://localhost:4200',
     exposedHeaders: ['x-api-token','x-auth-token'],
