@@ -95,7 +95,11 @@ app.use(express.static(__dirname + '/public'));
     })
   );
   app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
-  app.use(cors());
+  app.use(cors({
+    exposedHeaders: ['x-api-token','x-auth-token','set-cookie'],
+    methods: ['GET','POST'],
+    credentials: true
+  }));
   app.use(hpp());
   app.disable('x-powered-by');
   app.use(function(req, res, next) {
