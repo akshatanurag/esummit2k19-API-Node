@@ -106,6 +106,7 @@ app.use(express.static(__dirname + '/public'));
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Frame-Options', 'deny');
     res.header('X-Content-Type-Options', 'nosniff');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     next();
   });
   app.use(helmet());
