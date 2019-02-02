@@ -107,7 +107,7 @@ app.use(express.static(__dirname + '/public'));
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Frame-Options', 'deny');
     res.header('X-Content-Type-Options', 'nosniff');
-    //res.header('xhr.withCredentials','false');
+    res.header('xhr.withCredentials','false');
     next();
   });
   app.use(helmet());
