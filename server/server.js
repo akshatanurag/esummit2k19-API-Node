@@ -98,7 +98,7 @@ app.use(express.static(__dirname + '/public'));
   app.use(cors({
     exposedHeaders: ['x-api-token','x-auth-token','set-cookie'],
     methods: ['GET','POST'],
-    credentials: true
+    credentials: false
   }));
   app.use(hpp());
   app.disable('x-powered-by');
@@ -106,7 +106,7 @@ app.use(express.static(__dirname + '/public'));
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Frame-Options', 'deny');
     res.header('X-Content-Type-Options', 'nosniff');
-    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     next();
   });
   app.use(helmet());
