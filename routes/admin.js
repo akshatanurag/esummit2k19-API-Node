@@ -69,7 +69,7 @@ router.post("/login", async (req, res) => {
         var newAdmin = admin()
 
         const token = await newAdmin.generateAuthToken(santizer.escape(req.body.email))
-        req.session.secure = findAdmin._id
+        //req.session.secure = findAdmin._id
         return res.header('x-auth-token', token).status(200).send({
             success: true,
             message: "logged in"
@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout",middleware.isAdminLoggedIn,(req, res) => {
     try {
-        req.session.secure = null;
+        //req.session.secure = null;
         return res.status(200).header('x-auth-token', null).send({success: true,message: "Logged out!"})
     } catch (error) {
         log.error(error);
