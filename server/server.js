@@ -96,7 +96,7 @@ app.use(express.static(__dirname + '/public'));
   // );
   //app.use(cookieParser('6xH$*CYY*u44gcUN57%H'));
   app.use(cors({
-    origin: 'http://ecell.org.in',
+    origin: 'https://ecell.org.in',
     exposedHeaders: ['x-api-token','x-auth-token'],
     methods: ['GET','POST'],
     credentials: true
