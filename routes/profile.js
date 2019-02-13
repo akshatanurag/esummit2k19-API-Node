@@ -157,7 +157,7 @@ router.post(
               verifyToken,
               profile.alt_email,
               req.headers.host,
-              'kiit-id-verify'
+              'kiitmailverify'
             );
             
             if (!sentMail) {
