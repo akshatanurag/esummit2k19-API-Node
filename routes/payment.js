@@ -54,9 +54,9 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             amount: amt,
             phone: findProfile.mob_no,
             buyer_name: findProfile.fullName,
-            redirect_url: `https://ecell.org.in/esummit/cpanel/payment/thankyou`,
+            redirect_url: `https://ecell.org.in/esummit/payment/thankyou`,
             send_email: true,
-            webhook: `https://ecell.org.in/esummit/cpanel/payment/webhook`,
+            webhook: `https://ecell.org.in/esummit/payment/webhook`,
             send_sms: true,
             email: findUser.email,
             allow_repeated_payments: false
