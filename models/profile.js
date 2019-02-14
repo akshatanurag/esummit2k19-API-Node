@@ -86,7 +86,7 @@ function validateSchema(profile) {
         roll: joi.number(),
         mob_no: joi.number().min(10).required(),
         w_mob_no: joi.number().min(10).required(),
-        year: joi.number().min(1).required(),
+        year: joi.number().min(1),
         gender: joi.string().min(1).required()
         
 
