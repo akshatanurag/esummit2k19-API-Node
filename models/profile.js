@@ -83,7 +83,7 @@ function validateSchema(profile) {
         fullName: joi.string().min(1).max(50).required(),
         alt_email: joi.string().min(5).max(255).email(),
         uni: joi.string().min(1).max(255).required(),
-        roll: joi.number().required(),
+        roll: joi.number(),
         mob_no: joi.number().min(10).required(),
         w_mob_no: joi.number().min(10).required(),
         year: joi.number().min(1).required(),
