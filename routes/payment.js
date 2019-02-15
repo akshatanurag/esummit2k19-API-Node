@@ -46,11 +46,11 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             'X-Auth-Token': 'test_984665af47a659c0a4af0eef5a2'
         }
         if(findProfile.uni =='kiit university')
-        amt = '850'
+        amt = '925'
         else
-        amt ='1050'
+        amt ='1232'
         var payload = {
-            purpose: 'E-Summit 2019',
+            purpose: 'KIIT E-Summit 2019',
             amount: amt,
             phone: findProfile.mob_no,
             buyer_name: findProfile.fullName,
