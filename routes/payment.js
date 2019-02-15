@@ -62,7 +62,7 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             allow_repeated_payments: false
         }
     
-        await request.post('https://test.instamojo.com/api/1.1/payment-requests/', {
+        await request.post('https://www.instamojo.com/api/1.1/payment-requests/', {
             form: payload,
             headers: headers
         }, function (error, response, body) {
