@@ -11,6 +11,8 @@ const mailer = require('../config/sendgrid-mail');
 const router = express.Router();
 var owasp = require('owasp-password-strength-test');
 
+const resetMail = require('../config/reset-pass.js')
+
 
 owasp.config({
     allowPassphrases: true,
@@ -67,7 +69,7 @@ router.post("/forgot", async (req, res) => {
         findUser.resetEmailToken = verifyToken;
         findUser.resetEmailExpires = Date.now() + 3600000;
         //sentMail = await sendMail(verifyToken, findUser.email, req.headers.host)
-        let sentMail = await mailer.sendMail(
+        let sentMail = await resetMail.sendMail(
             verifyToken,
             req.body.email,
             req.headers.host,
