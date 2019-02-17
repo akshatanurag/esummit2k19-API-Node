@@ -42,8 +42,8 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
     
     
         var headers = {
-            'X-Api-Key': 'test_c10c242d09fa6d2792deed0c82a',
-            'X-Auth-Token': 'test_984665af47a659c0a4af0eef5a2'
+            'X-Api-Key': '2df42b9ee4bec052b29b4eb24e166346',
+            'X-Auth-Token': 'd15daf873005eadac356a3b642f5bd42'
         }
         if(findProfile.uni =='kiit university')
         amt = '925'
@@ -62,7 +62,7 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             allow_repeated_payments: false
         }
     
-        await request.post('https://test.instamojo.com/api/1.1/payment-requests/', {
+        await request.post('https://www.instamojo.com/api/1.1/payment-requests/', {
             form: payload,
             headers: headers
         }, function (error, response, body) {
