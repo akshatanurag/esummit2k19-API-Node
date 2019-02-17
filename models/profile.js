@@ -29,7 +29,6 @@ var profileSchema = new mongoose.Schema({
     },
     roll: {
         type: String,
-        required: true,
         minlength: 1
     },
     mob_no: {
