@@ -10,7 +10,7 @@ async function sendMail(token, to, host, route) {
   const msg_send = {
     to: to,
     from: 'esummit@ecell.org.in',
-    subject: 'KIIT E-Cell email verify',
+    subject: 'Email verify',
     // text:
     //   'You are receiving this because you (or someone else) has registered your account.\n\n' +
     //   'Please click on the following link, or paste this into your browser to complete the verfication process:\n\n' +
@@ -21,378 +21,200 @@ async function sendMail(token, to, host, route) {
     //   token +
     //   '\n\n' +
     //   'If you did not request this.\n'
-    html: `<head>
+    html: `<html>
+    <head>
     <title></title>
-    <!--[if !mso]><!-- -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--<![endif]-->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <style type="text/css">
-      #outlook a {
-        padding: 0;
-      }
-  
-      .ReadMsgBody {
-        width: 100%;
-      }
-  
-      .ExternalClass {
-        width: 100%;
-      }
-  
-      .ExternalClass * {
-        line-height: 100%;
-      }
-  
-      body {
-        margin: 0;
-        padding: 0;
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-      }
-  
-      table,
-      td {
-        border-collapse: collapse;
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-      }
-  
-      img {
-        border: 0;
-        height: auto;
-        line-height: 100%;
-        outline: none;
-        text-decoration: none;
-        -ms-interpolation-mode: bicubic;
-      }
-  
-      p {
-        display: block;
-        margin: 13px 0;
-      }
+      /* FONTS */
+        @media screen {
+        @font-face {
+          font-family: 'Lato';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+        }
+        
+        @font-face {
+          font-family: 'Lato';
+          font-style: normal;
+          font-weight: 700;
+          src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+        }
+        
+        @font-face {
+          font-family: 'Lato';
+          font-style: italic;
+          font-weight: 400;
+          src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+        }
+        
+        @font-face {
+          font-family: 'Lato';
+          font-style: italic;
+          font-weight: 700;
+          src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+        }
+        }
+        
+        /* CLIENT-SPECIFIC STYLES */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; }
+    
+        /* RESET STYLES */
+        img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        table { border-collapse: collapse !important; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+    
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] { margin: 0 !important; }
     </style>
-    <!--[if !mso]><!-->
-    <style type="text/css">
-      @media only screen and (max-width:480px) {
-        @-ms-viewport {
-          width: 320px;
-        }
-        @viewport {
-          width: 320px;
-        }
-      }
-    </style>
-    <!--<![endif]-->
-    <!--[if mso]>
-  <xml>
-    <o:OfficeDocumentSettings>
-      <o:AllowPNG/>
-      <o:PixelsPerInch>96</o:PixelsPerInch>
-    </o:OfficeDocumentSettings>
-  </xml>
-  <![endif]-->
-    <!--[if lte mso 11]>
-  <style type="text/css">
-    .outlook-group-fix {
-      width:100% !important;
-    }
-  </style>
-  <![endif]-->
-  
-    <!--[if !mso]><!-->
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
-    <style type="text/css">
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
-    </style>
-    <!--<![endif]-->
-    <style type="text/css">
-      @media only screen and (min-width:480px) {
-        .mj-column-per-100,
-        * [aria-labelledby="mj-column-per-100"] {
-          width: 100% !important;
-        }
-      }
-    </style>
-  </head>
-  
-  <body style="background: #F9F9F9;">
-    <div style="background-color:#F9F9F9;">
-      <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-      <style type="text/css">
-        html,
-        body,
-        * {
-          -webkit-text-size-adjust: none;
-          text-size-adjust: none;
-        }
-  
-        a {
-          color: #1EB0F4;
-          text-decoration: none;
-        }
-  
-        a:hover {
-          text-decoration: underline;
-        }
-      </style>
-      <div style="margin:0px auto;max-width:640px;background:transparent;">
-        <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:transparent;" align="center" border="0">
-          <tbody>
-            <tr>
-              <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 0px;">
-                <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-        <![endif]-->
-                <!--<div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                    <tbody>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;padding:0px;" align="center">
-                          <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0">
-                            <tbody>
-                              <tr>
-                                <td style="width:138px;"><a href="https://discordapp.com/" target="_blank"><img alt="" title="" height="38px" src="https://cdn.discordapp.com/email_assets/2ec94ed90b8e95d764f2a1c96f33139e.png" style="border:none;border-radius:;display:block;outline:none;text-decoration:none;width:100%;height:38px;" width="138"></a></td>
-                              </tr>
-                            </tbody>
-                          </table>
+    </head>
+    <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+    
+    <!-- HIDDEN PREHEADER TEXT -->
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        Looks like you tried signing in a few too many times. Let's see if we can get you back into your account.
+    </div>
+    
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <!-- LOGO -->
+        <tr>
+            <td bgcolor="#7c72dc" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                    <tr>
+                        <td align="center" valign="top" style="padding: 40px 10px 40px 10px;">
+                            <a href="https://ecell.org.in" target="_blank">
+                                <img alt="Logo" src="https://ecell.org.in/esummit/assets/white.png" width="200" height="150" style="display: block;  font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
+                            </a>
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>-->
-                <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-      <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-      <div style="max-width:640px;margin:0 auto;box-shadow:0px 1px 5px rgba(0,0,0,0.1);border-radius:4px;overflow:hidden">
-        <div style="margin:0px auto;max-width:640px;background:#7289DA url(https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;">
-          <!--[if mso | IE]>
-        <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:640px;">
-          <v:fill origin="0.5, 0" position="0.5,0" type="tile" src="https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png" />
-          <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-        <![endif]-->
-          <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#7289DA url(https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;" align="center" border="0"
-            background="https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png">
-            <tbody>
-              <tr>
-                <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:57px;">
-                  <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:undefined;width:640px;">
-        <![endif]-->
-                  <div style="cursor:auto;color:white;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:36px;font-weight:600;line-height:36px;text-align:center;">Thank You for registering in KIIT E-summit 2019!</div>
-                  <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <!--[if mso | IE]>
-          </v:textbox>
-        </v:rect>
-        <![endif]-->
-        </div>
-        <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-        <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-        <div style="margin:0px auto;max-width:640px;background:#ffffff;">
-          <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0">
-            <tbody>
-              <tr>
-                <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;">
-                  <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-        <![endif]-->
-                  <div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                      <tbody>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!-- HERO -->
+        <tr>
+            <td bgcolor="#7c72dc" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                          <h1 style="font-size: 32px; font-weight: 400; margin: 0;">Email Verification</h1>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!-- COPY BLOCK -->
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                  <!-- COPY -->
+                  <tr>
+                    <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
+                      <p style="margin: 0;">Hey,<br><br>
+                        Wowwee! Thanks for registering! Before you experience the gretest E-Summit in the country...<br>
+                        
+                        We'll need to verify your email.<br><br>
+                        Just press the button below and follow the instructions.</p>
+                    </td>
+                  </tr>
+                  <!-- BULLETPROOF BUTTON -->
+                  <tr>
+                    <td bgcolor="#ffffff" align="left">
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left">
-                            <div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                              <p><img src="https://cdn.discordapp.com/email_assets/127c95bbea39cd4bc1ad87d1500ae27d.png" alt="Party Wumpus" title="None" width="500" style="height: auto;"></p>
-  
-                              <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey,</h2>
-                              <p>Wowwee! Thanks for registering! Before you experience the gretest E-Summit in the country...</p>
-                              <p>We'll need to verify your email.</p><br>
-                              <p>Link : ${'https://ecell.org.in/esummit/'+route+'?token=' +token }</p><br>
-                              <p style="text-align:center;">or</p>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="word-break:break-word;font-size:0px;padding:10px 25px;" align="center">
-                            <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:separate;" align="center" border="0">
-                              <tbody>
-                                <tr>
-                                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA"><a href="${'http://' +host + '/' + route + '/' +token }" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
-              Verify Email
-            </a></td>
-                                </tr>
-                              </tbody>
+                          <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                              <tr>
+                                  <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc"><a href="https://ecell.org.in/esummit/verify?token=${token}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Verify Email</a></td>
+                              </tr>
                             </table>
                           </td>
                         </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-        <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-      </div>
-      <div style="margin:0px auto;max-width:640px;background:transparent;">
-        <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:transparent;" align="center" border="0">
-          <tbody>
-            <tr>
-              <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:0px;">
-                <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-        <![endif]-->
-                <div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                    <tbody>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;">
-                          <div style="font-size:1px;line-height:12px;">&nbsp;</div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-      <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-      <div style="margin:0 auto;max-width:640px;background:#ffffff;box-shadow:0px 1px 5px rgba(0,0,0,0.1);border-radius:4px;overflow:hidden;">
-        <table cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0">
-          <tbody>
-            <tr>
-              <td style="text-align:center;vertical-align:top;font-size:0px;padding:0px;">
-                <!--[if mso | IE]>
-        <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-        <![endif]-->
-                <!-- <div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                    <tbody>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;padding:30px 70px 0px 70px;" align="center">
-                          <div style="cursor:auto;color:#43B581;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:18px;font-weight:bold;line-height:16px;text-align:center;">FUN FACT #16</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;padding:14px 70px 30px 70px;" align="center">
-                          <div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:22px;text-align:center;">
-                            In Hearthstone, using the Hunter card Animal Companion against Kel'Thuzad will summon his cat Mr. Bigglesworth rather than the usual beasts.
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>-->
-                <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-      <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
-          <tr>
-            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-        <![endif]-->
-      <div style="margin:0px auto;max-width:640px;background:transparent;">
-        <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:transparent;" align="center" border="0">
-          <tbody>
-            <tr>
-              <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:20px 0px;">
-                <!--[if mso | IE]>
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-        <![endif]-->
-                <!--<div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                    <tbody>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;padding:0px;" align="center">
-                          <div style="cursor:auto;color:#99AAB5;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:12px;line-height:24px;text-align:center;">
-                            Sent by Discord • <a href="https://blog.discordapp.com/" style="color:#1EB0F4;text-decoration:none;" target="_blank">check our blog</a> • <a href="https://twitter.com/discordapp" style="color:#1EB0F4;text-decoration:none;" target="_blank">@discordapp</a>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="word-break:break-word;font-size:0px;padding:0px;" align="center">
-                          <div style="cursor:auto;color:#99AAB5;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:12px;line-height:24px;text-align:center;">
-                            444 De Haro Street, Suite 200, San Francisco, CA 94107
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>-->
-                <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--[if mso | IE]>
-        </td></tr></table>
-        <![endif]-->
-    </div>
-  
-  </body>`
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+            </td>
+        </tr>
+        <!-- COPY CALLOUT -->
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                    <!-- HEADLINE -->
+                    <tr>
+                      <td bgcolor="#111111" align="left" style="padding: 40px 30px 20px 30px; color: #ffffff; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
+                        <h2 style="font-size: 24px; font-weight: 400; margin: 0;">Unable to click on the button above?</h2>
+                      </td>
+                    </tr>
+                    <!-- COPY -->
+                    <tr>
+                      <td bgcolor="#111111" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
+                        <p style="margin: 0;">Click on the link below or copy/paste in the address bar.</p>
+                      </td>
+                    </tr>
+                    <!-- COPY -->
+                    <tr>
+                      <td bgcolor="#111111" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
+                        <p style="margin: 0;"><a href="https://ecell.org.in/esummit/verify?token=${token}" target="_blank" style="color: #7c72dc;">https://ecell.org.in/esummit/verify?token=${token}</a></p>
+                      </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!-- SUPPORT CALLOUT -->
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                    <!-- HEADLINE -->
+                    <tr>
+                      <td bgcolor="#C6C2ED" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
+                        <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Need more help?</h2>
+                        <p style="margin: 0;"><a href="mailto:techies@ecell.org.in" target="_blank" style="color: #7c72dc;">We&rsquo;re here, ready to talk</a></p>
+                      </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!-- FOOTER -->
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="480" >
+                  
+                  <!-- PERMISSION REMINDER -->
+                  <tr>
+                    <td bgcolor="#f4f4f4" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;" >
+                      <p style="margin: 0;">You received this email because you requested a password reset. If you did not, kindly ignore this.</p>
+                    </td>
+                  </tr>
+                  
+                  <!-- ADDRESS -->
+                  <!-- <tr>
+                    <td bgcolor="#f4f4f4" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;" >
+                      <p style="margin: 0;">185, Jiraeul-ro, Jijeong-myeon, Wonju-si, Gangwon-do</p>
+                    </td>
+                  </tr> -->
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+    </body>
+    </html>
+    `
   };
 
   try {

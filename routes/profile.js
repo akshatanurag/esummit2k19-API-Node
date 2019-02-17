@@ -17,6 +17,7 @@ const middleware = require('../middleware/middleware');
 const log = require('../config/bunyan-config');
 const router = express.Router();
 const mailer = require('../config/sendgrid-mail');
+const kiitMail = require('../config/kiit-mail');
 const sanitizer = require('sanitizer');
 
 router.post(
@@ -152,7 +153,7 @@ router.post(
               charset: 'hex'
             });
             profile.kiitMailVerifyToken = verifyToken;
-            let sentMail = await mailer.sendMail(
+            let sentMail = await kiitMail.sendMail(
               verifyToken,
               profile.alt_email,
               req.headers.host,
