@@ -127,8 +127,7 @@ router.post(
       if (
         (profile.gender == 'M' ||
           profile.gender == 'F' ||
-          profile.gender == 'O') &&
-        profile.year < 5
+          profile.gender == 'O')
       ) {
         profile.main_email = sanitizer.escape(findUser.email);
         profile.user_id = sanitizer.escape(findUser._id);
