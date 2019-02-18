@@ -125,7 +125,7 @@ async function sendMail(token, to, host, route) {
                   <tr>
                     <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
                       <p style="margin: 0;">Hey,<br><br>
-                        Wowwee! Thanks for registering! Before you experience the gretest E-Summit in the country...<br>
+                        Thanks for registering! Before you experience the greatest E-Summit in the country.<br>
                         
                         We'll need to verify your KIIT email.<br><br>
                         Just press the button below and follow the instructions.</p>
