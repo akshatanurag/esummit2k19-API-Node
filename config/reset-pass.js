@@ -165,7 +165,7 @@ async function sendMail(token, to, host, route) {
                     <!-- COPY -->
                     <tr>
                       <td bgcolor="#111111" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
-                        <p style="margin: 0;"><a href="https://ecell.org.in/esummit/cpanel/#/reset/token=${token}" target="_blank" style="color: #7c72dc;">https://ecell.org.in/esummit/cpanel/#/reset/token=${token}</a></p>
+                        <p style="margin: 0;"><a href="https://ecell.org.in/esummit/cpanel/#/reset?token=${token}" target="_blank" style="color: #7c72dc;">https://ecell.org.in/esummit/cpanel/#/reset?token=${token}</a></p>
                       </td>
                     </tr>
                 </table>
