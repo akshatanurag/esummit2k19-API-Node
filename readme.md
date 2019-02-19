@@ -249,7 +249,7 @@
     /api/reset/:token = **POST**
         -Expects
             -Password (Name: password)
-            -Please keep new and confirm password fields in frontend. And if the match the send th epassword on this route.
+            -Please keep new and confirm password fields in frontend. And if they match the send the password on this route.
 
 ```
 ---
