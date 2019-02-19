@@ -238,6 +238,20 @@
             -Destroys sessions
             -Destroys headers
 ```
+
+```
+    /api/forgot - **GET**
+        -Results
+            -Sends mail to the requested email id
+    /api/reset/:token - **GET**
+        -Results
+            -Tells if the token is valid or not
+    /api/reset/:token = **POST**
+        -Expects
+            -Password (Name: password)
+            -Please keep new and confirm password fields in frontend. And if the match the send th epassword on this route.
+
+```
 ---
 
 ### Admin Routes
