@@ -46,7 +46,7 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             'X-Auth-Token': 'd15daf873005eadac356a3b642f5bd42'
         }
         if(findProfile.uni =='kiit university')
-        amt = '925'
+        amt = '9'
         else
         amt ='1232'
         var payload = {
