@@ -108,9 +108,6 @@ router.post(
             mob_no: profile.mob_no
           },
           {
-            roll: profile.roll
-          },
-          {
             w_mob_no: profile.w_mob_no
           }
         ]
