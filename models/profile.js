@@ -5,7 +5,6 @@ var profileSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true,
         ref: "user"
     },
     fullName: {
