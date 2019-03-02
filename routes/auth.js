@@ -21,6 +21,7 @@ const log = require('../config/bunyan-config');
 const google = require('../config/google-util');
 const {Profile} = require('../models/profile');
 const middleware = require('../middleware/middleware');
+const {Campusperneur} = require('../models/campus-rep');
 //const nodemailer = require('nodemailer');
 
 // const sendMail = async (token, email, host) => {
@@ -182,6 +183,18 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
         message: 'Email taken'
       });
     }
+    if(req.body.ref_id){
+      if(!await Campusperneur.findOne({
+        camp_id: req.body.ref_id
+      })){
+        return res.status(400).send({
+          success: false,
+          message: 'Invalid referral ID'
+        });
+      }
+    }
+
+    
 
     const { error } = validate(req.body);
     if (error)
@@ -189,7 +202,8 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
         success: false,
         message: error.details[0].message
       });
-    var user = new User(_.pick(req.body, ['name', 'email']));
+    var user = new User(_.pick(req.body, ['name', 'email','ref_id']));
+
     user.password = user.generateHash(sanitizer.escape(req.body.password));
     // console.log(req.user._id)
     const token = user.generateAuthToken(sanitizer.escape(req.body.email));

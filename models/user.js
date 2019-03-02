@@ -53,6 +53,9 @@ var userSchema = new mongoose.Schema({
   singUpType: {
     type: String,
     required: true
+  },
+  ref_id: {
+    type: String,
   }
 });
 mongoose.Promise = global.Promise;
@@ -93,7 +96,10 @@ function validateSchema(user) {
       .string()
       .min(5)
       .max(255)
-      .required()
+      .required(),
+      ref_id: joi
+      .string()
+      .min(5)
   };
   return joi.validate(user, schema);
 }

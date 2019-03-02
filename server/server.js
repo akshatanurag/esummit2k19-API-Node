@@ -55,6 +55,7 @@ const qrGenRoutes = require('../routes/qr_gen');
 const adminRoutes = require('../routes/admin');
 const clientRoute = require('../routes/clients');
 const impsRoutes = require('../routes/imps');
+const campuspreneurRoutes = require('../routes/campus-rep')
 
 let port = process.env.PORT || 3000;
 if (cluster.isMaster) {
@@ -197,6 +198,7 @@ app.use(express.static(__dirname + '/public'));
   app.use('/api', qrGenRoutes);
   app.use('/api/admin', adminRoutes);
   app.use("/api/imps",impsRoutes);
+  app.use('/api/campuspreneur',campuspreneurRoutes)
 
   app.get('*', (req, res) => {
 
