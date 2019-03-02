@@ -140,7 +140,9 @@ router.post(
         // console.log('For ProfileDB + ', randString);
         profile.es_id = `ES_${randString}`;
         profile.profileComplete = true;
-
+        if(findUser.combo_code === 'COMBO2019'){
+          profile.combo_code = 'COMBO2019'
+        }
         //Fix needed
         // Send mail to kiit student
         if (profile.uni == "kiit university") {

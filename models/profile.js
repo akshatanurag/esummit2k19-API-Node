@@ -71,7 +71,10 @@ var profileSchema = new mongoose.Schema({
     kiitMailVerfyStatus:{
         type: Boolean,
         default: false
-    }
+    },
+    combo_code: {
+        type: String
+      }
 })
 
 function validateSchema(profile) {
@@ -84,7 +87,10 @@ function validateSchema(profile) {
         mob_no: joi.number().min(10).required(),
         w_mob_no: joi.number().min(10).required(),
         year: joi.number().min(1),
-        gender: joi.string().min(1).required()
+        gender: joi.string().min(1).required(),
+        combo_code: joi
+        .string()
+        .min(9)
         
 
 
