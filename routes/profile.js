@@ -143,6 +143,9 @@ router.post(
         if(findUser.combo_code === 'COMBO2019'){
           profile.combo_code = 'COMBO2019'
         }
+        if(findUser.payments.isPaid){
+          profile.isPaid= true
+        }
         //Fix needed
         // Send mail to kiit student
         if (profile.uni == "kiit university") {

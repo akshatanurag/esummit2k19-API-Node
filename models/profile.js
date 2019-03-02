@@ -74,6 +74,10 @@ var profileSchema = new mongoose.Schema({
     },
     combo_code: {
         type: String
+      },
+      isPaid: {
+          type: Boolean,
+          default: false
       }
 })
 
