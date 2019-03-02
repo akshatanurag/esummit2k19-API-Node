@@ -102,7 +102,10 @@ function validateSchema(user) {
       .required(),
       ref_id: joi
       .string()
-      .min(5)
+      .min(5),
+      combo_code: joi
+      .string()
+      .min(9)
   };
   return joi.validate(user, schema);
 }
