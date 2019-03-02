@@ -45,14 +45,17 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
             'X-Api-Key': '2df42b9ee4bec052b29b4eb24e166346',
             'X-Auth-Token': 'd15daf873005eadac356a3b642f5bd42'
         }
-        if(findProfile.uni =='kiit university')
+
+
+        if(findUser.combo_code == 'COMBO2019' && findProfile.uni == 'kiit university')
+        amt = '1425'
+        else if(findUser.combo_code == 'COMBO2019' && findProfile.uni !== 'kiit university')
+        amt = '1732'
+        else if(findProfile.uni =='kiit university')
         amt = '925'
         else
         amt ='1232'
 
-        if(findUser.combo_code == 'COMBO2019')
-        amt+=1000;
-        
         var payload = {
             purpose: 'KIIT E-Summit 2019',
             amount: amt,
