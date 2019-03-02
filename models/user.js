@@ -56,6 +56,9 @@ var userSchema = new mongoose.Schema({
   },
   ref_id: {
     type: String,
+  },
+  combo_code: {
+    type: String
   }
 });
 mongoose.Promise = global.Promise;

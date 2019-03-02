@@ -49,6 +49,10 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
         amt = '925'
         else
         amt ='1232'
+
+        if(findUser.combo_code == 'COMBO2019')
+        amt+=1000;
+        
         var payload = {
             purpose: 'KIIT E-Summit 2019',
             amount: amt,
