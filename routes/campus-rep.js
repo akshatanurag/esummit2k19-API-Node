@@ -17,7 +17,7 @@ router.post("/register",async(req,res)=>{
               success: false,
               message: error.details[0].message
         });
-        let profileObj = _.pick(req.body, ['name', 'email','mob_no','w_mob_no','roll','year','gender']);
+        let profileObj = _.pick(req.body, ['name', 'email','mob_no','w_mob_no','roll','year','branch_sec','exp']);
         Object.keys(profileObj).forEach(props => {
             if (
               typeof profileObj[props] == 'string' &&
@@ -50,9 +50,7 @@ router.post("/register",async(req,res)=>{
               message: 'Already Registered!'
             });
           }
-          if ((campuspreneur.gender == 'M' ||
-          campuspreneur.gender == 'F' ||
-          campuspreneur.gender == 'O')){
+
 
                 let randString = await randomstring.generate({
                     length: 5,
@@ -75,12 +73,7 @@ router.post("/register",async(req,res)=>{
                       ref_id: campuspreneur.camp_id
                     });
                   }
-          } else{
-            return res.status(400).send({
-                success: false,
-                message: "Gender wrong"
-            })
-          }
+
 
     } catch (error) {
         console.log(error);
