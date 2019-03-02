@@ -49,9 +49,6 @@ var campusRep = new mongoose.Schema({
     branch_sec : {
       type: String,
       required: true
-    },
-    exp: {
-      type: String
     }
 });
 mongoose.Promise = global.Promise;
@@ -76,7 +73,7 @@ function validateSchema(user) {
         mob_no: joi.number().min(10).required(),
         w_mob_no: joi.number().min(10).required(),
         branch_sec: joi.string().max(255).required(),
-        exp: joi.string().max(255),
+        
         year: joi.number().min(1)
   };
   return joi.validate(user, schema);

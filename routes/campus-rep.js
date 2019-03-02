@@ -17,7 +17,7 @@ router.post("/register",async(req,res)=>{
               success: false,
               message: error.details[0].message
         });
-        let profileObj = _.pick(req.body, ['name', 'email','mob_no','w_mob_no','roll','year','branch_sec','exp']);
+        let profileObj = _.pick(req.body, ['name', 'email','mob_no','w_mob_no','roll','year','branch_sec']);
         Object.keys(profileObj).forEach(props => {
             if (
               typeof profileObj[props] == 'string' &&
