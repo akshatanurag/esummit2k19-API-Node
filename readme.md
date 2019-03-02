@@ -297,7 +297,35 @@
 
 
 
-```    
+```
+
+###Admin Panel
+---
+
+```
+    /api/admin/login -  *POST*
+        -expects
+            -email
+            -password
+        -will return a x-auth-token store in localstorage
+
+    /api/admin/logout -  *GET*
+        - logs user out
+    
+    /api/admin/create-admin - *POST*
+        -expects
+            -email
+            -password
+        - will create new admins
+    /api/qr-gen - *POST*
+        -expects
+            -token
+        -will return user info if token correct
+    
+
+    --more to be added later, make this with axios--
+
+```
 
 
 

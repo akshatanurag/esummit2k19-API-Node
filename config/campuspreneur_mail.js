@@ -129,7 +129,7 @@ async function sendMail(to, camp_id) {
 
                         Referral ID : <b>${camp_id} </b><br><br>
 
-                        You can earn rewards for referring your frineds.<br>
+                        You can earn rewards for referring your friends.<br>
                         Send them your referral code <b>(${camp_id})</b>
 
                         
