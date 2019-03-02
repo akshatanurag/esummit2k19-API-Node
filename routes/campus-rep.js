@@ -45,6 +45,7 @@ router.post("/register",async(req,res)=>{
           //console.log(checkUnique.length)
     
           if (checkUnique != 0) {
+            console.log("al")
             return res.status(400).send({
               success: false,
               message: 'Already Registered!'
@@ -76,7 +77,7 @@ router.post("/register",async(req,res)=>{
 
 
     } catch (error) {
-        console.log(error);
+        console.log("error");
         return res.status(400).send({
             success: false,
             message: "Opps! Something went wrong"
