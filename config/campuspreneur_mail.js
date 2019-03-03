@@ -146,7 +146,10 @@ async function sendMail(to, camp_id) {
                       <li>Campuspreneurs ranking from 4th-10th will get to sit for Extra 2 Companies.</li>
                       </ol><br>
                       <b>The Rules are Set! The Perks are laid! Game On Campuspreneurs! All the best!</b>
-                      
+                      <br><br>
+                      <b>For any queries contact</b><br>
+                      <b>Bhaswati - 8910092228<br>
+                      Simran - 8969978775</b>
 
                         
 
