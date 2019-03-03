@@ -128,7 +128,7 @@ async function sendMail(to, camp_id) {
 
                       Thanks for registering! Here is your Referral id<br><br>
 
-                      <b>Referral ID : N8BVM</b><br><br>
+                      <b>Referral ID : ${camp_id}</b><br><br>
                       
                       Campuspreneur is our annual Campus Ambassador programme for KIIT E-Summit 2019. It’s an mini-competition testing your marketing & negotiation skills. Following are the guidelines for Campuspreneur ::<br><br>
                       
