@@ -48,9 +48,9 @@ router.get("/pay", [middleware.isLoggedIn, middleware.isProfileComplete,middlewa
 
 
         if(findUser.combo_code == 'COMBO2019' && findProfile.uni == 'kiit university')
-        amt = '1425'
+        amt = '1232'
         else if(findUser.combo_code == 'COMBO2019' && findProfile.uni !== 'kiit university')
-        amt = '1732'
+        amt = '1437'
         else if(findProfile.uni =='kiit university')
         amt = '925'
         else
