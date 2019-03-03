@@ -125,12 +125,28 @@ async function sendMail(to, camp_id) {
                   <tr>
                     <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
                       <p style="margin: 0;">Hey Campuspreneurs,<br><br>
-                        Thanks for registering! Here is your Referral id<br><br>
 
-                        Referral ID : <b>${camp_id} </b><br><br>
+                      Thanks for registering! Here is your Referral id<br><br>
 
-                        You can earn rewards for referring your friends.<br>
-                        Send them your referral code <b>(${camp_id})</b>
+                      <b>Referral ID : N8BVM</b><br><br>
+                      
+                      Campuspreneur is our annual Campus Ambassador programme for KIIT E-Summit 2019. It’s an mini-competition testing your marketing & negotiation skills. Following are the guidelines for Campuspreneur ::<br><br>
+                      
+                      <ol>
+                      <li>Pitch E-Summit 2019 to your friends & classmates. The perks of participating in KIIT E-Summit 2019 can be found on our Website, Facebook & Instagram handles.</li>
+                      <li>A unique Referral Id will be generated for each candidate. You can use your code for referrals of your friends when they Register & Pay for KIIT E-Summit 2019. </li>
+                      <li>The score of each Campuspreneur will be calculated based upon the No. of Payments on each referral Id. Only Payments count not just Registrations. </li>
+                      <li>Numerous perks await you for the Top 10 Campuspreneurs!!</li>
+                      </ol><br><br>
+                      
+                      The perks are ::-<br>
+                      <ol>
+                      <li>Certification will be provided to Top 10 Campuspreneurs</li>
+                      <li>Top 3 Campuspreneurs get a Cool T-Shirt & Free Access to our premier event : INTERNSHIP CAMP 2019.</li>
+                      <li>Campuspreneurs ranking from 4th-10th will get to sit for Extra 2 Companies.</li>
+                      </ol><br>
+                      <b>The Rules are Set! The Perks are laid! Game On Campuspreneurs! All the best!</b>
+                      
 
                         
 
