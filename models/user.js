@@ -101,11 +101,9 @@ function validateSchema(user) {
       .max(255)
       .required(),
       ref_id: joi
-      .string()
-      .max(5),
+      .string(),
       combo_code: joi
       .string()
-      .max(9)
   };
   return joi.validate(user, schema);
 }
