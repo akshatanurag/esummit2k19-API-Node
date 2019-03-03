@@ -55,7 +55,7 @@ var userSchema = new mongoose.Schema({
     required: true
   },
   ref_id: {
-    type: String
+    type: String,
   },
   combo_code: {
     type: String
@@ -99,7 +99,13 @@ function validateSchema(user) {
       .string()
       .min(5)
       .max(255)
-      .required()
+      .required(),
+      ref_id: joi
+      .string()
+      .max(5),
+      combo_code: joi
+      .string()
+      .max(9)
   };
   return joi.validate(user, schema);
 }
