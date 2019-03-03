@@ -55,7 +55,7 @@ var userSchema = new mongoose.Schema({
     required: true
   },
   ref_id: {
-    type: String,
+    type: String
   },
   combo_code: {
     type: String
