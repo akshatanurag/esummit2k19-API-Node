@@ -183,13 +183,15 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
         message: 'Email taken'
       });
     }
-
-    if(req.body.combo_code !== 'COMBO2019'){
-      return res.status(400).send({
-        success: false,
-        message: 'Invalid Cupon Code'
-      });
+    if(req.body.combo_code){
+      if(req.body.combo_code !== 'COMBO2019'){
+        return res.status(400).send({
+          success: false,
+          message: 'Invalid Cupon Code'
+        });
+      }
     }
+
 
     if(req.body.ref_id){
       if(!await Campusperneur.findOne({
