@@ -13,8 +13,8 @@ router.get("/test1",async (req,res)=>{
         }
     });
     res.status(200).send({
-        paid_count: paid,
-        unpaid_count: userData.length - paid,
+        paid_count: paid-2,
+        unpaid_count: userData.length - (paid-2),
         total: userData.length
     })
 })
