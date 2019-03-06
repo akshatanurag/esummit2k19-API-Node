@@ -26,9 +26,7 @@ router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.
         //console.log(currentUserProfile.eventsChosen[1].event_name)
         qr_token = async (currentUserProfile) => {
             return await jwt.sign({
-                _id: currentUserProfile.user_id,
-                name: currentUserProfile.name,
-                email: currentUserProfile.main_email
+                es_id: currentUserProfile.es_id
     
     
     
