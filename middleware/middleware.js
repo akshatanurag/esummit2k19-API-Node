@@ -267,9 +267,9 @@ module.exports = {
   isFromKiit: function(req, res, next) {
     const kiitSet = new Set([
       'kiit.ac.in',
-      'medical.ac.in',
-      'biotech.ac.in',
-      'law.ac.in'
+      'ksom.ac.in',
+      'ksol.ac.in',
+      'ksbt.ac.in'
     ]);
 
 
