@@ -149,7 +149,7 @@ router.post(
         //Fix needed
         // Send mail to kiit student
         if (profile.uni == "kiit university") {
-          if (req.kiit) {
+          // if (req.kiit) {
             let verifyToken = randomstring.generate({
               length: 50,
               charset: 'hex'
@@ -172,12 +172,12 @@ router.post(
               });
             }
 
-          } else {
-            return res.status(400).send({
-              success: false,
-              message: "Incorrect KIIT mail id"
-            })
-          }
+          // } else {
+          //   return res.status(400).send({
+          //     success: false,
+          //     message: "Incorrect KIIT mail id"
+          //   })
+          // }
 
         } else {
           await profile.save();
