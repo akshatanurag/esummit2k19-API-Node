@@ -1,6 +1,7 @@
 const express = require('express');
 const requestIp = require('request-ip');
-
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const router = express.Router();
 
 const ipMiddleware = function(req, res) {
@@ -15,5 +16,21 @@ router.get("/", (req, res) => {
     })
 })
 
+
+
+
+router.get("/dxuth",(req,res)=>{
+    const token = req.header('token');
+    if (!token)
+      return res.status(401).send({
+        success: false,
+        message: 'Access denied'
+      });
+      //console.log(token)
+    const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+    // req.user = decoded;
+    // var currentUser = await fetchUser(decoded.email);
+    res.status(200).send(decoded)
+})
 
 module.exports = router;
