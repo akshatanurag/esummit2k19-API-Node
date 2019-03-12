@@ -95,12 +95,12 @@ router.post("/get-user",middleware.isAdminLoggedIn,async (req,res)=>{
 
 })
 
-router.get("/get-user",async (req,res)=>{
+router.get("/get-user",middleware.isAdminLoggedIn,async (req,res)=>{
     let user = await Profile.find().select("-seatSafe").select("-selectedTwoEvents").select("-kiitMailVerfyStatus").select("-isPaid").select("-_id").select("-user_id").select("-kiitMailVerifyToken").select("-__v").select("-teamID").select("-combo_code").select("-eventsChosen")
     res.send(user)
 })
 
-router.post("/issue-id",async (req,res)=>{
+router.post("/issue-id",middleware.isAdminLoggedIn,async (req,res)=>{
     let profile = await Profile.findOneAndUpdate({
         main_email: req.body.email
     },{
