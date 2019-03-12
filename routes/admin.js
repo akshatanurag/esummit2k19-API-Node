@@ -9,6 +9,8 @@ const {
     validateSchema
 } = require('../models/admin')
 
+const {Profile} = require('../models/profile')
+
 var router = express.Router();
 
 router.post("/create-admin", middleware.isAdminLoggedIn, async (req, res) => {
@@ -80,6 +82,32 @@ router.post("/login", async (req, res) => {
             success: false,
             message: "Opps! Something went wrong"
         })
+    }
+})
+
+router.post("/get-user",middleware.isAdminLoggedIn,async (req,res)=>{
+    let profile = await Profile.findOne({
+        main_email: req.body.email
+    }).select("-profileComplete").select("-seatSafe").select("-selectedTwoEvents").select("-kiitMailVerfyStatus").select("-isPaid").select("-_id").select("-user_id").select("-kiitMailVerifyToken").select("-__v").select("-teamID").select("-combo_code")
+
+    res.send(profile)
+    
+
+})
+
+router.get("/get-user",async (req,res)=>{
+    let user = await Profile.find().select("-seatSafe").select("-selectedTwoEvents").select("-kiitMailVerfyStatus").select("-isPaid").select("-_id").select("-user_id").select("-kiitMailVerifyToken").select("-__v").select("-teamID").select("-combo_code").select("-eventsChosen")
+    res.send(user)
+})
+
+router.post("/issue-id",async (req,res)=>{
+    let profile = await Profile.findOneAndUpdate({
+        main_email: req.body.email
+    },{
+        id_issued: 1
+    })
+    if(profile){
+        res.send(true)
     }
 })
 

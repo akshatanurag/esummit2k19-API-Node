@@ -78,6 +78,10 @@ var profileSchema = new mongoose.Schema({
       isPaid: {
           type: Boolean,
           default: false
+      },
+      id_issued: {
+          type: Boolean,
+          default: 0
       }
 })
 
