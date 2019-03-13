@@ -328,6 +328,33 @@
 ```
 
 
+### Live Status
+``` 
+    /api/get-status - Will simply return user data what he attened and what he has not
+                    - expects
+                        -email
+    /api/updte-status - Will update the status of user.
+                      - do not allow true value to be chaged
+                      -expects
+                        -idIssued
+                        -opening
+                        -td1
+                        -clash
+                        -wolf
+                        -dinnerD1
+                        -td2
+                        -icamp
+                        -closing
+                        -dinnerD2
+    -dcrypt
+        -AES
+        -Key : ilovekiitesummit
+
+
+
+```
+
+
 
 
 ### For any queries call me directly.

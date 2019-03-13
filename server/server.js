@@ -57,6 +57,7 @@ const clientRoute = require('../routes/clients');
 const impsRoutes = require('../routes/imps');
 const campuspreneurRoutes = require('../routes/campus-rep')
 const test1Routes = require('../routes/test1')
+const liveStatusRoutes = require('../routes/livestatus')
 
 let port = process.env.PORT || 3000;
 if (cluster.isMaster) {
@@ -201,6 +202,7 @@ app.use(express.static(__dirname + '/public'));
   app.use("/api/imps",impsRoutes);
   app.use('/api/campuspreneur',campuspreneurRoutes)
   app.use("/api",test1Routes)
+  app.use("/api",liveStatusRoutes)
 
   app.get('*', (req, res) => {
 
