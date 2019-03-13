@@ -24,18 +24,19 @@ router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.
             })
         if(currentUserProfile.eventsChosen[1] && currentUserProfile.eventsChosen[2]){
         //console.log(currentUserProfile.eventsChosen[1].event_name)
-        qr_token = async (currentUserProfile) => {
-            return await jwt.sign({
-                _id: currentUserProfile.user_id,
-                name: currentUserProfile.name,
-                email: currentUserProfile.main_email
+        // qr_token = async (currentUserProfile) => {
+        //     return await jwt.sign({
+        //         _id: currentUserProfile.user_id,
+        //         name: currentUserProfile.name,
+        //         email: currentUserProfile.main_email
     
     
     
-            }, config.get("jwtPrivateKey"))
-        }
-        var token = await qr_token(currentUserProfile)
-        var enc_token = await crypto.AES.encrypt(token, salt).toString()
+        //     }, config.get("jwtPrivateKey"))
+        // }
+        var token = currentUserProfile.main_email
+        console.log(token)
+        var enc_token = token
         if (!token || !enc_token)
             return res.status(400).send({
                 success: false,
@@ -84,11 +85,11 @@ router.post("/qr-gen", middleware.isAdminLoggedIn, async (req, res) => {
             success: false,
             message: "Token was expected"
         })
-    dec_token = await crypto.AES.decrypt(santizer.escape(req.body.token), salt).toString(crypto.enc.Utf8);
+    //dec_token = await crypto.AES.decrypt(santizer.escape(req.body.token), salt).toString(crypto.enc.Utf8);
     //console.log(dec_token);
-    var decoded = await jwt.verify(dec_token, config.get("jwtPrivateKey"))
+    //var decoded = await jwt.verify(dec_token, config.get("jwtPrivateKey"))
     var userProfile = await Profile.findOne({
-        main_email: decoded.email
+        main_email: req.body.token
     })
     if (!userProfile)
         return res.status(400).send({
