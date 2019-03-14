@@ -35,6 +35,8 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
         'wolf',
         'dinnerD1',
         'td2',
+        'td3',
+        'td4',
         'icamp',
         'closing',
         'dinnerD2'

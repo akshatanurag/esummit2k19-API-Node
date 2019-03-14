@@ -37,6 +37,14 @@ var liveStatusSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    td3: {
+        type: Boolean,
+        default: false
+    },
+    td4: {
+        type: Boolean,
+        default: false
+    },
     icamp: {
         type: Boolean,
         default: false
