@@ -7,7 +7,7 @@ const middleware = require('../middleware/middleware')
 const router = express.Router()
 
 router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
-    let status = await liveStatus.find({
+    let status = await liveStatus.findOne({
         email: req.body.email
     })
     if(status){
