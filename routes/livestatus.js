@@ -64,6 +64,8 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
             idIssued: liveStatusObj.idIssued,
             opening: liveStatusObj.opening,
             td1: liveStatusObj.td1,
+            td3: liveStatusObj.td3,
+            td4: liveStatusObj.td4,
             clash: liveStatusObj.clash,
             wolf: liveStatusObj.wolf,
             dinnerD1: liveStatusObj.dinnerD1,
