@@ -57,6 +57,14 @@ var liveStatusSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    bplan: {
+        type: Boolean,
+        default: false
+    },
+    youtube: {
+        type: Boolean,
+        default: false
+    }
 
 
 })

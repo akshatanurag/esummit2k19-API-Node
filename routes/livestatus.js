@@ -39,7 +39,9 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
         'td4',
         'icamp',
         'closing',
-        'dinnerD2'
+        'dinnerD2',
+        'youtube',
+        'bplan'
     ]))
     let userInLive = await liveStatus.find({email: req.body.email})
     if(!userInLive){
@@ -72,7 +74,10 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
             td2: liveStatusObj.td2,
             icamp: liveStatusObj.icamp,
             closing: liveStatusObj.closing,
-            dinnerD2:  liveStatusObj.dinnerD2
+            dinnerD2:  liveStatusObj.dinnerD2,
+            youtube:  liveStatusObj.youtube,
+            bplan: liveStatusObj.bplan
+
         })
         if(update){
             await res.status(200).send({
