@@ -1,6 +1,7 @@
 const express = require('express');
 const {liveStatus} = require('../models/livestatusModel')
 const {User} = require('../models/user')
+const {Profile}= require('../models/profile')
 const _ = require('lodash');
 const middleware = require('../middleware/middleware')
 
@@ -10,10 +11,14 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
     let status = await liveStatus.findOne({
         email: req.body.email
     })
+    let profile = await Profile.findOne({
+        main_email: req.body.email
+    })
     if(status){
         res.status(200).send({
             success: true,
-            status
+            status,
+            profile
         }) 
     }else{
         res.status(400).send({
@@ -25,7 +30,7 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
 router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
     let user = await User.find({
         email: req.body.email
-    })
+    }).select("-password")
     var liveStatusObj = new liveStatus(_.pick(req.body, [
         'email',
         'idIssued',
