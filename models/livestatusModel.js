@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 var liveStatusSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     idIssued: {
         type: Boolean,
