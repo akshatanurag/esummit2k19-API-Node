@@ -1,5 +1,6 @@
 const express = require('express');
 const { User } = require('../models/user');
+const {Profile} = require('../models/profile')
 
 const router = express.Router()
 
@@ -22,6 +23,17 @@ router.get("/test1",async (req,res)=>{
         combo_paid: combo,
         combo_unpaid: userData.length - combo
     })
+})
+
+router.get("/update-kiit",async (req,res)=>{
+    // console.log(Profile.length)
+    let profile = await Profile.updateMany({
+        kiitMailVerfyStatus: false
+    },{
+        kiitMailVerfyStatus: true
+    })
+    if(profile)
+    console.log("done")
 })
 /**
  * Left to add

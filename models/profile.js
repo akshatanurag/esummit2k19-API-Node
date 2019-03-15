@@ -70,7 +70,7 @@ var profileSchema = new mongoose.Schema({
     kiitMailVerifyToken:  String,
     kiitMailVerfyStatus:{
         type: Boolean,
-        default: false
+        default: true
     },
     combo_code: {
         type: String
