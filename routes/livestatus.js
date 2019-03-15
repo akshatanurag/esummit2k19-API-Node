@@ -14,7 +14,10 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
     let profile = await Profile.findOne({
         main_email: req.body.email
     })
-    if(status){
+    let userPaid = await User.findOne({
+        email: req.body.email
+    }).select("-password")
+    if(status && userPaid.payments.isPaid){
         res.status(200).send({
             success: true,
             status,
@@ -22,7 +25,8 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
         }) 
     }else{
         res.status(400).send({
-            success: false
+            success: false,
+            message: "Unpaid user"
         })  
     }
 })
@@ -51,7 +55,7 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
     let userInLive = await liveStatus.find({email: req.body.email})
     if(!userInLive){
 
-        if(user){
+        if(user && user.payments.isPaid){
             await liveStatusObj.save()
             await res.status(200).send({
                 success: true,
@@ -60,52 +64,55 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
         } else{
             await res.status(400).send({
                 success: true,
-                message: "User not registered"
+                message: "User not registered or not paid"
             })
         }
     }
 
     else{
-        update = await liveStatus.findOneAndUpdate({ email: liveStatusObj.email},{
-            email: liveStatusObj.email,
-            idIssued: liveStatusObj.idIssued,
-            opening: liveStatusObj.opening,
-            td1: liveStatusObj.td1,
-            td3: liveStatusObj.td3,
-            td4: liveStatusObj.td4,
-            clash: liveStatusObj.clash,
-            wolf: liveStatusObj.wolf,
-            dinnerD1: liveStatusObj.dinnerD1,
-            td2: liveStatusObj.td2,
-            icamp: liveStatusObj.icamp,
-            closing: liveStatusObj.closing,
-            dinnerD2:  liveStatusObj.dinnerD2,
-            youtube:  liveStatusObj.youtube,
-            bplan: liveStatusObj.bplan
-
-        })
-        if(update){
-            await res.status(200).send({
-                success: true,
-                message: "Status updated successfully"
+        if(user.payments.isPaid){
+            update = await liveStatus.findOneAndUpdate({ email: liveStatusObj.email},{
+                email: liveStatusObj.email,
+                idIssued: liveStatusObj.idIssued,
+                opening: liveStatusObj.opening,
+                td1: liveStatusObj.td1,
+                td3: liveStatusObj.td3,
+                td4: liveStatusObj.td4,
+                clash: liveStatusObj.clash,
+                wolf: liveStatusObj.wolf,
+                dinnerD1: liveStatusObj.dinnerD1,
+                td2: liveStatusObj.td2,
+                icamp: liveStatusObj.icamp,
+                closing: liveStatusObj.closing,
+                dinnerD2:  liveStatusObj.dinnerD2,
+                youtube:  liveStatusObj.youtube,
+                bplan: liveStatusObj.bplan
+    
             })
+            if(update){
+                await res.status(200).send({
+                    success: true,
+                    message: "Status updated successfully"
+                })
+            }
         }
+
 
     }
  
     //liveStatusObj.email = req.user.email
-    if(user){
-        await liveStatusObj.save()
-        await res.status(200).send({
-            success: true,
-            message: "Status updated successfully"
-        })
-    } else{
-        await res.status(400).send({
-            success: true,
-            message: "User not registered"
-        })
-    }
+    // if(user){
+    //     await liveStatusObj.save()
+    //     await res.status(200).send({
+    //         success: true,
+    //         message: "Status updated successfully"
+    //     })
+    // } else{
+    //     await res.status(400).send({
+    //         success: true,
+    //         message: "User not registered"
+    //     })
+    // }
 
 
 })
