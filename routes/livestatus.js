@@ -54,6 +54,7 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
             'youtube',
             'bplan'
         ]))
+        liveStatusObj.oc_id = req.user.email;
         let userInLive = await liveStatus.findOne({email: req.body.email})
         if(userInLive && user.payments.isPaid){
             update = await liveStatus.findOneAndUpdate({ email: liveStatusObj.email},{
@@ -71,7 +72,8 @@ router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
                 closing: liveStatusObj.closing,
                 dinnerD2:  liveStatusObj.dinnerD2,
                 youtube:  liveStatusObj.youtube,
-                bplan: liveStatusObj.bplan
+                bplan: liveStatusObj.bplan,
+                oc_id: liveStatusObj.oc_id
     
             })
             if(update){

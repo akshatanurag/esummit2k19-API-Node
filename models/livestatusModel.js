@@ -64,6 +64,10 @@ var liveStatusSchema = new mongoose.Schema({
     youtube: {
         type: Boolean,
         default: false
+    },
+    oc_id: {
+        type: String,
+        required: true
     }
 
 
