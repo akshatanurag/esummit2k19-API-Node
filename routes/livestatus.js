@@ -17,7 +17,6 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
     let userPaid = await User.findOne({
         email: req.body.email
     }).select("-password")
-    console.log(userPaid.payments.isPaid)
     if(userPaid.payments.isPaid){
         res.status(200).send({
             success: true,
