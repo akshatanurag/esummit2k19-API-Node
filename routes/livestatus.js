@@ -32,9 +32,10 @@ router.post("/get-status",middleware.isAdminLoggedIn,async (req,res)=>{
 })
 
 router.post("/update-status",middleware.isAdminLoggedIn,async (req,res)=>{
-    let user = await User.find({
+    let user = await User.findOne({
         email: req.body.email
     }).select("-password")
+    //console.log(user);
     var liveStatusObj = new liveStatus(_.pick(req.body, [
         'email',
         'idIssued',
