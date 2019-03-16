@@ -163,7 +163,9 @@ router.get(
     }
   }
 );
-
+router.use((req,res,next)=>{
+  res.send("Registration have been closed")
+})
 router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) throw 'error';

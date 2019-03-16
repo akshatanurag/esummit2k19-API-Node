@@ -196,7 +196,7 @@ app.use(express.static(__dirname + '/public'));
   app.use('/api', forgotRoutes);
   app.use('/api', profileRoutes);
   app.use('/api', dashboardRoutes);
-  app.use('/api', paymentRoutes);
+  //app.use('/api', paymentRoutes);
   app.use('/api', qrGenRoutes);
   app.use('/api/admin', adminRoutes);
   app.use("/api/imps",impsRoutes);
