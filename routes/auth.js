@@ -164,100 +164,100 @@ router.get(
   }
 );
 
-router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
-  try {
-    if (!req.body.email || !req.body.password) throw 'error';
-    var passStrength = owasp.test(req.body.password);
-    if (passStrength.errors.length > 0)
-      return res.status(400).send({
-        errors: passStrength.errors
-      });
+// router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
+//   try {
+//     if (!req.body.email || !req.body.password) throw 'error';
+//     var passStrength = owasp.test(req.body.password);
+//     if (passStrength.errors.length > 0)
+//       return res.status(400).send({
+//         errors: passStrength.errors
+//       });
 
-    if (
-      await User.findOne({
-        email: sanitizer.escape(req.body.email)
-      })
-    ) {
-      return res.status(400).send({
-        success: false,
-        message: 'Email taken'
-      });
-    }
-    if(req.body.combo_code){
-      if(req.body.combo_code !== 'COMBO2019'){
-        return res.status(400).send({
-          success: false,
-          message: 'Invalid Cupon Code'
-        });
-      }
-    }
+//     if (
+//       await User.findOne({
+//         email: sanitizer.escape(req.body.email)
+//       })
+//     ) {
+//       return res.status(400).send({
+//         success: false,
+//         message: 'Email taken'
+//       });
+//     }
+//     if(req.body.combo_code){
+//       if(req.body.combo_code !== 'COMBO2019'){
+//         return res.status(400).send({
+//           success: false,
+//           message: 'Invalid Cupon Code'
+//         });
+//       }
+//     }
 
 
-    if(req.body.ref_id){
-      if(!await Campusperneur.findOne({
-        camp_id: req.body.ref_id
-      })){
-        return res.status(400).send({
-          success: false,
-          message: 'Invalid referral ID'
-        });
-      }
-    }
+//     if(req.body.ref_id){
+//       if(!await Campusperneur.findOne({
+//         camp_id: req.body.ref_id
+//       })){
+//         return res.status(400).send({
+//           success: false,
+//           message: 'Invalid referral ID'
+//         });
+//       }
+//     }
 
     
 
-    const { error } = validate(req.body);
-    if (error)
-      return res.status(400).send({
-        success: false,
-        message: error.details[0].message
-      });
-    var user = new User(_.pick(req.body, ['name', 'email','ref_id','combo_code']));
+//     const { error } = validate(req.body);
+//     if (error)
+//       return res.status(400).send({
+//         success: false,
+//         message: error.details[0].message
+//       });
+//     var user = new User(_.pick(req.body, ['name', 'email','ref_id','combo_code']));
 
-    user.password = user.generateHash(sanitizer.escape(req.body.password));
-    // console.log(req.user._id)
-    const token = user.generateAuthToken(sanitizer.escape(req.body.email));
-    let verifyToken = randomstring.generate({
-      length: 50,
-      charset: 'hex'
-    });
-    // console.log(verifyToken);
-    user.resetPasswordToken = verifyToken;
-    user.secureSessionID = randomstring.generate({
-      length: 20,
-      charset: 'hex'
-    });
-    user.dateJoined = Date.now();
-    user.singUpType = 'Normal';
-    //user.resetPasswordExpires = Date.now() + 86400000; // 24 hour
-    let sentMail = await mailer.sendMail(
-      verifyToken,
-      req.body.email,
-      req.headers.host,
-      'verify'
-    );
+//     user.password = user.generateHash(sanitizer.escape(req.body.password));
+//     // console.log(req.user._id)
+//     const token = user.generateAuthToken(sanitizer.escape(req.body.email));
+//     let verifyToken = randomstring.generate({
+//       length: 50,
+//       charset: 'hex'
+//     });
+//     // console.log(verifyToken);
+//     user.resetPasswordToken = verifyToken;
+//     user.secureSessionID = randomstring.generate({
+//       length: 20,
+//       charset: 'hex'
+//     });
+//     user.dateJoined = Date.now();
+//     user.singUpType = 'Normal';
+//     //user.resetPasswordExpires = Date.now() + 86400000; // 24 hour
+//     let sentMail = await mailer.sendMail(
+//       verifyToken,
+//       req.body.email,
+//       req.headers.host,
+//       'verify'
+//     );
 
-    if (sentMail) {
-      await user.save();
-      res.header('x-auth-token', token).send({
-        success: true,
-        message: 'Sign up successful'
-      });
-    } else {
-      res.status(400).send({
-        success: false,
-        message: 'Unable to sign up'
-      });
-    }
-  } catch (error) {
-    //console.log(error);
-    log.error(error);
-    return res.status(400).send({
-      success: false,
-      message: 'Uable to sign you up'
-    });
-  }
-});
+//     if (sentMail) {
+//       await user.save();
+//       res.header('x-auth-token', token).send({
+//         success: true,
+//         message: 'Sign up successful'
+//       });
+//     } else {
+//       res.status(400).send({
+//         success: false,
+//         message: 'Unable to sign up'
+//       });
+//     }
+//   } catch (error) {
+//     //console.log(error);
+//     log.error(error);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Uable to sign you up'
+//     });
+//   }
+// });
 
 
 router.get('/verify/:token', (req, res) => {
