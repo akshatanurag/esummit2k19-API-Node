@@ -400,6 +400,7 @@ async function sendMail(token, to, host, route) {
     return true;
   } catch (e) {
     log.error(e);
+    console.log(e)
     return false;
   }
 }

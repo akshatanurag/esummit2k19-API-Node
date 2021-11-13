@@ -12,7 +12,7 @@ var salt = process.env.SALT
 const log = require('../config/bunyan-config');
 const santizer = require('sanitizer');
 
-router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid, middleware.hasSeat], async (req, res) => {
+router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid], async (req, res) => {
     try {
         var currentUserProfile = await Profile.findOne({
             main_email: req.user.email
@@ -22,7 +22,7 @@ router.get("/qr-gen", [middleware.isLoggedIn, middleware.isVerified, middleware.
                 success: false,
                 message: "Profile was not found"
             })
-        if(currentUserProfile.eventsChosen[1] && currentUserProfile.eventsChosen[2]){
+        if(1){
         //console.log(currentUserProfile.eventsChosen[1].event_name)
         qr_token = async (currentUserProfile) => {
             return await jwt.sign({

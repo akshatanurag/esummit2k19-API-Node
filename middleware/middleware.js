@@ -32,24 +32,26 @@ module.exports = {
           success: false,
           message: 'Access denied'
         });
-      const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-      req.user = decoded;
+      const decoded = jwt.verify(token, config.get('jwtPrivateKey'))
       var currentUser = await fetchUser(decoded.email);
-      if (
-        req.session.secure &&
-        currentUser.secureSessionID &&
-        req.session.secure == currentUser.secureSessionID
-      )
-        next();
-      else
-        return res.status(401).send({
-          success: false,
-          message: 'Invalid Session or token'
-        });
+      req.user = currentUser;
+      if(currentUser)
+      next()
+      // if (
+      //   req.session.secure &&
+      //   currentUser.secureSessionID &&
+      //   req.session.secure == currentUser.secureSessionID
+      // )
+      //   next();
+      // else
+      //   return res.status(401).send({
+      //     success: false,
+      //     message: 'Invalid Session or token'
+      //   });
 
       //next();
     } catch (e) {
-      log.error('Generated from isLoggedIn Middileware' + e);
+      log.error('Generated from isLoggedIn Middileware+new' + e);
       return res.status(401).send({
         success: false,
         message: 'Access denied'
@@ -250,11 +252,11 @@ module.exports = {
   },
   doNotShowRegisterPage: function(req, res, next) {
     if (!req.header('x-auth-token') && !req.session.secure) next();
-    else
-      return res.status(400).send({
-        succes: false,
-        message: 'You are already loggedin. Kindly log out first'
-      });
+    // else
+    //   return res.status(400).send({
+    //     succes: false,
+    //     message: 'You are already loggedin. Kindly log out first'
+    //   });
   },
 
   /**
@@ -295,9 +297,9 @@ module.exports = {
       if(!userProfile)
       return res.status(400).send({succes: false, message: "Profile not complete"})
   
-      if(userProfile.uni == 'kiit university' && userProfile.kiitMailVerfyStatus)
+      if(userProfile.uni == 'kiit university' && !userProfile.kiitMailVerfyStatus)
       next();
-      else if(userProfile.uni !== 'kiit university' && userProfile.kiitMailVerfyStatus == false)
+      else if(userProfile.uni !== 'kiit university' && !userProfile.kiitMailVerfyStatus)
       next()
       else
       return res.status(400).send({succes: false, message: "If you are from KIIT then, please verify your kiit mail first. Or contact us at techies@ecell.org.in"})

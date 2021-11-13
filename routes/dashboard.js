@@ -1,27 +1,3 @@
-/* 
-    Yeah! ik the code on this page is way too fucked up. Do not attempt to undestand it.
-    The route was having too many bugs, below you will see my deperate attempts to resolve the issues,
-    it's just that the code works.
-
-    I will refactor the code later, Kindly use this for now, due to less time I coded whatever I could...
-
-
-
-    |----------------------------------------------------------------------------------------------|
-    |This code sucks, you know it and I know it. But yeah,rest of the pages are fucking awesome <3 |
-    |----------------------------------------------------------------------------------------------|
-
-
-    --Btw, I noticed just now--
-    OMFG! the page takes 4437ms to repond. So fuckin dead. I need to make this better very soon
-
-    =======
-    Date: 6/12/18
-    =======
-    SOLVED IT *120ms* !! YEAH :B
-
-*/
-
 const express = require('express');
 const middleware = require('../middleware/middleware');
 const allSeats = require('../models/allSeats');
@@ -149,7 +125,7 @@ router.get("/dashboard", [middleware.isLoggedIn, middleware.isVerified, middlewa
 
 })
 
-router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid, middleware.hasSeat, middleware.hasSelectedTwoEvents], async (req, res) => {
+router.post("/dashboard/choose-events", [middleware.isLoggedIn, middleware.isVerified, middleware.isProfileComplete,middleware.isKiitStudent,middleware.isPaid, middleware.hasSelectedTwoEvents], async (req, res) => {
     try {
         var event = _.pick(req.body, ["event1", "event2"]);
     if (!event.event1 || !event.event2)
@@ -262,23 +238,7 @@ var sessionHandler_2 = async (eventName, palyerData, req, res) => {
     } else {
         return 0;
     }
-/**
-* For the brave souls who get this far: You are the chosen ones,
-* the valiant knights of programming who toil away, without rest,
-* fixing our most awful code. To you, true saviors, kings of men,
-* I say this: never gonna give you up, never gonna let you down,
-* never gonna run around and desert you. Never gonna make you cry,
-* never gonna say goodbye. Never gonna tell a lie and hurt you.
-*=============
-*
-*   Yep just copied that from stackoverflow XD!! But yeah seriouly if you are here
-*   Then you are awesome. Because I am not awesome :P
-*
-*   When I wrote this, only God and I understood what I was doing
-*   Now, God only knows
-*
-*===============   
-*/
+
 
 
 }

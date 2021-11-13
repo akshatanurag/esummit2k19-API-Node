@@ -25,11 +25,9 @@ var profileSchema = new mongoose.Schema({
     },
     alt_email: {
         type: String,
-        minlength: 5
     },
     roll: {
         type: String,
-        required: true,
         minlength: 1
     },
     mob_no: {
@@ -67,8 +65,7 @@ var profileSchema = new mongoose.Schema({
         required: true
     },
     year: {
-        type: Number,
-        required: true
+        type: Number
     },
     kiitMailVerifyToken:  String,
     kiitMailVerfyStatus:{
@@ -81,12 +78,12 @@ function validateSchema(profile) {
     const schema = {
 
         fullName: joi.string().min(1).max(50).required(),
-        alt_email: joi.string().min(5).max(255).email(),
+        alt_email: joi.string().max(255).email().allow(''),
         uni: joi.string().min(1).max(255).required(),
-        roll: joi.number().required(),
+        roll: joi.number(),
         mob_no: joi.number().min(10).required(),
         w_mob_no: joi.number().min(10).required(),
-        year: joi.number().min(1).required(),
+        year: joi.number().min(1),
         gender: joi.string().min(1).required()
         
 

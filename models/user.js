@@ -35,7 +35,7 @@ var userSchema = new mongoose.Schema({
   //resetPasswordExpires: Date,
   secureSessionID: String,
   isEmailVerified: {
-    default: 0,
+    default: 1,
     type: Number
   },
   payments: {
@@ -66,10 +66,11 @@ userSchema.methods.validPassword = function(password, hashPass) {
   return bcrypt.compareSync(password, hashPass);
 };
 
-userSchema.methods.generateAuthToken = function(bodyEmail) {
+userSchema.methods.generateAuthToken = function(bodyEmail,fullName) {
   return jwt.sign(
     {
-      email: bodyEmail
+      email: bodyEmail,
+      fullName
     },
     config.get('jwtPrivateKey'),{
       expiresIn: "24h"

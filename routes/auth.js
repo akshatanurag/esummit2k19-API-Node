@@ -163,14 +163,12 @@ router.get(
   }
 );
 
-router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) throw 'error';
     var passStrength = owasp.test(req.body.password);
     if (passStrength.errors.length > 0)
-      return res.status(400).send({
-        errors: passStrength.errors
-      });
+      return res.status(400).send(passStrength.errors);
 
     if (
       await User.findOne({
@@ -206,28 +204,27 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
     user.dateJoined = Date.now();
     user.singUpType = 'Normal';
     //user.resetPasswordExpires = Date.now() + 86400000; // 24 hour
-    let sentMail = await mailer.sendMail(
-      verifyToken,
-      req.body.email,
-      req.headers.host,
-      'verify'
-    );
+    await user.save();
+    return res.status(200).send({
+      success: true,
+      message: 'Signup done'
+    });
+    // let sentMail = await mailer.sendMail(
+    //   'lol',
+    //   'lol',
+    //   'lol',
+    //   'verify'
+    // );
 
-    if (sentMail) {
-      await user.save();
-      res.header('x-auth-token', token).send({
-        success: true,
-        message: 'Sign up successful'
-      });
-    } else {
-      res.status(400).send({
-        success: false,
-        message: 'Unable to sign up'
-      });
-    }
+    // if (sentMail) {
+      
+    // } else {
+    //   res.send("unable to signup")
+    // }
   } catch (error) {
     //console.log(error);
     log.error(error);
+    console.log(error)
     return res.status(400).send({
       success: false,
       message: 'Uable to sign you up'
@@ -237,7 +234,7 @@ router.post('/signup', middleware.doNotShowRegisterPage, async (req, res) => {
 
 router.post(
   '/login',
-  [middleware.isVerified, middleware.doNotShowRegisterPage],
+  [middleware.isVerified],
   async (req, res) => {
     try {
       if (!req.body.email || !req.body.password) throw 'error';
@@ -264,7 +261,7 @@ router.post(
           message: 'Invalid email or passwrod'
         });
       }
-      const token = newUser.generateAuthToken(req.body.email);
+      const token = newUser.generateAuthToken(findUser.email,findUser.name);
       req.session.secure = findUser.secureSessionID;
       //console.log(req.session.secure)
       return res

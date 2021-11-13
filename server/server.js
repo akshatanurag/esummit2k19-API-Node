@@ -1,10 +1,5 @@
 /***
  *
- *  Very soon I will be commenting the entire code. Don't worry.
- *
- *  I intend to use it every year.
- *
- *  And if everything goes well then, I can modify this API for Icamp as well.
  *
  * ===============================
  * (: LET'S MAKE E-SUMMIT GREAT :)
@@ -18,6 +13,7 @@ const numCPUs = require('os').cpus().length;
 const config = require('config');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const sha256 = require('sha256');
 //var csrf = require('csurf');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
@@ -53,19 +49,19 @@ const adminRoutes = require('../routes/admin');
 const clientRoute = require('../routes/clients');
 const impsRoutes = require('../routes/imps');
 
-let port = process.env.PORT || 3000;
-if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
+let port = process.env.PORT || 8080;
+// if (cluster.isMaster) {
+//   console.log(`Master ${process.pid} is running`);
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+//   // Fork workers.
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
 
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-} else {
+//   cluster.on('exit', (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`);
+//   });
+// } else {
   //ALL CODE GOES IN HERE
   const app = express();
   app.set("view engine","ejs");
@@ -111,11 +107,7 @@ app.use(express.static(__dirname + '/public'));
       setTo: 'KIIT Ecell Server 1.0'
     })
   ); //change value of X-Powered-By header to given value
-  app.use(
-    helmet.noCache({
-      noEtag: true
-    })
-  ); //set Cache-Control header
+  app.use(helmet())
   app.use(helmet.noSniff()); // set X-Content-Type-Options header
   app.use(helmet.frameguard()); // set X-Frame-Options header
   app.use(helmet.xssFilter()); // set X-XSS-Protection header
@@ -131,13 +123,10 @@ app.use(express.static(__dirname + '/public'));
   app.use("/api",clientRoute);
   app.use(function(req, res, next) {
     try {
-      var decoded = () => {
-        return jwt.verify(
-          req.header('x-api-token'),
-          config.get('jwtPrivateKey')
-        );
-      };
-      if ('Android' == decoded().device || 'Angular' == decoded().device)
+      const date = Number(new Date().toLocaleDateString("en-GB").split("/").join(""));
+      const modedDate = date + (date % 1000000);
+      const xApiToken = sha256(modedDate + "kiitesummitzgOrJz91QOME8hrislove");
+      if (req.header('x-api-token') === xApiToken)
         next();
       else
         return res
@@ -192,4 +181,4 @@ app.use(express.static(__dirname + '/public'));
   app.listen(port, process.env.IP);
 
   // console.log(`Worker ${process.pid} started`);
-}
+// }
