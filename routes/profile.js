@@ -50,8 +50,6 @@ router.post(
   [middleware.isLoggedIn, middleware.isVerified, middleware.isFromKiit],
   async (req, res) => {
     try {
-      console.log(req.body);
-
       // Refactor isProfileComplete Middileware we can use that here.
       let findProfile = await Profile.findOne({
         main_email: req.user.email,
